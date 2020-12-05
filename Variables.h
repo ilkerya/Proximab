@@ -47,7 +47,7 @@ String ICERROR     = "  IC Error ";
 
 void readandwrite(void);
 void resetADE9153A(void);
-void Operating_Modes(void);
+void PowerIC_Operation(void);
 
 struct
 {

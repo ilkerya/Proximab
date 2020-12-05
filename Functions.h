@@ -118,16 +118,9 @@ void Common_Loop(){
          SDCard.PauseTimer--;    
       }
 
-               #ifdef AD9153_PROTOTYPE   
-         //   PowerIC_Mode =  POWERIC_NORMAL;        
-             Operating_Modes();
-            // if(PowerIC_Mode ==  POWERIC_NORMAL)     readandwrite();
-               Serial.print("PowerIC_Mode : "); 
-               Serial.println(PowerIC_Mode); 
-                Serial.print("PowerIC.Timer : "); 
-                Serial.println(PowerIC.Timer);  
+        #ifdef AD9153_PROTOTYPE   
+             PowerIC_Operation();
         #endif
-
 
   }
   if (LoopTask_5Sec) {
