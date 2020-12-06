@@ -1,33 +1,14 @@
+
+
 #ifdef AD9153_PROTOTYPE
-
-#define ARM_MATH_CM0PLUS
-#include  <ADE9153A.h>
-#include <ADE9153AAPI.h>
+//int ledState = LOW;
+//int inputState = LOW;
 
 
-int ledState = LOW;
-int inputState = LOW;
-unsigned long lastReport = 0;
-const long reportInterval = 2000;//2000;
-const long blinkInterval = 500;
-//bool Calib_Done = 0;
-
-////* Basic initializations */
-#define SPI_SPEED 1000000     //SPI Speed
-#define CS_PIN 8              //8-->Arduino Zero. 15-->ESP8266 
-#define ADE9153A_RESET_PIN 4  //On-board Reset Pin
-#define USER_INPUT 5          //On-board User Input Button Pin
-#define LED 6                 //On-board LED pin
-ADE9153AClass ade9153A;
 unsigned long currentReport;
       long Igain;
       long Vgain;
       bool commscheck;
-//ADE9153AClass cc;
-//SetupADE9153A
-
-//ADE9153AClass ade9153A = ADE9153AClass();
-//ADE9153AClass ade9153A = SetupADE9153A();
 
 struct EnergyRegs energyVals;  //Energy register values are read and stored in EnergyRegs structure
 struct PowerRegs powerVals;    //Metrology data can be accessed from these structures
@@ -36,33 +17,23 @@ struct PQRegs pqVals;
 struct AcalRegs acalVals;
 struct Temperature tempVal;
 
-String SETTINGUP   = "SettingUp  IC"; //21-3
-String CALIBRATING = "Calibrting IC";
-String ICERROR     = "  IC Error ";
+static const char SETTINGUP[] = "SettingUp"; //21-3
+static const char  CALIBRATING[] = "Calibrting";
+static const char  ICERROR[]     = " IC Error";
 
-
-//String SETTINGUP   = "Se"; //21-2
-//String CALIBRATING = "Ca";
-//String ICERROR    = "Po";
-
-void readandwrite(void);
-void resetADE9153A(void);
-void PowerIC_Operation(void);
 
 struct
 {
- // byte Modes;
+  byte Mode = 0;
   byte Timer = 0;
   bool Error = 0;
-}PowerIC;
-
-unsigned char PowerIC_Mode;
+}EnergyMeterIC;
 
 #endif  
 
 
 // so variables
-
+                     
 String Display_Line1 ="Display.........Line1"; 
 String Display_Line2 ="Display........Line2."; 
 String Display_Line3 ="Display.......Line3.."; 
@@ -71,10 +42,11 @@ String Display_Line5 ="Display.....Line5....";
 String Display_Line6 ="Display....Line6.....";
 String Display_Line7 ="Display...Line7......";
 String Display_Line8 ="Display..Line8.......";
+
 String FW_Version ="" ;
 byte Menu =0;
-unsigned int SerialCode =0;
 byte DispRollIndex[4] = {1,0,0,0};
+
 //2 1 0 0
 //3 2 1 0
 //4 3 2 1
@@ -99,8 +71,11 @@ bool KeyMid_Rel = 0;
 bool KeyRight_Rel = 0;
 bool KeyReleased = 0;
 
-unsigned int OLED_Timer = 0;
-bool OLED_Init = 0 ;
+
+bool I2CSet = 0;
+byte I2CTimer = 0;
+bool I2Error = 0;
+#define ACK_TIMEOUT 12
 
 //unsigned int Timer =0;
 
@@ -132,10 +107,6 @@ bool LoopTask_60Sec =0;
 
 byte SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5sec 16 // 10sec 32 // 20sec 64  
 
-//byte Sample_LogTime = 4;// default 2 sec
-
-
-
 struct
 {
   bool LogEnable;  // log on or off  eski LogStatus
@@ -145,13 +116,6 @@ struct
   unsigned int PauseCount;  
   byte Status; 
 }SDCard;
-
-
-
-//bool LogPause = 0;
-//bool SD_KartStop = 0;
-//int SDCardStatus = 0;
-
 
 bool DispExpSens1 =0;
 bool DispExpSens2 =0;
@@ -187,7 +151,9 @@ String Sensor_Info_SDS= "";
 
 // the logging file
 File logfile;
-
+String dataString = "";
+float SD_Volume;
+char SD_Type;
 String LOG_FILE =  "LOG_xxxx.csv";
 //#define LOG_FILE "AD_Log.csv"
 
@@ -200,28 +166,19 @@ struct
 }FileSize;
 
 
+ char SD1_CARD[]= "SD1 Card "; 
+  char SD2_CARD[]= "SD2 Card ";
+  char SDHC_CARD[]="SDHC Card "; 
+  char SD_CARD_ERR[]="Card Problem    !";
 
-
-
+//char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesdy", "Wedns.", "Thurs.", "Friday", "Satur."};
+//static const char SD_Type[4][14] = {"SD1 Card " , "SD2 Card " , "SDHC Card " , "Card Problem    !"};
 
 String EE_Id_EString =""; 
-
-String deBugString = "Start.....";  // Max 10 caharacter
-
-    String dataString = "";
-  //   String DataStr = "";   
-   // String Date_Time = "";
+   
     String Str_Time="";
     String Str_Date="";
     String Str_DispTime="";
-    float SD_Volume;
-    String SD_TypeString = "";
- //   bool SD_Card_Reset = 1;   
-    byte RTC_Test = 2;
-    String incomingStr ="";
-    int incomingByte = 0;
-  //  int Character_Length = 0;
-
 /*
 char DisplayLine[40] = {'1','2','3','4','5','6','7','8','9','0',
                         'a','b','c','d','e','f','g','h','i','j',
@@ -305,8 +262,7 @@ struct
   unsigned int Minute=0; 
   unsigned int Second=0;
   bool Init=0; 
-  bool RTC_Update=0;  
- // bool Disp_Update=0;  
+  bool RTC_Update=0;   
   unsigned int Disp_UpdateTimer=0; 
   unsigned int Disp_Flash=0;     
 }DateTimeBuf;
@@ -314,14 +270,14 @@ struct
 
 struct
 {
-
-  bool RTC_Update=0;  
- // bool Disp_Update=0;  
+  bool RTC_Update=0; 
+  bool OLED_Init = 0 ; 
   unsigned char MenuTimeout=0; 
-  unsigned char Flash=0;     
+  unsigned char Flash=0; 
+  int OLED_Timer = 0;    
 }Display;
 /*
-
+Display.
 // for wind sensor
 float zeroWindAdjustment = 0.1;             // individual adjustment parameter for wind sensor (standard = 0.1)
 const double F_A_temp = 1.00857557;       // constants for calibration factors of Y=A*X+B equation for air temperature, relative humidity, and globe temperature

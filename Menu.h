@@ -15,18 +15,13 @@ void KeyTimeOutStart(void) {
 }
 
 void DisplayWakeUp(void) {
-  if ((OLED_Timer == 0) && (OLED_Init == OFF)) {
-    OLED_Init = ON;
+  if ((Display.OLED_Timer == 0) && (Display.OLED_Init == OFF)) {
+    Display.OLED_Init = ON;
   }//else if(OLED_Timer)OLED_Timer += 10; // add additional time every time any key released
 }
 
-
-
-
-
-
 void  DispExtTimeout(void) {
-  if (OLED_Timer <= KEYDISP_TIMER) OLED_Timer = KEYDISP_TIMER;
+  if (Display.OLED_Timer <= KEYDISP_TIMER) Display.OLED_Timer = KEYDISP_TIMER;
 }
 void UpdateInfoQue(void){
      DispRollIndex[3] = DispRollIndex[2];
@@ -51,7 +46,7 @@ void DispEnable(bool Enable, byte Timer) {
   if (Enable == ON) {
     DisplaySleepEnable = ON; //go sleep
     //OLED_Timer = 20;
-    OLED_Timer = Timer;
+    Display.OLED_Timer = Timer;
   }
   else   DisplaySleepEnable = OFF;    // no sleep
 }
@@ -250,7 +245,7 @@ void Key_Functions(void) {
   }
 }
 void DownMenuKey(void) {
-  if (OLED_Timer == 0) return;
+  if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (Menu) {
     case MENU_NULL :// Menu = MENU_NULL;
@@ -335,7 +330,7 @@ void DownMenuKey(void) {
 }
 
 void UpMenuKey(void) {
-  if (OLED_Timer == 0) return;
+  if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (Menu) {
     case MENU_NULL : Menu = MENU_NULL;
@@ -448,7 +443,7 @@ void UpMenuKey(void) {
 
 
 void EscMenuKey(void) {
-  if (OLED_Timer == 0) return;
+  if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (Menu) {
     case MENU_NULL : Menu = MENU_NULL;
@@ -534,7 +529,7 @@ void EscMenuKey(void) {
   }
 }
 void EnterMenuKey(void) {
-  if (OLED_Timer == 0) return;
+  if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (Menu) {
     case MENU_NULL : Menu = MENU1;
@@ -656,7 +651,7 @@ void EnterMenuKey(void) {
        case MENU6_SUB1: Menu = MENU6_SUB2; //     
       break;
       case MENU6_SUB2: Menu = MENU6_SUB3; //
-          PowerIC_Mode = POWERIC_CALB1;       
+          EnergyMeterIC.Mode = POWERIC_CALB1;       
       break;        
        case MENU6_SUB3:      
       break;  

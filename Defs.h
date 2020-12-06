@@ -10,6 +10,9 @@ typedef  signed long        int32;
 typedef  unsigned long      uint32;
 typedef  signed long long   int64;
 typedef  unsigned long long uint64
+
+C:\Program Files (x86)\Arduino\libraries
+
 */
  
 #include "RTClib.h"
@@ -20,6 +23,16 @@ typedef  unsigned long long uint64
 // Select Hardware Type
 //#define FIRST_PROTOTYPE  // with LEM current Transdcucer
 #define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC
+
+#ifdef AD9153_PROTOTYPE
+
+#define ARM_MATH_CM0PLUS
+#include  <ADE9153A.h>
+#include <ADE9153AAPI.h>
+//#define ADE9153A_ACCMODE 0x0000      /*Energy accumulation modes, Bit 4, 0 for 50Hz, 1 for 60Hz 0x0010 -> 0x0000 */
+ADE9153AClass ade9153A;
+
+#endif
 
 #define TEMP_HUM_1_SENSOR_EXISTS
 #define TEMP_HUM_2_SENSOR_EXISTS
@@ -66,19 +79,21 @@ typedef  unsigned long long uint64
 #define POWERIC_CALB9  12
 #define POWERIC_CALB10 13
 
+////* Basic initializations for energy meter IC ADE9153 */
+#define SPI_SPEED 1000000     //SPI Speed
 
  #define SI072_FIRST_SENSOR 2  // multiplexer Channel 7 first blu box prot
  #define SI072_SECOND_SENSOR 3 // first prot  0      0
  #define SI072_THIRD_SENSOR 7 // sec1                2 
 
 #define NO_IC2_MULTIPLEXER 16
-
 #define DEBUG_KEY
 
 #define ON 1 //
 #define OFF 0 //
 
 #ifdef FIRST_PROTOTYPE
+    const int chipSelect = 10; // mega SS for SD Card  
   #define KEY_RIGHT 2//12//2 //
   #define LED_GREEN 3// 11//3 // GREEN
   #define LED_RED 4 // 12//4 //RED
@@ -86,64 +101,41 @@ typedef  unsigned long long uint64
   #define KEY_LEFT 6//13//6 // ok
 #endif
 #ifdef AD9153_PROTOTYPE
-// occupied pins 2,3,4,5,8
-  #define KEY_RIGHT 13
-  #define LED_GREEN 9
-  #define LED_RED  7
-  #define KEY_MID  12
-  #define KEY_LEFT 11
-#endif
-  const int chipSelect = 10; // mega SS for SD Card
 
+
+  
+  #define ANALOG5         19
+  #define ANALOG4         18
+  #define ANALOG3         17
+  #define ANALOG2         16
+  #define ANALOG1         15
+  #define I2C_TIMEOUT      A0  
+  
+  #define KEY_RIGHT       13
+  #define KEY_MID         12
+  #define KEY_LEFT        11
+  #define SD_CS_PINOUT    10  
+  #define LED_GREEN        9
+  #define ADE9153A_CS_PIN  8       
+  #define LED_RED          7 //??? bosta
+  #define ADE9153A_RED_LED 6                 //On-board LED pin 
+  #define ADE9153A_CALB_BUTTON   5         
+  #define ADE9153A_RESET_PIN     4  
+  #define ADE9153A_IRQ_PIN       3
+  #define ADE9153A_ZX_DREADY_PIN 2
+  #define TX_OUTPUT_PIN          1 //ON BOARD PROGRAMMING & DEBUG RESERVED
+  #define RX_INPUT_PIN           0  //ON BOARD PROGRAMMING & DEBUG RESERVED
+
+  #define OUT_PINOUT 2 // Out pin of the sensor
+  #define RV_PINOUT 1 // RV output of the sensor
+  #define TMP_PINOUT 0 // analogRead(TMP_PINOUT);
+
+#endif
+
+#define MAX_DISPLAY_CHAR 21
 #define  MAXSHOWLINE 6  // define how many lines for sensorts to show including fw info line 
 
-/*
-#define MENU_NULL 0
-#define MENU1   32
-#define MENU2   64
-#define MENU3   96
-#define MENU4   128
-#define MENU5   160
 
-//#define MENU_MAINMIN  32
-//#define MENU_MAINMAX  MENU5
-
-//#define MENU1MIN  36
-//#define MENU1MAX  40
-
-#define MENU1_SUB1 36 // +=4
-#define MENU1_SUB2 40
-
-//#define MENU2MIN  68
-//#define MENU2MAX  92
-
-#define MENU2_SUB1  68  // +=4
-#define MENU2_SUB2  72
-#define MENU2_SUB3  76
-#define MENU2_SUB4  80
-#define MENU2_SUB5  84
-#define MENU2_SUB6  88
-#define MENU2_SUB7  92
-//#define MENU2_SUB8  96
-
-//#define MENU3MIN  100
-//#define MENU3MAX  104
-
-#define MENU3_SUB1  100 // +=4
-#define MENU3_SUB2  104
-
-#define MENU4_SUB1 132
-#define MENU4_SUB2 136
-
-#define MENU5_SUB1 164
-#define MENU5_SUB2 168
-#define MENU5_SUB3 172
-#define MENU5_SUB4 176
-#define MENU5_SUB5 180
-#define MENU5_SUB6 184
-#define MENU5_SUB7 188
-
-*/
 #define MENU_NULL 0
 #define MENU1   16
 #define MENU2   32
@@ -188,10 +180,6 @@ typedef  unsigned long long uint64
 #define MENU6_SUB3 99
 
 #define KEYDISP_TIMER 40
-
-#define OUT_PINOUT 2 // Out pin of the sensor
-#define RV_PINOUT 1 // RV output of the sensor
-#define TMP_PINOUT 0 // TMP pin of sensor this is temperature output
 
 // function prototypes
 void Common_Loop(); 
@@ -245,6 +233,10 @@ void Log_Data_Write_SD(void);
 void Parse_FileString(void);
 void Relay_loop(void) ;
 float GetValue(byte Relay);
+String LimitCopyDisplayStr(String str, byte MaxNumber);
+void EnergyMeterIC_Operation(void);
+void I2_ACK_Reset(void);
+
 
 
 

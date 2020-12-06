@@ -134,7 +134,7 @@ void SD_Card_Info(void){
 
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
-  if (!card.init(SPI_HALF_SPEED, chipSelect)) {
+  if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {
     Serial.println("initialization failed. Things to check:");
     Serial.println("* is a card inserted?");
     Serial.println("* is your wiring correct?");
@@ -165,8 +165,6 @@ void SD_Card_Info(void){
         SDCard.Status = UNKNOWN_TYPE;
         Serial.println("Unknown");
     }
- //   SD_TypeString = String(SDCard.Status);
-
       // Now we will try to open the 'volume'/'partition' - it should be FAT16 or FAT32
       if (!volume.init(card)) {
       Serial.println("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card");
@@ -213,7 +211,7 @@ void SD_Card_Info(void){
 
 void SD_Card_Init(){
   // see if the card is present and can be initialized:
-  if (!SD.begin(chipSelect)) {
+  if (!SD.begin(SD_CS_PINOUT)) {
     Serial.println("Card failed, or not present");
       SDCard.Status = SD_NOT_Present;
       switch(SDCard.PauseCount){
@@ -259,26 +257,46 @@ void SD_Card_Init(){
       SDCard.LogBootInit = OFF;
       
   }
+  /*
   else
      //Serial.println("card Ready For Logging."); 
       switch(SDCard.Status){
-      case 1 : SD_TypeString ="SD1 Card "; //SD1
+      case 1 : SD_TypeString = SD1_CARD; //SD1
+            SD_Type = ; 
       break;
-      case 2 :SD_TypeString ="SD2 Card ";//SD2
+      case 2 :SD_TypeString = SD2_CARD;//SD2
+            SD_Type = ; 
       break;
-      case 3 :SD_TypeString ="SDHC Card ";//SDHC
+      case 3 :SD_TypeString = SDHC_CARD;//SDHC
+            SD_Type = ; 
       break; 
-      case 0 :SD_TypeString ="Card Problem    !";//no card   
+      case 0 :SD_TypeString = SD_CARD_ERR;//no card 
+            SD_Type = ;  
       default: //SD_Card_Reset = OFF;//unknown  
       break;     
-    }    
+    }
+*/   
 }
-
 void SD_Card_Header_Preparation(){
+      char* p =&SD_CARD_ERR[0];
+      
+      switch(SDCard.Status){
+      case 1 :  p= SD1_CARD; 
+      break;
+      case 2 : p= SD2_CARD;
+      break;
+      case 3 :p= SDHC_CARD;
+      break; 
+      case 0 :p= SD_CARD_ERR;
+      default: //SD_Card_Reset = OFF;//unknown  
+      break;     
+    }
+  
           //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
         //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";  
         
-        dataString += "FirmVers " + FW_Version +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + SD_TypeString + ',' + "Volume: " +String(SD_Volume) + " GB" + ',' +
+    //    dataString += "FirmVers " + FW_Version +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + SD_TypeString + ',' + "Volume: " +String(SD_Volume) + " GB" + ',' +
+        dataString += "FirmVers " + FW_Version +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + String(p) + ',' + "Volume: " +String(SD_Volume) + " GB" + ',' +
         
        "Found Sensors Id's:"  +  ','  + Sensor1_Id +  ',' +  Sensor2_Id + ','  + Sensor3_Id + ',' ;
        

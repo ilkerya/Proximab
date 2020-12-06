@@ -15,13 +15,13 @@ void Common_Loop(){
     LoopTask_250msec = OFF;
 
     // One time after wake up form sleep
-    if (OLED_Init == ON) {
+    if (Display.OLED_Init == ON) {
 #ifndef DEBUG_SIMULATOR_MODE
       Display_ReInit(20);
 #endif
-      OLED_Init = OFF;
+      Display.OLED_Init = OFF;
     }
-    if (OLED_Timer) {
+    if (Display.OLED_Timer) {
 #ifndef DEBUG_SIMULATOR_MODE
       displayValues();
 #endif
@@ -53,23 +53,24 @@ void Common_Loop(){
 #endif
 
 #ifdef TEMP_HUM_1_SENSOR_EXISTS
-    deBugString = "TmpHmSn1_1";
+ 
     SensorRead_Si072(SI072_FIRST_SENSOR); // MULTIPLEXER NO
-    deBugString = "TmpHmSn1_2";
+    
 #endif
 #ifdef TEMP_HUM_2_SENSOR_EXISTS
-    deBugString = "TmpHmSn2_1";
+   
     SensorRead_Si072(SI072_SECOND_SENSOR); // MULTIPLEXER NO
-    deBugString = "TmpHmSn2_2";
+    
 #endif
 #ifdef TEMP_HUM_3_SENSOR_EXISTS
-    deBugString = "TmpHmSn3_1";
+  
     SensorRead_Si072(SI072_THIRD_SENSOR); // MULTIPLEXER NO
-    deBugString = "TmpHmSn3_2";
+ 
 #endif
 
-
-
+#ifdef AD9153_PROTOTYPE
+     EnergymeterCalbLed( );
+#endif
 
 #ifdef  BAR_PRES_SENSOR_EXISTS
     SensorAlt_Read();
@@ -83,9 +84,7 @@ void Common_Loop(){
 #endif // end of  #ifndef DEBUG_SIMULATOR_MODE
 
     KeyTimeOutCheck();
-
     if (SampleTime == TASK_1SEC) Log_Data_Write_SD();
-
      if((Menu == MENU5_SUB7)||(Menu == MENU2_SUB8)||(Menu == MENU3_SUB3) ||(Menu == MENU3_SUB4)||(Menu == MENU1_SUB3)||(Menu == MENU1_SUB4)||(Menu == MENU6_SUB3) ){
       Display.MenuTimeout++;
       if(Display.MenuTimeout > 4){
@@ -93,8 +92,7 @@ void Common_Loop(){
         Menu = MENU_NULL;
       }
     }
-
-    
+   
 /*
       if( (Values.PM25 > 64) &&  !digitalRead(RELAY_OUT_1) ) digitalWrite(RELAY_OUT_1,HIGH);
       if( (Values.PM25 < 16) &&   digitalRead(RELAY_OUT_1) ) digitalWrite(RELAY_OUT_1,LOW);
@@ -119,7 +117,7 @@ void Common_Loop(){
       }
 
         #ifdef AD9153_PROTOTYPE   
-             PowerIC_Operation();
+             EnergyMeterIC_Operation();
         #endif
 
   }
@@ -163,7 +161,7 @@ void Common_Loop(){
 void AnalogValRead() {
   // https://www.onlinegdb.com/edit/Hkmlxi_08
 
-  deBugString = "Cur_tRd_1";
+ 
 #ifdef ARDUINO_MEGA
   ADCSRA |= (1 << ADEN); // enable adc
 #endif
@@ -215,7 +213,7 @@ void AnalogValRead() {
 #ifdef ARDUINO_MEGA
   ADCSRA &= ~ (1 << ADEN);            // turn off ADC
 #endif
-  deBugString = "Cur_tRd_2";
+
 }
 
 void SDS_DustSensor(void) {
@@ -259,23 +257,68 @@ void WindSensorRead() {
   */
 }
 
+void I2_ACK_TimeoutSet(void){
+  I2CSet =ON;
+}
+
+void I2_ACK_TimeoutReset(void){
+   I2CSet = OFF;
+   I2CTimer = ACK_TIMEOUT;
+}
+
+void I2_ACK_Reset(void){
+    if(!I2CSet)return;
+    if(I2CTimer){
+      I2CTimer--;
+      return;
+    } 
+     pinMode(I2C_TIMEOUT, OUTPUT);  // 
+     digitalWrite(I2C_TIMEOUT, LOW); 
+     delay(1);
+     I2CTimer = ACK_TIMEOUT;
+     I2CSet = OFF;
+     pinMode(I2C_TIMEOUT, INPUT);  // 
+     I2Error = ON;
+}
+
+
 void IO_Settings() {
 
 #ifdef FIRST_PROTOTYPE
 
 #endif
 #ifdef AD9153_PROTOTYPE
-  pinMode(4, OUTPUT);  // ADE9153A_RESET_PIN
-  digitalWrite(4, HIGH);
-  pinMode(8, OUTPUT);  // ADE9153A_SPI_SS_PIN
-  digitalWrite(8, HIGH);
-  pinMode(2, INPUT);  // ADE9153A_ZX_DREADY_PIN
-  pinMode(3, INPUT);  // ADE9153A_IRQ_PIN
-  pinMode(5, INPUT);  // ADE9153A_USER_BUTTON 
+/*
+  pinMode(A5, INPUT);  // 
+  pinMode(A4, INPUT);  // 
+  pinMode(A3, INPUT);  // 
+  pinMode(A2, INPUT);  // 
+  pinMode(A1, INPUT);  // 
+  digitalWrite(A5, HIGH);
+  digitalWrite(A4, HIGH);
+  digitalWrite(A3, HIGH);
+  digitalWrite(A2, HIGH);
+  digitalWrite(A1, HIGH);
+  pinMode(A5, INPUT_PULLUP);  //
+  pinMode(A4, INPUT_PULLUP);  //
+  pinMode(A3, INPUT_PULLUP);  //
+  pinMode(A2, INPUT_PULLUP);  //
+  pinMode(A1, INPUT_PULLUP);  //  
+  */
   
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
+  pinMode(I2C_TIMEOUT, INPUT);  // 
+ 
+  pinMode(ADE9153A_RESET_PIN, OUTPUT);  // ADE9153A_RESET_PIN
+  digitalWrite(ADE9153A_RESET_PIN, HIGH);
+  pinMode(ADE9153A_CS_PIN, OUTPUT);  // ADE9153A_SPI_SS_PIN
+  digitalWrite(ADE9153A_CS_PIN, HIGH);
+  pinMode(ADE9153A_ZX_DREADY_PIN, INPUT);  // ADE9153A_ZX_DREADY_PIN
+  pinMode(ADE9153A_IRQ_PIN, INPUT);  // ADE9153A_IRQ_PIN
+  pinMode(ADE9153A_CALB_BUTTON, INPUT);  // ADE9153A_USER_BUTTON 
+  
+  pinMode(ADE9153A_ZX_DREADY_PIN, INPUT_PULLUP);
+  pinMode(ADE9153A_IRQ_PIN, INPUT_PULLUP);
+  pinMode(ADE9153A_CALB_BUTTON, INPUT_PULLUP);
    
 #endif
   digitalWrite(RELAY_OUT_1, LOW);
@@ -284,10 +327,8 @@ void IO_Settings() {
   digitalWrite(RELAY_OUT_2, LOW);
   pinMode(RELAY_OUT_2, OUTPUT);  // SS Pin high to avoid miscommunication
 
- 
-  //const int chipSelect = 10; // mega SS for SD Card
-  pinMode(10, OUTPUT);
-  digitalWrite(10, HIGH);
+  pinMode(SD_CS_PINOUT, OUTPUT);
+  digitalWrite(SD_CS_PINOUT, HIGH);
   pinMode(LED_GREEN, OUTPUT);           // set pin to input
   digitalWrite(LED_GREEN, LOW);       // turn on pullup resistors
   pinMode(LED_RED, OUTPUT);           // set pin to input
@@ -304,17 +345,10 @@ void IO_Settings() {
 
 }
 void MicroInit() {
-  
+  Display_Line4[5] ='\0';
   Serial.begin(115200);
-
   IO_Settings();
   DisplaySetPowerIO();
-
- 
-
-
-
-
  #ifdef ARDUINO_MEGA // 8 bit AVR
 
 #endif
@@ -333,15 +367,10 @@ void MicroInit() {
   Serial.print("    DisplaySleep: ");
   Serial.println(DisplaySleepEnable);
 
-
-  //wdt_enable(WDT0_1S);
-
 #ifdef ARDUINO_MEGA
-
   wdt_reset();
-  wdt_enable(WDTO_8S);
+  wdt_enable(WDTO_8S);   //wdt_enable(WDT0_1S);
   //https://www.nongnu.org/avr-libc/user-manual/group__avr__watchdog.html
-
 #endif
 
 #ifdef ARDUINO_MEGA
@@ -380,8 +409,7 @@ void MicroInit() {
 #ifndef DEBUG_SIMULATOR_MODE
   Sensors_PeripInit();
   DateTimeBuf.Init = ON;
-  DisplayInit();
-    
+  DisplayInit();   
 #endif
 
     #ifdef AD9153_PROTOTYPE
@@ -407,13 +435,6 @@ void MicroInit() {
   startTimer(TC1, 0, TC3_IRQn, 64); //TC1 channel 0, the IRQ for that channel and the desired frequency
 #endif
 
-
-
-  
-}
-
-void Check_CompValue(void){
-  
 }
 
 void Parse_FileString(){
@@ -469,9 +490,6 @@ void Parse_FileString(){
         RlStr2 = "----";
         RlStr4 = "----";
     }
-
-
-
     index = ELEMENTS;
     Relay2str.trim();//remove leadig & last space characters
     if(Relay2str == "Relay2"){
@@ -493,7 +511,6 @@ void Parse_FileString(){
         RlStr6 = "----";
         RlStr8 = "----";
     }
-
    // Serial.println("'''''''''''''''''");
   Serial.println(Relay1str);
   Serial.println(RlStr2);
@@ -555,13 +572,5 @@ void Relay_loop() {
   Serial.print("RL2Min: ");Serial.println(RL2Min);
   Serial.print(RL2Val+":  ");Serial.print(CompValue);
   Serial.print("      RELAY2: ");Serial.println(RELAY_OUT_2);
-  Serial.print("RL2Max: ");Serial.println(RL2Max); 
-
- //   CurrentAD += 0.2;
-  //  Values.TemperatureSi072_Ch1 -= 0.35;
-
- //   if( CurrentAD > 6.00) CurrentAD = 0.1;
-  //   if( Values.TemperatureSi072_Ch1 < 13.00) Values.TemperatureSi072_Ch1 = 27.3;  
-
- 
+  Serial.print("RL2Max: ");Serial.println(RL2Max);  
 }

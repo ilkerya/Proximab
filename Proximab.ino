@@ -89,10 +89,11 @@ void TC3_Handler(){
     if(IntTimer250 >= 13){
       IntTimer250 = 0;
       LoopTask_250msec = ON;
+      I2_ACK_Reset();
     }
     if(IntTimer500 >= 25){ // 500 msec
       IntTimer500 = 0;
-      LoopTask_500msec = ON;
+      LoopTask_500msec = ON;  
     }
     if(IntTimer1 >= 50){  // 1 sec
       IntTimer1 = 0;
@@ -100,9 +101,9 @@ void TC3_Handler(){
       digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
    
       if(DisplaySleepEnable == ON){
-        if(OLED_Timer) OLED_Timer--;   // sleep active
+        if(Display.OLED_Timer) Display.OLED_Timer--;   // sleep active
       }
-      else OLED_Timer = 32768; // no sleep    
+      else Display.OLED_Timer = 32768; // no sleep    
       if(DisplayInitDelay == OFF)DisplayInitDelay = ON;           
     }
     if(IntTimer2 >= 100){ // 2 sec
