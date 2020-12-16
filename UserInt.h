@@ -2,8 +2,11 @@
 void UpdateDisplayBuffer(void){  
     //Display_Line1 = String(Str_Date) + "   " + String(Str_Time);
     Display_Line1 = Str_Date + "   " + Str_Time;
+  #ifdef SDCARD_EXISTS
+  
     UpdateSD_LogTime();// Line2
     UpdateFileSize();// Line3
+  #endif	
     
     UpdateProperLine(DispRollIndex[0], 4); // Line 4
     UpdateProperLine(DispRollIndex[1], 5); // Line 5
@@ -76,9 +79,10 @@ void PrintDisplayBuffer(void){
 
     // Additionals
     Serial.print("DevId: ");Serial.print(EE_Id_EString);
-    Serial.print("    Sensor1: ");Serial.print(Sensor1_Id);
-    Serial.print("    Sensor2: ");Serial.print(Sensor2_Id);
-    Serial.print("    Sensor3: ");Serial.print(Sensor3_Id);
+    Serial.print("    Sensor1: ");Serial.print(SensorId.No1,HEX);
+    Serial.print("    Sensor2: ");Serial.print(SensorId.No2,HEX);
+    Serial.print("    Sensor3: ");Serial.print(SensorId.No3,HEX);
+    
 
     Serial.println();   
     //Compiled: Jul 21 2020 15:55:39 7.3.0
@@ -152,7 +156,7 @@ void UpdateProperLine(byte Index, byte Line){
       
           if (!isnan(Values.TemperatureSi072_Ch1)) {
             str += String(Values.TemperatureSi072_Ch1,1);
-            str += " C";  DispExpSens1 = ON;                           
+            str += " C";  Display.ExpSens1 = ON;                           
           }
           else  str += "------";       
           if (!isnan(Values.Humidity_Ch1)) {
@@ -160,14 +164,14 @@ void UpdateProperLine(byte Index, byte Line){
             str += String((int)Values.Humidity_Ch1); // 10...
           }
           else   str +="----"; 
-          str += ' ' + Sensor1_Id;
+          str += ' ' + String(SensorId.No1, HEX);
           
      break;
      case 2:
           //str = "4."; // temp sensor2
           if (!isnan(Values.TemperatureSi072_Ch2)) {
             str += String(Values.TemperatureSi072_Ch2,1);
-            str += " C";   DispExpSens2 = ON;               //  str += '°'; 
+            str += " C";   Display.ExpSens2 = ON;               //  str += '°'; 
           }
           else  str += "------";        
           if (!isnan(Values.Humidity_Ch2)) {
@@ -175,7 +179,7 @@ void UpdateProperLine(byte Index, byte Line){
             str += String((int)Values.Humidity_Ch2); // 
           }
           else   str +="----";
-          str += ' ' + Sensor2_Id;  
+          str += ' ' + String(SensorId.No2, HEX);  
                     
      break;
      case 3: 
@@ -183,7 +187,7 @@ void UpdateProperLine(byte Index, byte Line){
         //str = "5."; // temp sensor3
          if (!isnan(Values.TemperatureSi072_Ch3)) {
             str += String(Values.TemperatureSi072_Ch3,1);
-            str += " C";    DispExpSens3 = ON;
+            str += " C";    Display.ExpSens3 = ON;
         }
         else  str += "------";  
         if (!isnan(Values.Humidity_Ch3)) {
@@ -191,7 +195,7 @@ void UpdateProperLine(byte Index, byte Line){
           str += String((int)Values.Humidity_Ch3); // 
         }
         else   str +="----";   // 10 lines
-        str += ' ' + Sensor3_Id; 
+        str += ' ' + String(SensorId.No3, HEX); 
                    
      break;
      case 4:   
@@ -204,7 +208,7 @@ void UpdateProperLine(byte Index, byte Line){
                 str += String(Current_Mains_Rms) + "A ";  
             #endif
 
-           #ifdef AD9153_PROTOTYPE 
+           #ifdef ENERGYMETER_EXISTS 
              if(EnergyMeterIC.Error){
               str += ICERROR;
              }              
@@ -220,7 +224,7 @@ void UpdateProperLine(byte Index, byte Line){
           #endif          
      break;      
      case 5:       
-      //       #ifdef AD9153_PROTOTYPE 
+             #ifdef ENERGYMETER_EXISTS 
               if(EnergyMeterIC.Error){
                     str += ICERROR;
               }             
@@ -235,7 +239,7 @@ void UpdateProperLine(byte Index, byte Line){
                   //str += SETTINGUP; // 3/4/2
              }    
              else   str += CALIBRATING;//str += "Calibrating!";  // 3/4/2             
-     //       #endif   
+            #endif   
                    
      break; 
      case 6:
@@ -261,7 +265,6 @@ void UpdateProperLine(byte Index, byte Line){
           
       break;  
       case 8:    
-          
       
           str += "R2:" +String(digitalRead(RELAY_OUT_2))+ " "; //7 + 1
           for(int i = 0; i < MAXNOCHAR; i++){
@@ -299,26 +302,27 @@ void UpdateProperLine(byte Index, byte Line){
     }        
 }
 
+#ifdef SDCARD_EXISTS
+
 void UpdateSD_LogTime(){
     String str;
     if(SDCard.PauseTimer){
-      str = "SD Error   Retry-> "; //18
+      if(SDCard.Status == SD_NOT_Present)str = "SD Error!  Retry-> "; //18
+      if(SDCard.FatError == ON)          str = "FAT Error! Retry-> "; //18      
       str += String(SDCard.PauseTimer);//13
-     // " Try in"  //7
       Display_Line2 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR); 
       return;     
   }
-  
-    if(SDCard.Status != SD_NOT_Present){
-      //SDCard_or_File(); 
-         switch(DisplayValueTimer){
+     if(SDCard.Status != SD_NOT_Present){
+    //if((SDCard.Status != SD_NOT_Present) || (SDCard.Status != SD_NO_FAT)){
+         switch(Display.ValueTimer){
             case 0:
             case 2:
             case 4:       
                 if(SDCard.Status == SD1_TYPE)      str = "SD1 ";         
                 else if(SDCard.Status == SD2_TYPE) str = "SD2 ";           
                 else if(SDCard.Status == SDHC_TYPE)str = "SDH ";
-                str += String(SD_Volume) + "Gb " ;   // 4+5+3
+                str += String(SDCard.Volume) + "Gb " ;   // 4+5+3
          break;
           case 1:
           case 3: 
@@ -350,3 +354,4 @@ void UpdateSD_LogTime(){
     else str = "SD Error             ";
     Display_Line2 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR); 
 }
+#endif

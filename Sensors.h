@@ -32,9 +32,9 @@ SdsDustSensor sds(rxPin, txPin);
 */
 //SdsDustSensor sds(Serial1); // passing HardwareSerial& as parameter
 //SdsDustSensor sds(HardwareSerial); // passing HardwareSerial& as parameter
-
-#ifdef TEMP_HUM_1_SENSOR_EXISTS  //TEMP_HUM_2_SENSOR_EXISTS TEMP_HUM_3_SENSOR_EXISTS
-  #include "Adafruit_Si7021.h"
+#if (defined TEMP_HUM_1_SENSOR_EXISTS  || defined TEMP_HUM_2_SENSOR_EXISTS  || defined  TEMP_HUM_3_SENSOR_EXISTS  )
+//#ifdef TEMP_HUM_1_SENSOR_EXISTS  //TEMP_HUM_2_SENSOR_EXISTS TEMP_HUM_3_SENSOR_EXISTS
+ // #include "Adafruit_Si7021.h"
   Adafruit_Si7021 THsensor = Adafruit_Si7021();
 #endif
 
@@ -53,7 +53,6 @@ SdsDustSensor sds(rxPin, txPin);
   #include "Adafruit_LSM9DS1.h"
   Adafruit_LSM9DS1 lsm = Adafruit_LSM9DS1(); 
 #endif
-
 // Arduino BH1750FVI Light sensor
 //https://github.com/mysensors/MySensorsArduinoExamples/blob/master/examples/LightLuxSensor/LightLuxSensor.ino
 
@@ -65,8 +64,6 @@ void Sensors_PeripInit(void){
     ReadConfigFile();
   #endif  
   RTC_Init();
-
-
 
   #ifdef TEMP_HUM_1_SENSOR_EXISTS
     SensorInit_Si072(SI072_FIRST_SENSOR); // TEMP HUM
@@ -107,18 +104,40 @@ void Sensors_PeripInit(void){
     Serial1.begin(9600);
     Serial.print("PMSensor Serial Port Init ");
    #endif 
-
 }
 void tcaselect(uint8_t i) {
  // if (i > 7) return;
   Wire.beginTransmission(TCAADDR);
-    //dafruit Industries
     //  https://learn.adafruit.com/adafruit-tca9548a-1-to-8-i2c-multiplexer-breakout
     Wire.write(1 << i);
     Wire.endTransmission();
     delay(2);
 }
+/*
+void I2_ACK_TimeoutSet(void){
+  I2CSet =ON;
+}
 
+void I2_ACK_TimeoutReset(void){
+   I2CSet = OFF;
+   I2CTimer = ACK_TIMEOUT;
+}
+
+void I2_ACK_Reset(void){
+    if(!I2CSet)return;
+    if(I2CTimer){
+      I2CTimer--;
+      return;
+    } 
+     pinMode(I2C_TIMEOUT, OUTPUT);  // 
+     digitalWrite(I2C_TIMEOUT, LOW); 
+     delay(1);
+     I2CTimer = ACK_TIMEOUT;
+     I2CSet = OFF;
+     pinMode(I2C_TIMEOUT, INPUT);  // 
+     I2Error = ON;
+}
+*/
 #ifdef PM25_DUST_SENSOR_EXISTS  
 void PrintPMValues(byte PMError, byte PMCount){
   /*
@@ -247,28 +266,32 @@ void SensorInit_Si072(byte Channel){
   //  while (true)      
   }else{
     Serial.print(" Si7021 sensor found!");
-    Serial.print(" Rev(");
-    Serial.print(THsensor.getRevision());
-    Serial.print(")");
-     Serial.print(" Serial "); Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
+ //   Serial.print(" Rev(");
+  //  Serial.print(THsensor.getRevision());
+    THsensor.getRevision();
+//    Serial.print(")");
+ //    Serial.print(" Serial "); //Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
      Serial.print("Sensor_Channel:");Serial.println(Channel);
-     Serial.print(" String : ");
+  //   Serial.print(" String : ");
     switch(Channel){
-      case NO_IC2_MULTIPLEXER:
+      case NO_IC2_MULTIPLEXER:break; 
       case SI072_FIRST_SENSOR:
-            Sensor1_Id = String(THsensor.sernum_a, HEX) ;//+ String(THsensor.sernum_b,HEX); 
-            Sensor1_Id.toUpperCase();     
-            Serial.println(Sensor1_Id);
+           // long Sensor1Ser = THsensor.sernum_a;
+    //       Sensor1_Id = String(THsensor.sernum_a, HEX) ;//+ String(THsensor.sernum_b,HEX); 
+   //         Sensor1_Id.toUpperCase();     
+             SensorId.No1 = THsensor.sernum_a;     
+             Serial.println(SensorId.No1,HEX); 
        break;
       case SI072_SECOND_SENSOR:
-            Sensor2_Id = String(THsensor.sernum_a, HEX);// + String(THsensor.sernum_b,HEX);
-            Sensor2_Id.toUpperCase();        
-            Serial.println(Sensor2_Id);
+     //       Sensor2_Id = String(SensorId.No1, HEX);// + String(THsensor.sernum_b,HEX);
+     //       Sensor2_Id.toUpperCase();
+            SensorId.No2 = THsensor.sernum_a;        
+            Serial.println(SensorId.No2,HEX); 
        break;
       case SI072_THIRD_SENSOR: 
-            Sensor3_Id = String(THsensor.sernum_a, HEX);// + String(THsensor.sernum_b,HEX);
-            Sensor3_Id.toUpperCase();        
-             Serial.println(Sensor3_Id);
+        //    Sensor3_Id = String(THsensor.sernum_a, HEX);// + String(THsensor.sernum_b,HEX);
+            SensorId.No3 = THsensor.sernum_a;     
+             Serial.println(SensorId.No3,HEX);            
        break; 
        default:
               Serial.print("error");
@@ -284,13 +307,13 @@ void GerSerialNo(void){
 }
 
 
-void SensorRead_Si072(byte Channel){
+void SensorRead_Si072(unsigned char Channel){
     if(Channel != NO_IC2_MULTIPLEXER)tcaselect(Channel);
 
    // Serial.print("Humidity_");Serial.print(Channel);Serial.print(" %");
 
     switch(Channel){
-      case NO_IC2_MULTIPLEXER:
+      case NO_IC2_MULTIPLEXER:break;
       case SI072_FIRST_SENSOR: 
         Values.Humidity_Ch1 = THsensor.readHumidity();       
       //  Serial.print(Values.Humidity_Ch1, 2);
@@ -311,10 +334,9 @@ void SensorRead_Si072(byte Channel){
        break;
     }
  
-  //  Serial.print(" Temperature");Serial.print(Channel);Serial.print(" :");
 
     switch(Channel){
-      case NO_IC2_MULTIPLEXER:
+      case NO_IC2_MULTIPLEXER:break;
       case SI072_FIRST_SENSOR: 
         Values.TemperatureSi072_Ch1 = THsensor.readTemperature();
    //     Serial.println(Values.TemperatureSi072_Ch1, 2);
@@ -331,6 +353,7 @@ void SensorRead_Si072(byte Channel){
         Serial.print("error");
        break;
     } 
+    
 }
 #endif
 #ifdef BAR_PRES_SENSOR_EXISTS 
@@ -352,24 +375,20 @@ void SensorAlt_Init() {
 }
 
 void SensorAlt_Read(){
-      tcaselect(CHANNEL_BAROMETRIC);
-      
+    tcaselect(CHANNEL_BAROMETRIC);
     if (! bmp.performReading()) {
     Serial.println("Failed to perform reading :(");
    // return;
   }
   else{
-  
     Serial.print("Temperature = ");
     Values.TemperatureBMP = bmp.temperature;
     Serial.print(Values.TemperatureBMP);
     Serial.print(" *C");
-
     Serial.print("  Pressure = ");
     Values.Pressure = bmp.pressure / 100.0;
     Serial.print(Values.Pressure);
     Serial.println(" hPa");
-
     Serial.print("Altitude = ");
     Values.Altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
     Serial.print(Values.Altitude);
@@ -378,8 +397,7 @@ void SensorAlt_Read(){
 }
 #endif
 #ifdef LIGHT_SENSOR_EXISTS
-void displaySensorDetails(void)
-{
+void displaySensorDetails(void){
   sensor_t sensor;
   tsl.getSensor(&sensor);
   Serial.println(F("------------------------------------"));
@@ -393,9 +411,7 @@ void displaySensorDetails(void)
   Serial.println(F(""));
  // delay(500);
 }
-void configureSensor(void)
-{
- 
+void configureSensor(void){
   // You can change the gain on the fly, to adapt to brighter/dimmer light situations
   //tsl.setGain(TSL2591_GAIN_LOW);    // 1x gain (bright light)
   tsl.setGain(TSL2591_GAIN_MED);      // 25x gain
@@ -414,8 +430,7 @@ void configureSensor(void)
   Serial.println(F("------------------------------------"));
   Serial.print  (F("Gain:         "));
   tsl2591Gain_t gain = tsl.getGain();
-  switch(gain)
-  {
+  switch(gain){
     case TSL2591_GAIN_LOW:
       Serial.println(F("1x (Low)"));
       break;
@@ -458,7 +473,6 @@ void SensorLight_Read(void) {
   // This can take 100-600 milliseconds! Uncomment whichever of the following you want to read
 //  uint16_t x = tsl.getLuminosity(TSL2591_VISIBLE);
   Values.Luminosity = tsl.getLuminosity(TSL2591_VISIBLE);
-  
   //uint16_t x = tsl.getLuminosity(TSL2591_FULLSPECTRUM);
   //uint16_t x = tsl.getLuminosity(TSL2591_INFRARED);
 
@@ -468,9 +482,7 @@ void SensorLight_Read(void) {
 }
 #endif
 
-
 #ifdef WIND_SENSOR_EXISTS
-
 void WindSpeed_Calculation(){
     tempReading = (double)Values.TemperatureSi072;
     // calculate wind speed 
@@ -494,12 +506,10 @@ void WindSpeed_Calculation(){
  
  //  This Part is based on the Sensors Manufacturer Data sheet
   //  Values.WindMPH
-  
   // #define WND_OUT_Pin  0;// A0;   // wind sensor analog pin  hooked up to Wind P sensor "OUT" pin
   //  Values.WindTemp  
   // #define WND_TEMP_Pin 1;// A1;   // temp sesnsor analog pin hooked up to Wind P sensor "TMP" pin
 
- 
 void WinSensor(){
         int windADunits = analogRead(WND_OUT_Pin);
     // Serial.print("RW ");   // print raw A/D for debug

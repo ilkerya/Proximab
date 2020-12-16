@@ -14,41 +14,35 @@ typedef  unsigned long long uint64
 C:\Program Files (x86)\Arduino\libraries
 
 */
- 
-#include "RTClib.h"
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+//#define TEMP_HUM_1_SENSOR_EXISTS
+//#define TEMP_HUM_2_SENSOR_EXISTS
+//#define TEMP_HUM_3_SENSOR_EXISTS  
 
- // #define DEBUG_SIMULATOR_MODE // For DEbugging As A Simulator
-// Select Hardware Type
-//#define FIRST_PROTOTYPE  // with LEM current Transdcucer
-#define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC
-
-#ifdef AD9153_PROTOTYPE
-
-#define ARM_MATH_CM0PLUS
-#include  <ADE9153A.h>
-#include <ADE9153AAPI.h>
-//#define ADE9153A_ACCMODE 0x0000      /*Energy accumulation modes, Bit 4, 0 for 50Hz, 1 for 60Hz 0x0010 -> 0x0000 */
-ADE9153AClass ade9153A;
-
-#endif
-
-#define TEMP_HUM_1_SENSOR_EXISTS
-#define TEMP_HUM_2_SENSOR_EXISTS
-#define TEMP_HUM_3_SENSOR_EXISTS  
 //#define LIGHT_SENSOR_EXISTS  
 //#define BAR_PRES_SENSOR_EXISTS  
 //#define ACCL_GYRO_SENSOR_EXISTS  
 //#define WIND_SENSOR_EXISTS  
 //#define LEM_CURRENT_EXISTS
 //#define VOLTAGE_MEASURE_EXISTS
-#define PM25_DUST_SENSOR_EXISTS
-#define SDCARD_EXISTS
+
+
+//#define PM25_DUST_SENSOR_EXISTS
+//#define SDCARD_EXISTS
+//#define OLEDDISPLAY_EXISTS
+//#define ENERGYMETER_EXISTS 
+#define PROGRELAY_EXISTS 
+
+#define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC Related IOs
+
+ // #define DEBUG_SIMULATOR_MODE // For DEbugging As A Simulator
+// Select Hardware Type
+//#define FIRST_PROTOTYPE  // with LEM current Transdcucer
+
+#define ARM_MATH_CM0PLUS
+
 
 #define RELAY_OUT_1 23
 #define RELAY_OUT_2 53
-
 
 //#include "SdsDustSensor.h" // https://github.com/lewapek/sds-dust-sensors-arduino-library
 
@@ -79,12 +73,11 @@ ADE9153AClass ade9153A;
 #define POWERIC_CALB9  12
 #define POWERIC_CALB10 13
 
-////* Basic initializations for energy meter IC ADE9153 */
-#define SPI_SPEED 1000000     //SPI Speed
 
- #define SI072_FIRST_SENSOR 2  // multiplexer Channel 7 first blu box prot
+
+ #define SI072_FIRST_SENSOR 7  // multiplexer Channel 7 first blu box prot
  #define SI072_SECOND_SENSOR 3 // first prot  0      0
- #define SI072_THIRD_SENSOR 7 // sec1                2 
+ #define SI072_THIRD_SENSOR 2 // sec1                2 
 
 #define NO_IC2_MULTIPLEXER 16
 #define DEBUG_KEY
@@ -93,22 +86,22 @@ ADE9153AClass ade9153A;
 #define OFF 0 //
 
 #ifdef FIRST_PROTOTYPE
-    const int chipSelect = 10; // mega SS for SD Card  
+  //  const int chipSelect = 10; // mega SS for SD Card  
   #define KEY_RIGHT 2//12//2 //
   #define LED_GREEN 3// 11//3 // GREEN
   #define LED_RED 4 // 12//4 //RED
   #define KEY_MID 5// 11//5 //
   #define KEY_LEFT 6//13//6 // ok
 #endif
-#ifdef AD9153_PROTOTYPE
 
 
-  
-  #define ANALOG5         19
-  #define ANALOG4         18
-  #define ANALOG3         17
-  #define ANALOG2         16
-  #define ANALOG1         15
+  #define TDI         A7
+  #define TDO         A6
+  #define TMS         A5
+  #define TCK         A4
+  #define ANALOG3         A3
+  #define ANALOG2         A2
+  #define ANALOG1         A1
   #define I2C_TIMEOUT      A0  
   
   #define KEY_RIGHT       13
@@ -116,13 +109,17 @@ ADE9153AClass ade9153A;
   #define KEY_LEFT        11
   #define SD_CS_PINOUT    10  
   #define LED_GREEN        9
-  #define ADE9153A_CS_PIN  8       
+    #ifdef ENERGYMETER_EXISTS
+  #define ADE9153A_CS_PIN  8 
+      #endif      
   #define LED_RED          7 //??? bosta
+     #ifdef ENERGYMETER_EXISTS 
   #define ADE9153A_RED_LED 6                 //On-board LED pin 
   #define ADE9153A_CALB_BUTTON   5         
   #define ADE9153A_RESET_PIN     4  
   #define ADE9153A_IRQ_PIN       3
   #define ADE9153A_ZX_DREADY_PIN 2
+    #endif
   #define TX_OUTPUT_PIN          1 //ON BOARD PROGRAMMING & DEBUG RESERVED
   #define RX_INPUT_PIN           0  //ON BOARD PROGRAMMING & DEBUG RESERVED
 
@@ -130,7 +127,7 @@ ADE9153AClass ade9153A;
   #define RV_PINOUT 1 // RV output of the sensor
   #define TMP_PINOUT 0 // analogRead(TMP_PINOUT);
 
-#endif
+
 
 #define MAX_DISPLAY_CHAR 21
 #define  MAXSHOWLINE 6  // define how many lines for sensorts to show including fw info line 
@@ -194,10 +191,10 @@ void  SensorLight_Init();
 void  SensorACccel_GyroInit();
 void  Sensors_PeripInit();
 
-void AnalogValRead();
+void CurrentVolt_Read();
 void  AdcRead();
 void WindSensorRead();
-void  SensorRead_Si072();
+void  SensorRead_Si072(unsigned char);
 void  SensorAlt_Read();
 void  SensorLight_Read();
 void  SensorAcccel_GyroRead();
@@ -217,6 +214,7 @@ void DownMenuKey(void);
 void UpMenuKey(void);
 void SetSampling(unsigned int Time);
 void DispEnable(bool Enable, byte Timer);
+void DispEnable_4SD_Prblm(bool Enable, byte Timer);
 void LogEnable(bool Enable);
 void  DispExtTimeout(void);
 void   DisplayMenu(void);
@@ -237,7 +235,10 @@ String LimitCopyDisplayStr(String str, byte MaxNumber);
 void EnergyMeterIC_Operation(void);
 void I2_ACK_Reset(void);
 
-
+void EESetResetLog(bool Mode);
+void EEReadLog(void);
+void EESetSampleTimeLog(byte Sample);
+void EEDisplaySleep(bool Mode);
 
 
 // C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries

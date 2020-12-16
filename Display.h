@@ -3,6 +3,8 @@
 
 // https://upload.wikimedia.org/wikipedia/commons/f/f8/Codepage-437.png
 
+#ifdef OLEDDISPLAY_EXISTS
+
 #ifdef FIRST_PROTOTYPE
   #define OLED_GND 46// 13
   #define OLED_POWER 44// 13
@@ -21,16 +23,7 @@
   #define OLED_DC    32// 12  // common 50
   #define OLED_CLK   30 //13 // common  52
   #define OLED_MOSI  28// 11 //common 51
- 
 #endif
-
-/*
-#define OLED_CS    A0
-#define OLED_RESET A1
-#define OLED_DC    A2
-#define OLED_CLK   A3
-#define OLED_MOSI  A4
-*/
 
 #define NUMFLAKES 10
 #define XPOS 0
@@ -38,24 +31,9 @@
 #define DELTAY 2
 #define LOGO16_GLCD_HEIGHT 16
 #define LOGO16_GLCD_WIDTH  16
-static const unsigned char PROGMEM logo16_glcd_bmp[] =
-{ B00000000, B11000000,
-  B00000001, B11000000,
-  B00000001, B11000000,
-  B00000011, B11100000,
-  B11110011, B11100000,
-  B11111110, B11111000,
-  B01111110, B11111111,
-  B00110011, B10011111,
-  B00011111, B11111100,
-  B00001101, B01110000,
-  B00011011, B10100000,
-  B00111111, B11100000,
-  B00111111, B11110000,
-  B01111100, B11110000,
-  B01110000, B01110000,
-  B00000000, B00110000 };
- 
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
   /*
  * In Adafruit_SSD1306.h
  * 1. uncomment #define SSD1306_128_64
@@ -65,10 +43,6 @@ In the example ssd1306_128x64_i2c
 4. add #define SSD1306_LCDHEIGHT 64
  *
  */
-
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
-
   /*
 #ifdef SSD1306_LCDHEIGHT
   #define SSD1306_LCDHEIGHT 64
@@ -76,9 +50,6 @@ In the example ssd1306_128x64_i2c
 #ifndef SSD1306_LCDHEIGHT
   #define SSD1306_LCDHEIGHT 64
 #endif  
-
-//#define SSD1306_LCDHEIGHT 64
-
 
 #if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -90,7 +61,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_
 void Display_SwitchOff(){
      // digitalWrite(OLED_POWER, LOW);       // turn on pullup resistors
      // digitalWrite(OLED_GND, LOW);       // keep GND Level   
-      Menu = MENU_NULL;    
+      MainMenu = MENU_NULL;    
       display.clearDisplay(); 
       display.display();  
 }
@@ -193,20 +164,20 @@ void UpdateDispSpChar(byte Index,byte Line){
       break;
       */
       case 1:
-           if(DispExpSens1 ){
-                DispExpSens1 = OFF;
+           if(Display.ExpSens1 ){
+                Display.ExpSens1 = OFF;
                 display.write(247); // 5th character  '°';   
           }   
       break;    
       case 2:
-             if(DispExpSens2 ){
-                DispExpSens2 = OFF;
+             if(Display.ExpSens2 ){
+                Display.ExpSens2 = OFF;
                 display.write(247); // 5th character  '°';   
             } 
       break;     
       case 3:      
-           if(DispExpSens3 ){
-                DispExpSens3 = OFF;
+           if(Display.ExpSens3 ){
+                Display.ExpSens3 = OFF;
                 display.write(247); // 5th character  '°';   
           }  
       break;
@@ -224,7 +195,7 @@ void UpdateDispSpChar(byte Index,byte Line){
 void displayValues(void)
 {
   UpdateDisplayBuffer();
-  if(DisplayInitDelay == OFF)return;
+  if(Display.InitDelay == OFF)return;
   //testdrawchar();
   //return;
 
@@ -269,7 +240,7 @@ void displayValues(void)
       display.write(31); // 5th character  '<';        
     }
     */
-  switch(Menu){
+  switch(MainMenu){
 
       case MENU_NULL :
            display.setCursor(60, 56); //x,y  6*10 = 60
@@ -288,48 +259,7 @@ void displayValues(void)
    display.display();
 }
 
-//String Disp_MENU_NULL = "ENTER  UP DOWN    ESC";
-static const char Disp_MENU_NULL_ENT[] = "ENTER     "; // 10
-static const char Disp_MENU_NULL_ESC[] = "     ESC";
-  
-static const char Disp_MENU1[] =     "LOG START & STOP MENU";
-//char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
-static const char Disp_MENU2[] =     "LOG SAMPLE TIME MENU ";
-//char Disp_MENU2[] =    {'L','O','G',' ','S','A','M','P','L','E',' ','T','I','M','E',' ','M','E','N','U',' ','\0'};
-static const char Disp_MENU3[] =     "DISPLAY STANDBYE MENU";
-//char Disp_MENU3[] =    {'D','I','S','P','L','A','Y',' ','S','T','A','N','D','B','Y','E',' ','M','E','N','U','\0'};
-static const char Disp_MENU4[] =     "INFORMATION MENU";
-//char Disp_MENU4[] =     {'I','N','F','O','R','M','A','T','I','O','N',' ','M','E','N','U','\0'};
-static const char Disp_MENU5[] =     "DATE & TIME ADJ. MENU";
-static const char Disp_MENU6[] =     "POWER IC CALIBR. MENU";
 
-static const char Disp_MENU5_SUB7[] = "Date & Time Updated !"; 
-
-static const char Disp_MENU6_SUB1[] = "Start Calib? 60 Secs."; 
-static const char Disp_MENU6_SUB2[] = "Sure To Start Calib.?"; 
-static const char Disp_MENU6_SUB3[] = "Calibration Started !"; 
-
-static const char Disp_MENU1_SUBMAIN[]= "LOG "; 
-static const char Disp_MENU1_SUB1[]= "START"; 
-static const char Disp_MENU1_SUB2[]= "STOP ";
-static const char Disp_MENU1_SUB3[]= "Started !"; 
-static const char Disp_MENU1_SUB4[]= "Stopped !";
-
-static const char Disp_MENU3_SUBMAIN[]= "STANDBYE ";  
-static const char Disp_MENU3_SUB1[]= "Enable "; 
-static const char Disp_MENU3_SUB2[]= "Disable";  
-static const char Disp_MENU3_SUB3[]= "Updated! On";
-static const char Disp_MENU3_SUB4[]= "Updated! Off";
-  
-static const char Disp_MENU2_SUB[]= "Enter -> ";  //9
-static const char Disp_MENU2_SUB1[]= " 0.5 Sec    "; //12
-static const char Disp_MENU2_SUB2[]= " 1 Sec      "; //12
-static const char Disp_MENU2_SUB3[]= " 2 Sec      "; //12
-static const char Disp_MENU2_SUB4[]= " 5 Sec      "; //12
-static const char Disp_MENU2_SUB5[]= " 10 Sec     "; //12
-static const char Disp_MENU2_SUB6[]= " 20 Sec     "; //12
-static const char Disp_MENU2_SUB7[]= " 60 Sec     "; //12
-static const char Disp_MENU2_SUB8[]= "Sample Time Updated !";
 
 bool DisplayFlash(void){
         Display.Flash++;
@@ -358,7 +288,7 @@ String UpddateDateTimeBuffer(void){
 
 void UpdateDisplayMenu(void){
   String str;
-  switch(Menu){
+  switch(MainMenu){
     case MENU_NULL : str = Disp_MENU_NULL_ENT;
                      str += "   ";
                      str += Disp_MENU_NULL_ESC;
@@ -539,7 +469,7 @@ void UpdateDisplayMenu(void){
   }    
     Display_Line8 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR);
 }
-
+/*
 void DisplayFullSensors(void){
 
     display.print("x");
@@ -567,3 +497,5 @@ void DisplayFullSensors(void){
     display.print(Values.Altitude,1);
     display.println("m"); 
 }
+*/
+#endif

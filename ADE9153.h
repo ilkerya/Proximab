@@ -1,5 +1,8 @@
 
-#ifdef AD9153_PROTOTYPE
+#ifdef ENERGYMETER_EXISTS
+ //#define ADE9153A_ACCMODE 0x0000      /*Energy accumulation modes, Bit 4, 0 for 50Hz, 1 for 60Hz 0x0010 -> 0x0000 */
+  #define SPI_SPEED 1000000     //SPI Speed   ////* Basic initializations for energy meter IC ADE9153 */
+  ADE9153AClass ade9153A;
 void EnergymeterCalbLed(void){
   switch(EnergyMeterIC.Mode){
     case POWERIC_SETUP1:
@@ -8,7 +11,7 @@ void EnergymeterCalbLed(void){
      break;
     case POWERIC_SETUP3:
     break;
-    case 3://POWERIC_NORMAL:           // Running Normal Mode  
+    case POWERIC_NORMAL:           // Running Normal Mode  
     break;
     case POWERIC_CALB1: // Calibrating The Current Channel Started            
     case POWERIC_CALB2: // Calibrating The Current Channel Continues        
@@ -28,10 +31,12 @@ void EnergymeterCalbLed(void){
 }
 // Call in 2 seconds
 void EnergyMeterIC_Operation(void){ 
+            /*
                 Serial.print("EnergyMeterIC.Mode : "); 
                 Serial.println(EnergyMeterIC.Mode); 
                 Serial.print("EnergyMeterIC.Timer : "); 
-                Serial.println(EnergyMeterIC.Timer);     
+                Serial.println(EnergyMeterIC.Timer);  
+                */   
   switch(EnergyMeterIC.Mode){   
     case POWERIC_SETUP1:
       pinMode(ADE9153A_RED_LED, OUTPUT);
@@ -49,9 +54,9 @@ void EnergyMeterIC_Operation(void){
           else EnergyMeterIC.Mode = POWERIC_SETUP3;//PowerIC_Mode++;    
     break;
     case POWERIC_SETUP3:
-         commscheck = ade9153A.SPI_Init(SPI_SPEED,ADE9153A_CS_PIN); //Initialize SPI
+         EnergyMeterIC.commscheck = ade9153A.SPI_Init(SPI_SPEED,ADE9153A_CS_PIN); //Initialize SPI
       //   commscheck = OFF; // TEST ERROR CASE
-        if (!commscheck) {
+        if (!EnergyMeterIC.commscheck) {
            Serial.println("ADE9153A Shield not detected. Plug in Shield and reset the Arduino");  
             EnergyMeterIC.Error = ON;
             EnergyMeterIC.Mode = POWERIC_SETUP1; 
@@ -65,7 +70,7 @@ void EnergyMeterIC_Operation(void){
           EnergyMeterIC.Mode = POWERIC_NORMAL ; 
         }
     break;
-    case 3://POWERIC_NORMAL:           // Running Normal Mode
+    case POWERIC_NORMAL:           // Running Normal Mode
       ade9153A.ReadPowerRegs(&powerVals);    //Template to read Power registers from ADE9000 and store data in Arduino MCU
       ade9153A.ReadRMSRegs(&rmsVals);
       ade9153A.ReadPQRegs(&pqVals);
@@ -86,8 +91,7 @@ void EnergyMeterIC_Operation(void){
       Values.Frequency =  pqVals.FrequencyValue;
       if(Values.Frequency < 0) Values.Frequency = 0;
       if(Values.Voltage < 30) Values.Frequency = 0;
-      
-  
+
       Serial.print("RMS Current:\t");Serial.print(Values.Current); Serial.println(" A         ");
       //Serial.print(rmsVals.CurrentRMSValue/1000); Serial.println(" A");
 

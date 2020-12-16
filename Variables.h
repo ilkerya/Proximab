@@ -1,14 +1,68 @@
+static const unsigned char PROGMEM logo16_glcd_bmp[] =
+{ B00000000, B11000000,
+  B00000001, B11000000,
+  B00000001, B11000000,
+  B00000011, B11100000,
+  B11110011, B11100000,
+  B11111110, B11111000,
+  B01111110, B11111111,
+  B00110011, B10011111,
+  B00011111, B11111100,
+  B00001101, B01110000,
+  B00011011, B10100000,
+  B00111111, B11100000,
+  B00111111, B11110000,
+  B01111100, B11110000,
+  B01110000, B01110000,
+  B00000000, B00110000 };
+  
+//char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
+  
+static const char Disp_MENU_NULL_ENT[] = "ENTER     "; // 10
+static const char Disp_MENU_NULL_ESC[] = "     ESC";
+static const char Disp_MENU1[] =     "LOG START & STOP MENU";
+static const char Disp_MENU2[] =     "LOG SAMPLE TIME MENU ";
+static const char Disp_MENU3[] =     "DISPLAY STANDBYE MENU";
+static const char Disp_MENU4[] =     "INFORMATION MENU";
+static const char Disp_MENU5[] =     "DATE & TIME ADJ. MENU";
+static const char Disp_MENU6[] =     "ENEGY METER CALB MENU";
+static const char Disp_MENU5_SUB7[] = "Date & Time Updated !"; 
+static const char Disp_MENU6_SUB1[] = "Start Calib? 60 Secs."; 
+static const char Disp_MENU6_SUB2[] = "Sure To Start Calib.?"; 
+static const char Disp_MENU6_SUB3[] = "Calibration Started !"; 
 
+static const char Disp_MENU1_SUBMAIN[]= "LOG "; 
+static const char Disp_MENU1_SUB1[]= "START"; 
+static const char Disp_MENU1_SUB2[]= "STOP ";
+static const char Disp_MENU1_SUB3[]= "Started !"; 
+static const char Disp_MENU1_SUB4[]= "Stopped !";
+static const char Disp_MENU3_SUBMAIN[]= "STANDBYE ";  
+static const char Disp_MENU3_SUB1[]= "Enable "; 
+static const char Disp_MENU3_SUB2[]= "Disable";  
+static const char Disp_MENU3_SUB3[]= "Updated! On";
+static const char Disp_MENU3_SUB4[]= "Updated! Off";
+  
+static const char Disp_MENU2_SUB[]= "Enter -> ";  //9
+static const char Disp_MENU2_SUB1[]= " 0.5 Sec    "; //12
+static const char Disp_MENU2_SUB2[]= " 1 Sec      "; //12
+static const char Disp_MENU2_SUB3[]= " 2 Sec      "; //12
+static const char Disp_MENU2_SUB4[]= " 5 Sec      "; //12
+static const char Disp_MENU2_SUB5[]= " 10 Sec     "; //12
+static const char Disp_MENU2_SUB6[]= " 20 Sec     "; //12
+static const char Disp_MENU2_SUB7[]= " 60 Sec     "; //12
+static const char Disp_MENU2_SUB8[]= "Sample Time Updated !";
 
-#ifdef AD9153_PROTOTYPE
-//int ledState = LOW;
-//int inputState = LOW;
+static const char SD1_CARD[]= "SD1 Card "; 
+static const char SD2_CARD[]= "SD2 Card ";
+static const char SDHC_CARD[]="SDHC Card "; 
+static const char NO_FAT[]   ="Fat Problem    !";
+static const char SD_CARD_ERR[]="Card Problem    !";
 
+static const char SETTINGUP[] = "SettingUp"; //21-3
+static const char  CALIBRATING[] = "Calibrting";
+static const char  ICERROR[]     = " IC Error";
 
-unsigned long currentReport;
-      long Igain;
-      long Vgain;
-      bool commscheck;
+#ifdef ENERGYMETER_EXISTS
 
 struct EnergyRegs energyVals;  //Energy register values are read and stored in EnergyRegs structure
 struct PowerRegs powerVals;    //Metrology data can be accessed from these structures
@@ -17,20 +71,18 @@ struct PQRegs pqVals;
 struct AcalRegs acalVals;
 struct Temperature tempVal;
 
-static const char SETTINGUP[] = "SettingUp"; //21-3
-static const char  CALIBRATING[] = "Calibrting";
-static const char  ICERROR[]     = " IC Error";
-
-
+long Igain;
+long Vgain;
+      
 struct
 {
   byte Mode = 0;
   byte Timer = 0;
   bool Error = 0;
+  bool commscheck;  
 }EnergyMeterIC;
 
 #endif  
-
 
 // so variables
                      
@@ -44,7 +96,7 @@ String Display_Line7 ="Display...Line7......";
 String Display_Line8 ="Display..Line8.......";
 
 String FW_Version ="" ;
-byte Menu =0;
+byte MainMenu =0;
 byte DispRollIndex[4] = {1,0,0,0};
 
 //2 1 0 0
@@ -63,22 +115,12 @@ String RLlVal, RL2Val;
 String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
 #define ELEMENTS 12
 String KeyWords[12] = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
-
-unsigned int KeyLogger=0;
-
-bool KeyLeft_Rel = 0;
-bool KeyMid_Rel = 0;
-bool KeyRight_Rel = 0;
-bool KeyReleased = 0;
-
-
+/*
 bool I2CSet = 0;
 byte I2CTimer = 0;
 bool I2Error = 0;
 #define ACK_TIMEOUT 12
-
-//unsigned int Timer =0;
-
+*/
 unsigned int IntTimer250 = 0;
 unsigned int  IntTimer500 = 0;
 unsigned int  IntTimer1 = 0;
@@ -88,14 +130,19 @@ unsigned int  IntTimer10 = 0;
 unsigned int  IntTimer20 = 0;
 unsigned int  IntTimer60 = 0;
 
-bool LoopTask_250msec =0;
-bool LoopTask_500msec =0;
-bool LoopTask_1Sec =0;
-bool LoopTask_2Sec =0;
-bool LoopTask_5Sec =0;
-bool LoopTask_10Sec =0;
-bool LoopTask_20Sec =0;
-bool LoopTask_60Sec =0;
+
+struct
+{
+  bool Task_250msec =0;
+  bool Task_500msec =0;
+  bool Task_1Sec =0;
+  bool Task_2Sec =0;
+  bool Task_5Sec =0;
+  bool Task_10Sec =0;
+  bool Task_20Sec =0;
+  bool Task_60Sec =0;
+}Loop;
+
 
 #define TASK_500MSEC  1
 #define TASK_1SEC 2
@@ -107,6 +154,13 @@ bool LoopTask_60Sec =0;
 
 byte SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5sec 16 // 10sec 32 // 20sec 64  
 
+// the logging file
+File logfile;
+String dataString = "";
+String LOG_FILE =  "LOG_xxxx.csv";
+String ConfigFile= "ADConfig.txt";
+String Config_Str = "";
+
 struct
 {
   bool LogEnable;  // log on or off  eski LogStatus
@@ -115,47 +169,9 @@ struct
   unsigned int PauseTimer;
   unsigned int PauseCount;  
   byte Status; 
+  bool FatError;
+  float Volume;
 }SDCard;
-
-bool DispExpSens1 =0;
-bool DispExpSens2 =0;
-bool DispExpSens3 =0;
-
-bool SensorRollKey = 0;
-byte SensorRollTimer = 0;
-
-byte KeyBoardTimeOut = 0;
-bool KeyBoardTimeOutEnb = 0;
-
-unsigned int Current_Mains_Raw;
-unsigned int Current_Mains_Raw_Trim;
-float Current_Mains;
-float Current_MainsAverage;
-float    Current_Mains_Rms ;
-float    Current_Mains_Av ;
-unsigned int CurrentArray[10];
-byte CurrentIndexer = 0;
-unsigned int TrimpotAdc ;
-unsigned int Mains_Volt_Raw ;
-unsigned int Mains_Volt ;
-
-bool DisplayInitDelay = 0;
-bool DisplaySleepEnable = 0;
-
-byte DisplayValueTimer = 0;
-
-String Sensor1_Id = "";
-String Sensor2_Id = "";
-String Sensor3_Id = "";
-String Sensor_Info_SDS= "";
-
-// the logging file
-File logfile;
-String dataString = "";
-float SD_Volume;
-char SD_Type;
-String LOG_FILE =  "LOG_xxxx.csv";
-//#define LOG_FILE "AD_Log.csv"
 
 struct
 {
@@ -165,44 +181,35 @@ struct
   unsigned char Mbyte;
 }FileSize;
 
+struct
+{
+  unsigned int Logger=0;
+  byte BoardTimeOut = 0;
+  bool BoardTimeOutEnb = 0;  
+  bool Left_Rel = 0;
+  bool Mid_Rel = 0;
+  bool Right_Rel = 0;
+  bool Released = 0;
+  byte TimeOut = 0;
+  bool TimeOutEnb = 0;
+}Key;
 
- char SD1_CARD[]= "SD1 Card "; 
-  char SD2_CARD[]= "SD2 Card ";
-  char SDHC_CARD[]="SDHC Card "; 
-  char SD_CARD_ERR[]="Card Problem    !";
+struct
+{
+  long No1;
+  long No2;
+  long No3;    
+}SensorId;
+
+//String Sensor_Info_SDS= "";
 
 //char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesdy", "Wedns.", "Thurs.", "Friday", "Satur."};
 //static const char SD_Type[4][14] = {"SD1 Card " , "SD2 Card " , "SDHC Card " , "Card Problem    !"};
 
-String EE_Id_EString =""; 
-   
-    String Str_Time="";
-    String Str_Date="";
-    String Str_DispTime="";
-/*
-char DisplayLine[40] = {'1','2','3','4','5','6','7','8','9','0',
-                        'a','b','c','d','e','f','g','h','i','j',
-                        'k','l','m','n','o','p','q','r','s','t',
-                        'u','v','y','z','-','?','&','%','*','#'};
-*/                        
-
-#define DEF_START_NULL_LINES 5
-#define DEF_END_LINE_INDEX 21
-                        
-byte IndxStr = DEF_START_NULL_LINES;
-byte IndxEnd = DEF_END_LINE_INDEX;
-
-byte IndxCount = 0;
-byte DisplayCounter = 0;
 
 const byte numChars = 32;
 char receivedChars[numChars]; // an array to store the received data
 boolean newData = false;
-
-
-unsigned int AD_Value1;
-unsigned int AD_Value2;
-unsigned int AD_Value3;
 
 #define BUF_LENGTH 60
 byte PMBuffer[BUF_LENGTH];
@@ -230,13 +237,14 @@ struct
   unsigned int WindTemp;   // 35
   unsigned int Luminosity;  
 }Values;
-
+#ifdef   ACCL_GYRO_SENSOR_EXISTS 
 struct
 {
   float x;
   float y; // 27
   float z; //    
 }Accelometer;
+#endif
 /*
 struct
 {
@@ -246,13 +254,15 @@ struct
 }Gyro;
 */
 
+
 #define ADDRES_LOG 8
 #define SLEEP_LOG 16
-void EESetResetLog(bool Mode);
-void EEReadLog(void);
-void EESetSampleTimeLog(byte Sample);
-void EEDisplaySleep(bool Mode);
 
+String EE_Id_EString =""; 
+
+String Str_Time="";
+String Str_Date="";
+String Str_DispTime="";
 struct
 {
   unsigned int Year=0; 
@@ -274,8 +284,35 @@ struct
   bool OLED_Init = 0 ; 
   unsigned char MenuTimeout=0; 
   unsigned char Flash=0; 
-  int OLED_Timer = 0;    
+  int OLED_Timer = 0; 
+  bool InitDelay = 0;
+  bool SleepEnable = 0;
+  byte ValueTimer = 0; 
+  bool ExpSens1 =0;
+  bool ExpSens2 =0;
+  bool ExpSens3 =0;
+  byte SensorRollTimer = 0; 
 }Display;
+
+
+/*
+unsigned int AD_Value1;
+unsigned int AD_Value2;
+unsigned int AD_Value3;
+
+unsigned int Current_Mains_Raw;
+unsigned int Current_Mains_Raw_Trim;
+float Current_Mains;
+float Current_MainsAverage;
+float    Current_Mains_Rms ;
+float    Current_Mains_Av ;
+unsigned int CurrentArray[10];
+byte CurrentIndexer = 0;
+unsigned int TrimpotAdc ;
+unsigned int Mains_Volt_Raw ;
+unsigned int Mains_Volt ;
+*/
+
 /*
 Display.
 // for wind sensor

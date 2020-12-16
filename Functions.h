@@ -1,4 +1,73 @@
 
+// interrupt vector
+    #ifdef ARDUINO_MEGA
+ISR(TIMER1_OVF_vect){        // interrupt service routine that wraps a user defined function supplied by attachInterrupt
+ //   TCNT1 = 34286;            // preload timer for 500mSec
+       TCNT1 = 64286;            // preload timer for 20mSec
+    #endif
+    
+    #ifdef ARDUINO_DUE
+void TC3_Handler(){
+        TC_GetStatus(TC1, 0);
+    #endif
+       
+    IntTimer250++;
+    IntTimer500 ++;
+    IntTimer1 ++;
+    IntTimer2 ++;
+    IntTimer5 ++;
+    IntTimer10 ++;
+    IntTimer20 ++;   
+    IntTimer60 ++;   
+
+    if(IntTimer250 >= 13){
+      IntTimer250 = 0;
+      Loop.Task_250msec = ON;
+     // I2_ACK_Reset();
+    }
+    if(IntTimer500 >= 25){ // 500 msec
+      IntTimer500 = 0;
+      Loop.Task_500msec = ON;  
+    }
+    if(IntTimer1 >= 50){  // 1 sec
+      IntTimer1 = 0;
+      Loop.Task_1Sec = ON;
+      digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
+   
+      if(Display.SleepEnable == ON){
+        if(Display.OLED_Timer) Display.OLED_Timer--;   // sleep active
+      }
+      else Display.OLED_Timer = 32768; // no sleep    
+      if(Display.InitDelay == OFF)Display.InitDelay = ON;           
+    }
+    if(IntTimer2 >= 100){ // 2 sec
+      IntTimer2 = 0;
+      Loop.Task_2Sec = ON;
+      //PrintDisplayBuffer();
+    }
+    if(IntTimer5 >= 250){  // 5 sec
+      IntTimer5 = 0;
+      Loop.Task_5Sec = ON;
+    }
+    if(IntTimer10 >= 500){  // 10 sec
+      IntTimer10 = 0;
+      Loop.Task_10Sec = ON;
+    }
+    if(IntTimer20 >= 1000){  // 20 sec
+      IntTimer20 = 0;
+      Loop.Task_20Sec = ON;
+    }
+    if(IntTimer60 >= 3000){  // 60 sec
+      IntTimer60 = 0;
+      Loop.Task_60Sec = ON;
+    }        
+    Key_Functions();
+       //  digitalWrite(LED_RED, digitalRead(LED_RED) ^ 1);
+     //   if(!digitalRead(KEY_LEFT) || !digitalRead(KEY_MID) || !digitalRead(KEY_RIGHT))
+}
+   
+
+
 // https://www.onlinegdb.com/edit/Hkmlxi_08
 
 
@@ -11,38 +80,34 @@ void Log_Data_Write_SD(){
 
 void Common_Loop(){
   
-  if (LoopTask_250msec) {
-    LoopTask_250msec = OFF;
-
+  if (Loop.Task_250msec) {
+    Loop.Task_250msec = OFF;
+	  #ifdef OLEDDISPLAY_EXISTS
     // One time after wake up form sleep
     if (Display.OLED_Init == ON) {
-#ifndef DEBUG_SIMULATOR_MODE
       Display_ReInit(20);
-#endif
       Display.OLED_Init = OFF;
     }
     if (Display.OLED_Timer) {
-#ifndef DEBUG_SIMULATOR_MODE
       displayValues();
-#endif
     }
     else {
-#ifndef DEBUG_SIMULATOR_MODE
+
       Display_SwitchOff();
-#endif
     }
+#endif
 #ifdef LEM_CURRENT_EXISTS
     AnalogValRead();
 #endif
 
   }
-  if (LoopTask_500msec) {
-    LoopTask_500msec = OFF;
+  if (Loop.Task_500msec) {
+    Loop.Task_500msec = OFF;
     if (SampleTime == TASK_500MSEC) Log_Data_Write_SD();
   }
 
-  if (LoopTask_1Sec) {
-    LoopTask_1Sec = OFF;
+  if (Loop.Task_1Sec) {
+    Loop.Task_1Sec = OFF;
 #ifndef DEBUG_SIMULATOR_MODE
 
     SerialPortRx();
@@ -68,7 +133,7 @@ void Common_Loop(){
  
 #endif
 
-#ifdef AD9153_PROTOTYPE
+#ifdef ENERGYMETER_EXISTS
      EnergymeterCalbLed( );
 #endif
 
@@ -85,11 +150,11 @@ void Common_Loop(){
 
     KeyTimeOutCheck();
     if (SampleTime == TASK_1SEC) Log_Data_Write_SD();
-     if((Menu == MENU5_SUB7)||(Menu == MENU2_SUB8)||(Menu == MENU3_SUB3) ||(Menu == MENU3_SUB4)||(Menu == MENU1_SUB3)||(Menu == MENU1_SUB4)||(Menu == MENU6_SUB3) ){
+     if((MainMenu == MENU5_SUB7)||(MainMenu == MENU2_SUB8)||(MainMenu == MENU3_SUB3) ||(MainMenu == MENU3_SUB4)||(MainMenu == MENU1_SUB3)||(MainMenu == MENU1_SUB4)||(MainMenu == MENU6_SUB3) ){
       Display.MenuTimeout++;
       if(Display.MenuTimeout > 4){
         Display.MenuTimeout = 0;
-        Menu = MENU_NULL;
+        MainMenu = MENU_NULL;
       }
     }
    
@@ -105,8 +170,8 @@ void Common_Loop(){
            //     digitalWrite(RELAY_OUT_2, digitalRead(RELAY_OUT_2) ^ 1);  
   }
   
-  if (LoopTask_2Sec) {
-    LoopTask_2Sec = OFF;
+  if (Loop.Task_2Sec) {
+    Loop.Task_2Sec = OFF;
     if (SampleTime == TASK_2SEC) Log_Data_Write_SD();
 
       UpdateDispRoll();
@@ -116,13 +181,13 @@ void Common_Loop(){
          SDCard.PauseTimer--;    
       }
 
-        #ifdef AD9153_PROTOTYPE   
+        #ifdef ENERGYMETER_EXISTS   
              EnergyMeterIC_Operation();
         #endif
 
   }
-  if (LoopTask_5Sec) {
-    LoopTask_5Sec = OFF;
+  if (Loop.Task_5Sec) {
+    Loop.Task_5Sec = OFF;
     if (SampleTime == TASK_5SEC) Log_Data_Write_SD();
 
       #ifdef PM25_DUST_SENSOR_EXISTS  
@@ -135,22 +200,22 @@ void Common_Loop(){
     Relay_loop();
  
 
-    DisplayValueTimer++;
-    if (DisplayValueTimer > 4)DisplayValueTimer = 0;
+    Display.ValueTimer++;
+    if (Display.ValueTimer > 4)Display.ValueTimer = 0;
 
   }
-  if (LoopTask_10Sec) {
-    LoopTask_10Sec = OFF;
+  if (Loop.Task_10Sec) {
+    Loop.Task_10Sec = OFF;
     if (SampleTime == TASK_10SEC) Log_Data_Write_SD();
  
   }
-  if (LoopTask_20Sec) {
-    LoopTask_20Sec = OFF;
+  if (Loop.Task_20Sec) {
+    Loop.Task_20Sec = OFF;
     if (SampleTime == TASK_20SEC) Log_Data_Write_SD();
 
   }
-  if (LoopTask_60Sec) {
-    LoopTask_60Sec = OFF;
+  if (Loop.Task_60Sec) {
+    Loop.Task_60Sec = OFF;
     if (SampleTime == TASK_60SEC) Log_Data_Write_SD();
 
 
@@ -158,7 +223,9 @@ void Common_Loop(){
   
 }
 
-void AnalogValRead() {
+#ifdef VOLTAGE_MEASURE_EXISTS
+
+void CurrentVolt_Read() {
   // https://www.onlinegdb.com/edit/Hkmlxi_08
 
  
@@ -215,6 +282,7 @@ void AnalogValRead() {
 #endif
 
 }
+#endif 
 
 void SDS_DustSensor(void) {
     #ifdef PM25_DUST_SENSOR_EXISTS
@@ -257,29 +325,7 @@ void WindSensorRead() {
   */
 }
 
-void I2_ACK_TimeoutSet(void){
-  I2CSet =ON;
-}
 
-void I2_ACK_TimeoutReset(void){
-   I2CSet = OFF;
-   I2CTimer = ACK_TIMEOUT;
-}
-
-void I2_ACK_Reset(void){
-    if(!I2CSet)return;
-    if(I2CTimer){
-      I2CTimer--;
-      return;
-    } 
-     pinMode(I2C_TIMEOUT, OUTPUT);  // 
-     digitalWrite(I2C_TIMEOUT, LOW); 
-     delay(1);
-     I2CTimer = ACK_TIMEOUT;
-     I2CSet = OFF;
-     pinMode(I2C_TIMEOUT, INPUT);  // 
-     I2Error = ON;
-}
 
 
 void IO_Settings() {
@@ -287,7 +333,7 @@ void IO_Settings() {
 #ifdef FIRST_PROTOTYPE
 
 #endif
-#ifdef AD9153_PROTOTYPE
+#ifdef ENERGYMETER_EXISTS
 /*
   pinMode(A5, INPUT);  // 
   pinMode(A4, INPUT);  // 
@@ -348,15 +394,21 @@ void MicroInit() {
   Display_Line4[5] ='\0';
   Serial.begin(115200);
   IO_Settings();
+  #ifdef OLEDDISPLAY_EXISTS
   DisplaySetPowerIO();
- #ifdef ARDUINO_MEGA // 8 bit AVR
+  #endif
+  
+  
 
-#endif
+
+
 
   ResetCasePrint();
   //  SDCard.LogStatus = 0;      // default start with log off;
+#ifdef ARDUINO_MEGA // 8 bit AVR
   EEDisplaySleepRead();
   EEReadLog();
+  #endif
   
   SDCard.LogBootInit = 0;  // put the header of the csv file
 
@@ -365,7 +417,7 @@ void MicroInit() {
   Serial.print("    SampleTime: ");
   Serial.println(SampleTime);
   Serial.print("    DisplaySleep: ");
-  Serial.println(DisplaySleepEnable);
+  Serial.println(Display.SleepEnable);
 
 #ifdef ARDUINO_MEGA
   wdt_reset();
@@ -409,30 +461,26 @@ void MicroInit() {
 #ifndef DEBUG_SIMULATOR_MODE
   Sensors_PeripInit();
   DateTimeBuf.Init = ON;
+  #ifdef OLEDDISPLAY_EXISTS
   DisplayInit();   
+  #endif
 #endif
 
-    #ifdef AD9153_PROTOTYPE
-      //ADsetup();
-      #endif  
-
-#ifdef ARDUINO_MEGA
-#endif
 
 #ifdef ARDUINO_MEGA
   // initialize timer1
-  noInterrupts();           // disable all interrupts
-  TCCR1A = 0;
-  TCCR1B = 0;
-  //    TCNT1 = 34286;            // preload timer 65536-16MHz/256/2Hz 500mS
-  TCNT1 = 64286;            // preload timer 65536-16MHz/256/50Hz 20 ms
-  TCCR1B |= (1 << CS12);    // 256 prescaler
-  TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
-  interrupts();
+    noInterrupts();           // disable all interrupts
+    TCCR1A = 0;
+    TCCR1B = 0;
+    //    TCNT1 = 34286;            // preload timer 65536-16MHz/256/2Hz 500mS
+    TCNT1 = 64286;            // preload timer 65536-16MHz/256/50Hz 20 ms
+    TCCR1B |= (1 << CS12);    // 256 prescaler
+    TIMSK1 |= (1 << TOIE1);   // enable timer overflow interrupt
+    interrupts();
 #endif
 
 #ifdef ARDUINO_DUE
-  startTimer(TC1, 0, TC3_IRQn, 64); //TC1 channel 0, the IRQ for that channel and the desired frequency
+    startTimer(TC1, 0, TC3_IRQn, 64); //TC1 channel 0, the IRQ for that channel and the desired frequency
 #endif
 
 }

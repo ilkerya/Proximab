@@ -220,7 +220,7 @@ void RTC_TimeClock(){
               */          
               rtc.adjust(DateTime(Year, Month, Day, Hour, Minute, Second));
         //      Serial.println("Date & Time Adjusted");
-               Menu = MENU5_SUB7;
+               MainMenu = MENU5_SUB7;
                DispExtTimeout();
           }
         if((Timer == 10) && (receivedChars[0] == 'E' )&&(receivedChars[1] == 'E') && (receivedChars[2] == 'E')&&  (receivedChars[3] == 'E' )){

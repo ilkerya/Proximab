@@ -12,20 +12,45 @@
 
  //*********************************************************************
  
+// C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
+// C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
+ //#define ARDUINO_MEGA // 8 bit AVR
+ #define ARDUINO_DUE // ARM Cortex M3
+ /*
+//#include <Wire.h>
+//#include <SPI.h>
+ #include "RTClib.h"
+ #include <Adafruit_GFX.h>
+ #include <Adafruit_SSD1306.h>
+ #include  <ADE9153A.h>
+ #include <ADE9153AAPI.h>
+ #include "Adafruit_Si7021.h"
+  #include <SD.h>
+  */
+  #ifdef ARDUINO_MEGA // 8 bit AVR
+    #include <EEPROM.h>
+    #include <avr/wdt.h>
+  #endif
+
+#include <RTClib.h>
+#include <Adafruit_Si7021.h>
+#include <Adafruit_SSD1306.h>
+#include <SD.h>
+#include <gfxfont.h>
+/*
+#include <Adafruit_SPITFT_Macros.h>
+#include <Adafruit_SPITFT.h>
+#include <Adafruit_GrayOLED.h>
+*/
+#include <Adafruit_GFX.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <ADE9153AAPI.h>
+#include <ADE9153A.h>
 
 
 #define ARM_MATH_CM0PLUS
 
- #define ARDUINO_MEGA // 8 bit AVR
- //#define ARDUINO_DUE // ARM Cortex M3
-
-//#include <Wire.h>
-//#include <SPI.h>
-#include <SD.h>
-  #ifdef ARDUINO_MEGA // 8 bit AVR
-  #include <EEPROM.h>
-  #include <avr/wdt.h>
-  #endif
 
 #ifdef ARDUINO_DUE
 void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
@@ -43,6 +68,12 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 }
 #endif
 
+// C:\Projects\Pangolin\..   Atmel Studio Project Path
+// C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
+
+// C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
+// C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
+
 #include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Defs.h"
 #include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
 #include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\RTC.h"
@@ -54,89 +85,16 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 #include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Menu.h"
 #include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Functions.h"
 
-// C:\Projects\Pangolin\..   Atmel Studio Project Path
-// C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
-
-
 
 void setup() {
   MicroInit();
-  // 
-//  if(DisplayInitDelay == OFF)DisplayInitDelay = ON;  
-}
-
-// interrupt vector
-    #ifdef ARDUINO_MEGA
-ISR(TIMER1_OVF_vect){        // interrupt service routine that wraps a user defined function supplied by attachInterrupt
- //   TCNT1 = 34286;            // preload timer for 500mSec
-       TCNT1 = 64286;            // preload timer for 20mSec
-    #endif
-    
-    #ifdef ARDUINO_DUE
-void TC3_Handler(){
-        TC_GetStatus(TC1, 0);
-    #endif
-       
-    IntTimer250++;
-    IntTimer500 ++;
-    IntTimer1 ++;
-    IntTimer2 ++;
-    IntTimer5 ++;
-    IntTimer10 ++;
-    IntTimer20 ++;   
-    IntTimer60 ++;   
-
-    if(IntTimer250 >= 13){
-      IntTimer250 = 0;
-      LoopTask_250msec = ON;
-      I2_ACK_Reset();
-    }
-    if(IntTimer500 >= 25){ // 500 msec
-      IntTimer500 = 0;
-      LoopTask_500msec = ON;  
-    }
-    if(IntTimer1 >= 50){  // 1 sec
-      IntTimer1 = 0;
-      LoopTask_1Sec = ON;
-      digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
-   
-      if(DisplaySleepEnable == ON){
-        if(Display.OLED_Timer) Display.OLED_Timer--;   // sleep active
-      }
-      else Display.OLED_Timer = 32768; // no sleep    
-      if(DisplayInitDelay == OFF)DisplayInitDelay = ON;           
-    }
-    if(IntTimer2 >= 100){ // 2 sec
-      IntTimer2 = 0;
-      LoopTask_2Sec = ON;
-      //PrintDisplayBuffer();
-    }
-    if(IntTimer5 >= 250){  // 5 sec
-      IntTimer5 = 0;
-      LoopTask_5Sec = ON;
-    }
-    if(IntTimer10 >= 500){  // 10 sec
-      IntTimer10 = 0;
-      LoopTask_10Sec = ON;
-    }
-    if(IntTimer20 >= 1000){  // 20 sec
-      IntTimer20 = 0;
-      LoopTask_20Sec = ON;
-    }
-    if(IntTimer60 >= 3000){  // 60 sec
-      IntTimer60 = 0;
-      LoopTask_60Sec = ON;
-    }        
-    Key_Functions();
-       //  digitalWrite(LED_RED, digitalRead(LED_RED) ^ 1);
-     //   if(!digitalRead(KEY_LEFT) || !digitalRead(KEY_MID) || !digitalRead(KEY_RIGHT))
 }
 // the loop function runs over and over again forever
 void loop() {
     Common_Loop(); 
        #ifdef ARDUINO_MEGA // 8 bit AVR 
- 
         wdt_reset();
          wdt_enable(WDTO_8S);
      #endif
-}       
+}  
+  
