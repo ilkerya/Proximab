@@ -57,71 +57,118 @@ void DispEnable_4SD_Prblm(bool Enable, byte Timer) {
   //else   Display.SleepEnable = OFF;    // no sleep
 }
 
-void LogEnable(bool Enable) {
-  
+void SetResetLog(bool Enable) {
     if(Enable == ON){
       SDCard.LogEnable = ON;
-      #ifdef ARDUINO_MEGA // 8 bit AVR
-      EESetResetLog(ON);
-      #endif
+      NVRam_Write_LogStatus(ON); 
     }
     if(Enable == OFF){
       SDCard.LogEnable = OFF;
-      #ifdef ARDUINO_MEGA // 8 bit AVR
-      EESetResetLog(OFF);
-      #endif
+      NVRam_Write_LogStatus(OFF);
     } 
 }
-
-#ifdef ARDUINO_MEGA // 8 bit AVR
-void EE_SerNoWrite2_EE(unsigned int SerialNo) {
-  //  EEPROM.write(Adr, byte);
-  // byte t = 0XFFFF & (SerialNo>>8);
-    byte t;
-    t = (byte)SerialNo;
-    EEPROM.write(4, t);// low byte
-    t = (byte)(SerialNo >> 8);
-    EEPROM.write(5, t);// high byte
+void NVRam_Read_SerNo() {
+    char c;
+    EE_Id_EString = "";
+    
+   #ifdef ARDUINO_MEGA // 8 bit AVR 
+    c = (char)EEPROM.read(NVRAM_ID1);
+    EE_Id_EString += String(c);
+    c = (char)EEPROM.read(NVRAM_ID2);
+    EE_Id_EString += String(c);
+    c = (char)EEPROM.read(NVRAM_ID3);
+    EE_Id_EString += String(c);
+    c = (char)EEPROM.read(NVRAM_ID4);
+    EE_Id_EString += String(c);
+  #endif
+   #ifdef ARDUINO_DUE // 8 bit AVR
+    c = (char)dueFlashStorage.read(NVRAM_ID1);
+    EE_Id_EString += String(c);
+    c = (char)dueFlashStorage.read(NVRAM_ID2);
+    EE_Id_EString += String(c);
+    c = (char)dueFlashStorage.read(NVRAM_ID3);
+    EE_Id_EString += String(c);
+    c = (char)dueFlashStorage.read(NVRAM_ID4);
+    EE_Id_EString += String(c);
+   #endif
+    Serial.print(" Device Id: ");
+    Serial.println(EE_Id_EString);
 }
-
-void EEDisplaySleepRead(void) {
-      byte Mode = EEPROM.read(SLEEP_LOG);// OFF
-      if(Mode == OFF)DispEnable(OFF,0);
-      if(Mode == ON)DispEnable(ON,100);  
+void NVRam_Write_SerNo(char* p) {
+  Serial.print("EECode:");
+  #ifdef ARDUINO_MEGA // 8 bit AVR
+          EEPROM.write(NVRAM_ID1, p[0]);// high byte
+          EEPROM.write(NVRAM_ID2, p[1]);// high byte                 
+          EEPROM.write(NVRAM_ID3, p[2]);// high byte         
+          EEPROM.write(NVRAM_ID4, p[3]);// high byte         
+    #endif
+    #ifdef ARDUINO_DUE
+          dueFlashStorage.write(NVRAM_ID1, p[0]);// high byte
+          dueFlashStorage.write(NVRAM_ID2, p[1]);// high byte                
+          dueFlashStorage.write(NVRAM_ID3, p[2]);// high byte        
+          dueFlashStorage.write(NVRAM_ID4, p[3]);// high byte         
+    #endif
+         Serial.println(p[0]);Serial.println(p[1]);Serial.println(p[2]);Serial.println(p[3]);
 }
-void EEDisplaySleep(bool Mode) {
-      if (Mode == OFF)EEPROM.write(SLEEP_LOG, OFF); // OFF
-      else EEPROM.write(SLEEP_LOG, ON);// ON
-}
-void EESetResetLog(bool Mode) {
+void NVRam_Write_LogStatus(bool Mode) { 
+    #ifdef ARDUINO_MEGA
       if (Mode == OFF)EEPROM.write(ADDRES_LOG, OFF); // OFF
       else EEPROM.write(ADDRES_LOG, SampleTime);// ON
+    #endif
+    #ifdef ARDUINO_DUE
+      if (Mode == OFF)dueFlashStorage.write(ADDRES_LOG, OFF); // OFF
+      else dueFlashStorage.write(ADDRES_LOG, SampleTime);// ON
+    #endif    
+      
 }
-#endif
+void NVRam_Write_Standbye(bool Mode) {
+    #ifdef ARDUINO_MEGA
+      if (Mode == OFF)EEPROM.write(SLEEP_LOG, OFF); // OFF
+      else EEPROM.write(SLEEP_LOG, ON);// ON
+    #endif
+    #ifdef ARDUINO_DUE
+      if (Mode == OFF)dueFlashStorage.write(SLEEP_LOG, OFF); // OFF
+      else dueFlashStorage.write(SLEEP_LOG, ON);// ON
+    #endif       
+}
 
-  #ifdef ARDUINO_DUE 
-    volatile byte Sample2;
-  #endif
-void EESetSampleTimeLog(byte Sample) {
+void NVRam_Read_Standbye(void) {
+    #ifdef ARDUINO_MEGA
+        byte Read = EEPROM.read(SLEEP_LOG);// OFF
+        if(Read == OFF)DispEnable(OFF,0);
+        if(Read == ON)DispEnable(ON,100);
+    #endif
+     #ifdef ARDUINO_DUE
+      byte Read =dueFlashStorage.read(SLEEP_LOG);
+      if(Read == OFF)DispEnable(OFF,0);
+      if(Read == ON)DispEnable(ON,100); // default
+
+    #endif
+}
+void NVRam_Write_SampleTime(byte Sample) {
   #ifdef ARDUINO_MEGA
       EEPROM.write(ADDRES_LOG, Sample);// ON
   #endif
      #ifdef ARDUINO_DUE 
-    Sample2 = Sample;
+    dueFlashStorage.write(ADDRES_LOG,Sample); 
   #endif
 }
-
-
-
-
-void EEReadLog(void) {
+void NVRam_Read_SampleTime(void) {
    #ifdef ARDUINO_MEGA // 8 bit AVR
     byte Mode = EEPROM.read(ADDRES_LOG);// OFF
     #endif
-   #ifdef ARDUINO_DUE // 8 bit AVR
-    byte Mode = TASK_2SEC;// OFF
+   #ifdef ARDUINO_DUE // 32 bit ARM
+       byte Mode = dueFlashStorage.read(ADDRES_LOG);
     #endif
-    
+    if((Mode== TASK_500MSEC)||(Mode== TASK_1SEC)||(Mode== TASK_2SEC)||(Mode== TASK_5SEC)||(Mode== TASK_10SEC)||(Mode== TASK_20SEC)||(Mode== TASK_60SEC)){
+      SDCard.LogEnable = ON; 
+      SampleTime =  Mode;
+    }
+    else{
+      //SDCard.LogEnable = OFF; 
+      SampleTime =  TASK_2SEC; // default
+    }       
+    /*
     switch (Mode) {
       case TASK_500MSEC: SDCard.LogEnable = ON; SampleTime =  Mode;
       break;
@@ -140,28 +187,9 @@ void EEReadLog(void) {
       default: SDCard.LogEnable = OFF; SampleTime =  TASK_2SEC;
       break;
     }
-  
+  */
 }
-void UpdateDeviceEE() {
-   #ifdef ARDUINO_MEGA // 8 bit AVR 
-    char c;
-    EE_Id_EString = "";
-    c = (char)EEPROM.read(4);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(5);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(6);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(7);
-    EE_Id_EString += String(c);
-    Serial.print(" Device Id: ");
-    Serial.println(EE_Id_EString);
-  #endif
-   #ifdef ARDUINO_DUE // 8 bit AVR
-   
-      #endif
 
-}
 void ResetCasePrint() {
 #ifdef ARDUINO_MEGA // 8 bit AVR 
     
@@ -436,7 +464,7 @@ void UpMenuKey(void) {
 }
 
 
-void EscMenuKey(void) {
+void EscMenuKey(void) {   
   if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (MainMenu) {
@@ -524,10 +552,10 @@ void EnterMenuKey(void) {
       if (SDCard.LogEnable == ON) MainMenu = MENU1_SUB2; //already logging
       else  MainMenu = MENU1_SUB1;
       break;
-    case MENU1_SUB1 :  LogEnable(ON); //SDCard.LogEnable = ON; EESetResetLog(ON);
+    case MENU1_SUB1 :  SetResetLog(ON); //SDCard.LogEnable = ON; EESetResetLog(ON);
       MainMenu =  MENU1_SUB3;//MENU1
       break;
-    case MENU1_SUB2 : LogEnable(OFF);// SDCard.LogEnable = OFF; EESetResetLog(OFF); // default
+    case MENU1_SUB2 : SetResetLog(OFF);// SDCard.LogEnable = OFF; EESetResetLog(OFF); // default
       MainMenu =  MENU1_SUB4;//MENU1
       break;
     case MENU1_SUB3 :  
@@ -554,25 +582,25 @@ void EnterMenuKey(void) {
           break;
       }
       break;   
-    case MENU2_SUB1 :  SampleTime = TASK_500MSEC ; EESetSampleTimeLog(TASK_500MSEC);
+    case MENU2_SUB1 :  SampleTime = TASK_500MSEC ; NVRam_Write_SampleTime(TASK_500MSEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB2 : SampleTime = TASK_1SEC; EESetSampleTimeLog(TASK_1SEC);
+    case MENU2_SUB2 : SampleTime = TASK_1SEC; NVRam_Write_SampleTime(TASK_1SEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB3 :  SampleTime = TASK_2SEC; EESetSampleTimeLog(TASK_2SEC);
+    case MENU2_SUB3 :  SampleTime = TASK_2SEC; NVRam_Write_SampleTime(TASK_2SEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB4 : SampleTime = TASK_5SEC; EESetSampleTimeLog(TASK_5SEC); // default
+    case MENU2_SUB4 : SampleTime = TASK_5SEC; NVRam_Write_SampleTime(TASK_5SEC); // default
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB5 :  SampleTime = TASK_10SEC; EESetSampleTimeLog(TASK_10SEC);
+    case MENU2_SUB5 :  SampleTime = TASK_10SEC; NVRam_Write_SampleTime(TASK_10SEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB6 :  SampleTime = TASK_20SEC; EESetSampleTimeLog(TASK_20SEC);
+    case MENU2_SUB6 :  SampleTime = TASK_20SEC; NVRam_Write_SampleTime(TASK_20SEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
-    case MENU2_SUB7 :  SampleTime = TASK_60SEC; EESetSampleTimeLog(TASK_60SEC);
+    case MENU2_SUB7 :  SampleTime = TASK_60SEC; NVRam_Write_SampleTime(TASK_60SEC);
       MainMenu =  MENU2_SUB8;//MENU2;//
       break;
     case MENU2_SUB8 :  
@@ -583,15 +611,11 @@ void EnterMenuKey(void) {
       else  MainMenu = MENU3_SUB1;
       break;    
     case MENU3_SUB1 :  DispEnable(ON,40);
-     #ifdef ARDUINO_MEGA
-      EEDisplaySleep(ON);
-      #endif
+      NVRam_Write_Standbye(ON);
       MainMenu =  MENU3_SUB3;//MENU3
       break;
     case MENU3_SUB2 :  DispEnable(OFF,0);
-      #ifdef ARDUINO_MEGA
-      EEDisplaySleep(OFF);
-      #endif      
+      NVRam_Write_Standbye(OFF); 
       MainMenu =  MENU3_SUB4;//MENU3
       break;
     case MENU3_SUB3 :  

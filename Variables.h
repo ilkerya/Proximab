@@ -18,49 +18,50 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
   
 //char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
   
-static const char Disp_MENU_NULL_ENT[] = "ENTER     "; // 10
-static const char Disp_MENU_NULL_ESC[] = "     ESC";
-static const char Disp_MENU1[] =     "LOG START & STOP MENU";
-static const char Disp_MENU2[] =     "LOG SAMPLE TIME MENU ";
-static const char Disp_MENU3[] =     "DISPLAY STANDBYE MENU";
-static const char Disp_MENU4[] =     "INFORMATION MENU";
-static const char Disp_MENU5[] =     "DATE & TIME ADJ. MENU";
-static const char Disp_MENU6[] =     "ENEGY METER CALB MENU";
-static const char Disp_MENU5_SUB7[] = "Date & Time Updated !"; 
-static const char Disp_MENU6_SUB1[] = "Start Calib? 60 Secs."; 
-static const char Disp_MENU6_SUB2[] = "Sure To Start Calib.?"; 
-static const char Disp_MENU6_SUB3[] = "Calibration Started !"; 
+//static const char Disp_MENU_NULL_ENT[]  PROGMEM  = "ENTER     "; // 10
+//static const char Disp_MENU_NULL_ESC[] PROGMEM = "     ESC";
+static const char Disp_MENU_NULL[]    PROGMEM = "ENTER             ESC";
+static const char Disp_MENU1[] PROGMEM =     "LOG START & STOP MENU";
+static const char Disp_MENU2[] PROGMEM =     "LOG SAMPLE TIME MENU ";
+static const char Disp_MENU3[] PROGMEM =     "DISPLAY STANDBYE MENU";
+static const char Disp_MENU4[] PROGMEM =     "INFORMATION MENU";
+static const char Disp_MENU5[] PROGMEM =     "DATE & TIME ADJ. MENU";
+static const char Disp_MENU6[] PROGMEM =     "ENEGY METER CALB MENU";
+static const char Disp_MENU5_SUB7[] PROGMEM = "Date & Time Updated !"; 
+static const char Disp_MENU6_SUB1[] PROGMEM = "Start Calib? 60 Secs."; 
+static const char Disp_MENU6_SUB2[] PROGMEM = "Sure To Start Calib.?"; 
+static const char Disp_MENU6_SUB3[] PROGMEM = "Calibration Started !"; 
 
-static const char Disp_MENU1_SUBMAIN[]= "LOG "; 
-static const char Disp_MENU1_SUB1[]= "START"; 
-static const char Disp_MENU1_SUB2[]= "STOP ";
-static const char Disp_MENU1_SUB3[]= "Started !"; 
-static const char Disp_MENU1_SUB4[]= "Stopped !";
-static const char Disp_MENU3_SUBMAIN[]= "STANDBYE ";  
-static const char Disp_MENU3_SUB1[]= "Enable "; 
-static const char Disp_MENU3_SUB2[]= "Disable";  
-static const char Disp_MENU3_SUB3[]= "Updated! On";
-static const char Disp_MENU3_SUB4[]= "Updated! Off";
+static const char Disp_MENU1_SUB1[] PROGMEM = "LOG START            "; 
+static const char Disp_MENU1_SUB2[] PROGMEM = "LOG STOP             "; 
+static const char Disp_MENU1_SUB3[] PROGMEM = "LOG Started !        ";
+static const char Disp_MENU1_SUB4[] PROGMEM = "LOG Stopped !        "; 
+//static const char Disp_MENU1_SUB4[] PROGMEM = "Stopped !";
+static const char Disp_MENU3_SUBMAIN[] PROGMEM = "STANDBYE ";  
+static const char Disp_MENU3_SUB1[] PROGMEM = "Enable "; 
+static const char Disp_MENU3_SUB2[] PROGMEM = "Disable";  
+static const char Disp_MENU3_SUB3[] PROGMEM = "Updated! On";
+static const char Disp_MENU3_SUB4[] PROGMEM = "Updated! Off";
   
-static const char Disp_MENU2_SUB[]= "Enter -> ";  //9
-static const char Disp_MENU2_SUB1[]= " 0.5 Sec    "; //12
-static const char Disp_MENU2_SUB2[]= " 1 Sec      "; //12
-static const char Disp_MENU2_SUB3[]= " 2 Sec      "; //12
-static const char Disp_MENU2_SUB4[]= " 5 Sec      "; //12
-static const char Disp_MENU2_SUB5[]= " 10 Sec     "; //12
-static const char Disp_MENU2_SUB6[]= " 20 Sec     "; //12
-static const char Disp_MENU2_SUB7[]= " 60 Sec     "; //12
-static const char Disp_MENU2_SUB8[]= "Sample Time Updated !";
+static const char Disp_MENU2_SUB[] PROGMEM = "Enter -> ";  //9
+static const char Disp_MENU2_SUB1[] PROGMEM = " 0.5 Sec    "; //12
+static const char Disp_MENU2_SUB2[] PROGMEM = " 1 Sec      "; //12
+static const char Disp_MENU2_SUB3[] PROGMEM = " 2 Sec      "; //12
+static const char Disp_MENU2_SUB4[] PROGMEM = " 5 Sec      "; //12
+static const char Disp_MENU2_SUB5[] PROGMEM = " 10 Sec     "; //12
+static const char Disp_MENU2_SUB6[] PROGMEM = " 20 Sec     "; //12
+static const char Disp_MENU2_SUB7[] PROGMEM = " 60 Sec     "; //12
+static const char Disp_MENU2_SUB8[] PROGMEM = "Sample Time Updated !";
 
-static const char SD1_CARD[]= "SD1 Card "; 
-static const char SD2_CARD[]= "SD2 Card ";
-static const char SDHC_CARD[]="SDHC Card "; 
-static const char NO_FAT[]   ="Fat Problem    !";
-static const char SD_CARD_ERR[]="Card Problem    !";
+static const char SD1_CARD[] PROGMEM = "SD1 Card "; 
+static const char SD2_CARD[] PROGMEM = "SD2 Card ";
+static const char SDHC_CARD[] PROGMEM ="SDHC Card "; 
+static const char NO_FAT[]  PROGMEM   ="Fat Problem    !";
+static const char SD_CARD_ERR[] PROGMEM ="Card Problem    !";
 
-static const char SETTINGUP[] = "SettingUp"; //21-3
-static const char  CALIBRATING[] = "Calibrting";
-static const char  ICERROR[]     = " IC Error";
+static const char SETTINGUP[] PROGMEM     = "SettingUp"; //21-3
+static const char  CALIBRATING[] PROGMEM  = "Calibrating";
+static const char  ICERROR[]   PROGMEM    = " IC Error";
 
 #ifdef ENERGYMETER_EXISTS
 
@@ -114,7 +115,7 @@ float RL1Min, RL1Max, RL2Min,RL2Max,CompValue;
 String RLlVal, RL2Val;
 String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
 #define ELEMENTS 12
-String KeyWords[12] = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
+ const String KeyWords[12]   = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
 /*
 bool I2CSet = 0;
 byte I2CTimer = 0;
@@ -158,7 +159,7 @@ byte SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5sec 1
 File logfile;
 String dataString = "";
 String LOG_FILE =  "LOG_xxxx.csv";
-String ConfigFile= "ADConfig.txt";
+static const String ConfigFile  = "ADConfig.txt";
 String Config_Str = "";
 
 struct
@@ -257,6 +258,10 @@ struct
 
 #define ADDRES_LOG 8
 #define SLEEP_LOG 16
+#define NVRAM_ID1 4
+#define NVRAM_ID2 5
+#define NVRAM_ID3 6
+#define NVRAM_ID4 7
 
 String EE_Id_EString =""; 
 
@@ -291,7 +296,9 @@ struct
   bool ExpSens1 =0;
   bool ExpSens2 =0;
   bool ExpSens3 =0;
-  byte SensorRollTimer = 0; 
+  byte SensorRollTimer = 0;
+  byte ReInit_Timer = 2;
+  bool ReInit_Enable = OFF;
 }Display;
 
 

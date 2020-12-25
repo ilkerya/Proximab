@@ -1,3 +1,12 @@
+
+#if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
+    #error Select Only One Platform
+#endif
+ #if !(!defined (ARDUINO_MEGA) ^ !defined (ARDUINO_DUE)) 
+    #error Select At Least One Platform
+#endif
+
+
 /*
 typedef  byte               uint8;
 typedef  signed char        int8;
@@ -14,9 +23,15 @@ typedef  unsigned long long uint64
 C:\Program Files (x86)\Arduino\libraries
 
 */
-//#define TEMP_HUM_1_SENSOR_EXISTS
-//#define TEMP_HUM_2_SENSOR_EXISTS
-//#define TEMP_HUM_3_SENSOR_EXISTS  
+#define TEMP_HUM_1_SENSOR_EXISTS
+#define TEMP_HUM_2_SENSOR_EXISTS
+#define TEMP_HUM_3_SENSOR_EXISTS  
+
+#define PM25_DUST_SENSOR_EXISTS
+#define SDCARD_EXISTS
+#define OLEDDISPLAY_EXISTS
+#define ENERGYMETER_EXISTS 
+#define PROGRELAY_EXISTS 
 
 //#define LIGHT_SENSOR_EXISTS  
 //#define BAR_PRES_SENSOR_EXISTS  
@@ -26,11 +41,7 @@ C:\Program Files (x86)\Arduino\libraries
 //#define VOLTAGE_MEASURE_EXISTS
 
 
-//#define PM25_DUST_SENSOR_EXISTS
-//#define SDCARD_EXISTS
-//#define OLEDDISPLAY_EXISTS
-//#define ENERGYMETER_EXISTS 
-#define PROGRELAY_EXISTS 
+
 
 #define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC Related IOs
 
@@ -102,17 +113,19 @@ C:\Program Files (x86)\Arduino\libraries
   #define ANALOG3         A3
   #define ANALOG2         A2
   #define ANALOG1         A1
-  #define I2C_TIMEOUT      A0  
+  
+  #define DEBUG_OUT     A0  
   
   #define KEY_RIGHT       13
   #define KEY_MID         12
   #define KEY_LEFT        11
-  #define SD_CS_PINOUT    10  
-  #define LED_GREEN        9
+  const int SD_CS_PINOUT = 10;
+ // #define SD_CS_PINOUT    10  
+  #define LED_RED        9  // L1
     #ifdef ENERGYMETER_EXISTS
   #define ADE9153A_CS_PIN  8 
       #endif      
-  #define LED_RED          7 //??? bosta
+  #define  LED_GREEN         7 //L2
      #ifdef ENERGYMETER_EXISTS 
   #define ADE9153A_RED_LED 6                 //On-board LED pin 
   #define ADE9153A_CALB_BUTTON   5         
@@ -183,7 +196,9 @@ void Common_Loop();
 void ResetCasePrint();
 void IO_Settings();
 void MicroInit(void);
-void Display_ReInit(byte Timer);
+void Display_ReInit_Start(byte Timer);
+void Display_ReInit_End(void);
+
 void  RTC_Init();
 void  SensorInit_Si072(byte);
 void  SensorAlt_Init();
@@ -200,8 +215,8 @@ void  SensorLight_Read();
 void  SensorAcccel_GyroRead();
 void SDS_DustSensor(void);
 void UpdateSensorInfo(void);
-void EE_SerNoWrite2_EE(unsigned int SerialNo);
-void UpdateDeviceEE();
+
+
 void UpdateInfoLine();
 void UpdateDisplayMenu();
 void UpdateSD_LogTime();
@@ -215,7 +230,7 @@ void UpMenuKey(void);
 void SetSampling(unsigned int Time);
 void DispEnable(bool Enable, byte Timer);
 void DispEnable_4SD_Prblm(bool Enable, byte Timer);
-void LogEnable(bool Enable);
+
 void  DispExtTimeout(void);
 void   DisplayMenu(void);
 void KeyTimeOutCheck(void);
@@ -235,10 +250,17 @@ String LimitCopyDisplayStr(String str, byte MaxNumber);
 void EnergyMeterIC_Operation(void);
 void I2_ACK_Reset(void);
 
-void EESetResetLog(bool Mode);
-void EEReadLog(void);
-void EESetSampleTimeLog(byte Sample);
-void EEDisplaySleep(bool Mode);
+
+void SetResetLog(bool Enable);
+void NVRam_Write_LogStatus(bool Mode);
+void NVRam_Read_SampleTime(void);
+void NVRam_Write_SampleTime(byte Sample);
+void NVRam_Read_Standbye(void);
+void NVRam_Write_Standbye(bool Mode);
+void NVRam_Read_SerNo(void);
+void NVRam_Write_SerNo(char* p);
+
+void Due_Memory();
 
 
 // C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries

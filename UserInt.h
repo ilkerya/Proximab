@@ -1,4 +1,17 @@
-
+char Dispbuffer[22];  // make sure this is large enough for the largest string it must hold
+char* CopyFlashToRam(const char* p){
+  //length.Dispbuffer; 
+    for (byte i = 0; i < 22; i++) {
+      Dispbuffer[i] = 0;
+    }
+    for (byte i = 0; i < strlen_P(p); i++) {
+      char c = pgm_read_byte_near(p + i);
+      Dispbuffer[i] = c;
+      //Serial.print(c);
+    }
+   //  Serial.print(F("Dispbuffer : ")); Serial.println(Dispbuffer);
+    return Dispbuffer;
+}
 void UpdateDisplayBuffer(void){  
     //Display_Line1 = String(Str_Date) + "   " + String(Str_Time);
     Display_Line1 = Str_Date + "   " + Str_Time;
@@ -65,7 +78,7 @@ void UpdateFileSize(){
 void PrintDisplayBuffer(void){
       Serial.println();
       Serial.println();
-      Serial.println("   DISPLAY  8x21     ");
+      Serial.println(F("   DISPLAY  8x21     "));
       Serial.println(Display_Line1);
       Serial.println(Display_Line2);
       Serial.println(Display_Line3);
@@ -78,10 +91,10 @@ void PrintDisplayBuffer(void){
       Serial.println();   
 
     // Additionals
-    Serial.print("DevId: ");Serial.print(EE_Id_EString);
-    Serial.print("    Sensor1: ");Serial.print(SensorId.No1,HEX);
-    Serial.print("    Sensor2: ");Serial.print(SensorId.No2,HEX);
-    Serial.print("    Sensor3: ");Serial.print(SensorId.No3,HEX);
+    Serial.print(F("DevId: "));Serial.print(EE_Id_EString);
+    Serial.print(F("    Sensor1: "));Serial.print(SensorId.No1,HEX);
+    Serial.print(F("    Sensor2: "));Serial.print(SensorId.No2,HEX);
+    Serial.print(F("    Sensor3: "));Serial.print(SensorId.No3,HEX);
     
 
     Serial.println();   
@@ -89,8 +102,8 @@ void PrintDisplayBuffer(void){
     Serial.println( "Compiled: " + FW_Version  + ' ' + __VERSION__);  // 11 1 8
    // Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__); 
 
-    Serial.print("RELAY 1:");Serial.println(digitalRead(RELAY_OUT_1));
-    Serial.print("RELAY 2:");Serial.println(digitalRead(RELAY_OUT_2));   
+    Serial.print(F("RELAY 1:"));Serial.println(digitalRead(RELAY_OUT_1));
+    Serial.print(F("RELAY 2:"));Serial.println(digitalRead(RELAY_OUT_2));   
      
      
     Serial.println();
@@ -210,7 +223,8 @@ void UpdateProperLine(byte Index, byte Line){
 
            #ifdef ENERGYMETER_EXISTS 
              if(EnergyMeterIC.Error){
-              str += ICERROR;
+                //str += ICERROR;
+                 str += CopyFlashToRam(ICERROR);
              }              
              else if(EnergyMeterIC.Mode == POWERIC_NORMAL){            
                 str +=String(Values.Current)+ "A "; // 3/4/2 = 9
@@ -218,15 +232,18 @@ void UpdateProperLine(byte Index, byte Line){
                 str += String(Values.Frequency)+ "Hz"; //4 = 22               
              }        
              else if((EnergyMeterIC.Mode == POWERIC_SETUP1) || (EnergyMeterIC.Mode == POWERIC_SETUP2) || (EnergyMeterIC.Mode == POWERIC_SETUP3)){
-                   str += SETTINGUP; // 3/4/2
+                   //str += SETTINGUP; // 3/4/2
+                   str += CopyFlashToRam(SETTINGUP);    
              }
-             else   str += CALIBRATING; // 3/4/2           
+             else   //str += CALIBRATING; // 3/4/2   
+                      str += CopyFlashToRam(CALIBRATING);        
           #endif          
      break;      
      case 5:       
              #ifdef ENERGYMETER_EXISTS 
               if(EnergyMeterIC.Error){
-                    str += ICERROR;
+                  //  str += ICERROR;
+                    str += CopyFlashToRam(ICERROR); 
               }             
               else if(EnergyMeterIC.Mode == POWERIC_NORMAL){       
                 str += " ";
@@ -237,8 +254,10 @@ void UpdateProperLine(byte Index, byte Line){
               }
               else if((EnergyMeterIC.Mode == POWERIC_SETUP1) || (EnergyMeterIC.Mode == POWERIC_SETUP2) || (EnergyMeterIC.Mode == POWERIC_SETUP3)){
                   //str += SETTINGUP; // 3/4/2
+                  str += CopyFlashToRam(SETTINGUP); 
              }    
-             else   str += CALIBRATING;//str += "Calibrating!";  // 3/4/2             
+             else   //str += CALIBRATING;//str += "Calibrating!";  // 3/4/2  
+                      str += CopyFlashToRam(CALIBRATING);               
             #endif   
                    
      break; 

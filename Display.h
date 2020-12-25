@@ -55,15 +55,30 @@ In the example ssd1306_128x64_i2c
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 */
+
+//#define DISPLAY_POWEROFF_STANDBYE
+#define DISPLAY_SOFTOFF_STANDBYE 
+
+#if defined (DISPLAY_POWEROFF_STANDBYE)  & defined (DISPLAY_SOFTOFF_STANDBYE) 
+    #error Select Only One Standbye Type
+#endif
+ #if !(!defined (DISPLAY_POWEROFF_STANDBYE) ^ !defined (DISPLAY_SOFTOFF_STANDBYE)) 
+    #error Select At Least One Standbye Type
+#endif
+
 //Adafruit_SSD1306 display(OLED_RESET);
 //DISPLAY INITIALIZER
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 void Display_SwitchOff(){
-     // digitalWrite(OLED_POWER, LOW);       // turn on pullup resistors
-     // digitalWrite(OLED_GND, LOW);       // keep GND Level   
+
       MainMenu = MENU_NULL;    
       display.clearDisplay(); 
       display.display();  
+   #ifdef DISPLAY_POWEROFF_STANDBYE
+      digitalWrite(OLED_POWER, LOW);       // turn on pullup resistors
+      digitalWrite(OLED_GND, LOW);       // keep GND Level
+   #endif   
+      
 }
 void DisplaySetPowerIO(){
      //-- DISPLAY INIT --//
@@ -72,15 +87,44 @@ void DisplaySetPowerIO(){
     pinMode(OLED_POWER, OUTPUT);
     digitalWrite(OLED_POWER, HIGH);       // turn on pullup resistors    
 }
-void Display_ReInit(byte Timer){
+void Display_ReInit_Start(byte Timer){
     DisplaySetPowerIO();
     Display.OLED_Timer = Timer; // 10 sec
-  //  delay(300); // Pause for 2 seconds 
+    Display.ReInit_Enable = ON;
+    Display.ReInit_Timer = 4; 
+    
+}
+void Display_ReInit_End(){
+   #ifdef DISPLAY_SOFTOFF_STANDBYE
+    return;
+  #endif
+    #ifdef DISPLAY_POWEROFF_STANDBYE 
+  if(!Display.ReInit_Enable)return;
+  if(Display.ReInit_Timer){
+    Display.ReInit_Timer--;
+    return;
+  }
+   Display.ReInit_Enable = OFF; 
+   Display.ReInit_Timer = 4; 
+  
+  
+   // delay(300); // Pause for 2 seconds // critical
+   
+  #ifdef ARDUINO_DUE 
+    delay(1300); // Pause for 2 seconds 
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //    SSD1306_EXTERNALVCC
-        Serial.println("SSD1306 allocation failed");
+        Serial.println(F("SSD1306 allocation failed"));
             //for(;;); // Don’t proceed, loop forever
     }
-     Serial.println("Dsiplay ReInitilized");  
+    
+  #endif
+    #ifdef ARDUINO_MEGA
+    if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //    SSD1306_EXTERNALVCC
+        Serial.println(F("SSD1306 allocation failed"));
+            //for(;;); // Don’t proceed, loop forever
+    }
+      #endif
+     Serial.println(F("Display ReInitilized"));  
  //   display.clearDisplay();
  //   display.setTextSize(3);
  //   display.setTextColor(WHITE);  //0  white on black
@@ -90,6 +134,7 @@ void Display_ReInit(byte Timer){
  //   display.println();
 //    display.println("DATALOG"); 
  //   display.display();
+  #endif
 }
 
  
@@ -98,14 +143,41 @@ void DisplayInit(void){
     DisplaySetPowerIO();
     //-- DISPLAY INIT --//    
     Display.OLED_Timer = 40; // 20-> 10 sec
-    delay(300); // Pause for 2 seconds
+    
+    delay(300); // Pause for 2 seconds // critic !!
+  #ifdef ARDUINO_DUE 
+    delay(1300); // Pause for 2 seconds 
+  #endif
+
+   
     
     Serial.println("Display Initing");
+    Serial.println("Display Initing");
+    Serial.println("Display Initing");
+    Serial.println("Display Initing");
+    Serial.println("Display Initing");
+      Serial.println(); 
+
+       Serial.println();
+       Serial.println();
+       Serial.println();
+       Serial.println();
+       Serial.println();
+
+ //   #ifdef ARDUINO_MEGA  
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //  SSD1306_EXTERNALVCC
-        Serial.println("SSD1306 allocation failed");
+        Serial.println(F("SSD1306 allocation failed"));
   
      // for(;;); // Don’t proceed, loop forever
       }
+      
+      else {
+        Serial.println("Display ok");
+        Serial.println("Display ok");
+        Serial.println("Display ok");
+
+    }
+    //#endif
        display.dim(0); // lower brightness 
    // display.begin(SSD1306_SWITCHCAPVCC);
     display.clearDisplay();
@@ -116,7 +188,7 @@ void DisplayInit(void){
     display.println();
     display.println("DATALOG"); 
       display.display();
-  //    delay(250);
+
      // Adafruit_SSD1306::dim  ( 1 ) //1 == lower brightness // 0 == full brightness
       //display.dim       
 }
@@ -285,18 +357,19 @@ String UpddateDateTimeBuffer(void){
         str += String(DateTimeBuf.Second);  
         return str;
 }
-
+  
 void UpdateDisplayMenu(void){
   String str;
   switch(MainMenu){
-    case MENU_NULL : str = Disp_MENU_NULL_ENT;
-                     str += "   ";
-                     str += Disp_MENU_NULL_ESC;
-                      
+    case MENU_NULL : 
+      str = CopyFlashToRam(Disp_MENU_NULL);
+                  //str = Disp_MENU_NULL_ENT;
+               //      str += "   ";
+               //      str += CopyFlashToRam(Disp_MENU_NULL_ESC);                  
       break;
-    case MENU1 :  str = Disp_MENU1;
+    case MENU1 :  str = CopyFlashToRam(Disp_MENU1);
       break;
-     case MENU1_SUB1 :    str = Disp_MENU1_SUBMAIN;str +=Disp_MENU1_SUB1;
+     case MENU1_SUB1 :    str = CopyFlashToRam(Disp_MENU1_SUB1);  //str +=CopyFlashToRam(Disp_MENU1_SUB1);
         if(DisplayFlash() == 0){     
           str[4] = ' ';
           str[5] = ' ';
@@ -305,7 +378,7 @@ void UpdateDisplayMenu(void){
           str[8] = ' ';        
         } 
       break;
-    case MENU1_SUB2 :     str = Disp_MENU1_SUBMAIN;str +=Disp_MENU1_SUB2;
+    case MENU1_SUB2 :     str = CopyFlashToRam(Disp_MENU1_SUB2); //   str +=CopyFlashToRam(Disp_MENU1_SUB2);
            if(DisplayFlash() == 0){     
           str[4] = ' ';
           str[5] = ' ';
@@ -314,64 +387,60 @@ void UpdateDisplayMenu(void){
           str[8] = ' '; 
         }  
       break;
-    case MENU1_SUB3 : str = Disp_MENU1_SUBMAIN ;str +=Disp_MENU1_SUB3;
-
+    case MENU1_SUB3 : str = CopyFlashToRam(Disp_MENU1_SUB3) ;//str +=CopyFlashToRam(Disp_MENU1_SUB3);
       break;
-    case MENU1_SUB4 : str = Disp_MENU1_SUBMAIN ;str +=Disp_MENU1_SUB4;    
+    case MENU1_SUB4 : str = CopyFlashToRam(Disp_MENU1_SUB4) ;//str +=CopyFlashToRam(Disp_MENU1_SUB4);    
+      break;    
+    case MENU2 :   str = CopyFlashToRam(Disp_MENU2);
       break;
-
-           
-    case MENU2 :   str = Disp_MENU2;
-      break;
-    case MENU2_SUB1 : str = Disp_MENU2_SUB ;
-                      str +=Disp_MENU2_SUB1;
+    case MENU2_SUB1 : str = CopyFlashToRam(Disp_MENU2_SUB) ;
+                      str +=CopyFlashToRam(Disp_MENU2_SUB1);
           if(DisplayFlash() == OFF){     
               str[10] = ' ';
               str[11] = ' '; 
               str[12] = ' '; 
         }      
       break;
-    case MENU2_SUB2 : str = Disp_MENU2_SUB;
-                      str += Disp_MENU2_SUB2; 
+    case MENU2_SUB2 : str = CopyFlashToRam(Disp_MENU2_SUB);
+                      str += CopyFlashToRam(Disp_MENU2_SUB2); 
               if(DisplayFlash() == OFF)str[10] = ' ';        
       break;
-    case MENU2_SUB3 : str = Disp_MENU2_SUB;
-                      str +=Disp_MENU2_SUB3;
-
+    case MENU2_SUB3 : str = CopyFlashToRam(Disp_MENU2_SUB);
+                      str +=CopyFlashToRam(Disp_MENU2_SUB3);
              if(DisplayFlash() == OFF)str[10] = ' ';
       break;
-    case MENU2_SUB4 : str = Disp_MENU2_SUB; 
-                     str += Disp_MENU2_SUB4;
+    case MENU2_SUB4 : str = CopyFlashToRam(Disp_MENU2_SUB); 
+                     str += CopyFlashToRam(Disp_MENU2_SUB4);
              if(DisplayFlash() == OFF)str[10] = ' ';
       break;
-    case MENU2_SUB5 : str = Disp_MENU2_SUB; 
-                      str += Disp_MENU2_SUB5;
+    case MENU2_SUB5 : str = CopyFlashToRam(Disp_MENU2_SUB); 
+                      str += CopyFlashToRam(Disp_MENU2_SUB5);
               if(DisplayFlash() == OFF){     
                 str[10] = ' ';
                 str[11] = ' ';        
             }    
       break;
-    case MENU2_SUB6 : str = Disp_MENU2_SUB; 
-                      str += Disp_MENU2_SUB6;
+    case MENU2_SUB6 : str = CopyFlashToRam(Disp_MENU2_SUB); 
+                      str += CopyFlashToRam(Disp_MENU2_SUB6);
               if(DisplayFlash() == OFF){     
                 str[10] = ' ';
                 str[11] = ' ';        
             }     
       break;
     case MENU2_SUB7 :// str = Disp_MENU2_SUB + Disp_MENU2_SUB7;
-              str = Disp_MENU2_SUB;
-              str += Disp_MENU2_SUB7;
+              str = CopyFlashToRam(Disp_MENU2_SUB);
+              str += CopyFlashToRam(Disp_MENU2_SUB7);
               if(DisplayFlash() == OFF){     
                 str[10] = ' ';
                 str[11] = ' ';        
             }     
       break;
-    case MENU2_SUB8 :str = Disp_MENU2_SUB8;
+    case MENU2_SUB8 :str = CopyFlashToRam(Disp_MENU2_SUB8);
         break;   
-    case MENU3 :   str = Disp_MENU3;
+    case MENU3 :   str = CopyFlashToRam(Disp_MENU3);
       break;
-    case MENU3_SUB1 : str = Disp_MENU3_SUBMAIN ;
-                      str +=Disp_MENU3_SUB1;
+    case MENU3_SUB1 : str = CopyFlashToRam(Disp_MENU3_SUBMAIN) ;
+                      str +=CopyFlashToRam(Disp_MENU3_SUB1);
               if(DisplayFlash() == OFF){     
               str[9] = ' '; 
               str[10] = ' ';
@@ -382,8 +451,8 @@ void UpdateDisplayMenu(void){
                str[15] = ' ';               
         }  
       break;
-    case MENU3_SUB2 :  str = Disp_MENU3_SUBMAIN ;
-                      str +=Disp_MENU3_SUB2;
+    case MENU3_SUB2 :  str = CopyFlashToRam(Disp_MENU3_SUBMAIN) ;
+                      str +=CopyFlashToRam(Disp_MENU3_SUB2);
          if(DisplayFlash() == OFF){              
               str[9] = ' '; 
               str[10] = ' ';
@@ -394,23 +463,21 @@ void UpdateDisplayMenu(void){
                str[15] = ' ';                            
         }
               break;  
-       case MENU3_SUB3 :str = Disp_MENU3_SUBMAIN ;
-                            str += Disp_MENU3_SUB3;
+       case MENU3_SUB3 :str = CopyFlashToRam(Disp_MENU3_SUBMAIN) ;
+                            str += CopyFlashToRam(Disp_MENU3_SUB3);
         break;  
-       case MENU3_SUB4 :str = Disp_MENU3_SUBMAIN ;
-                          str +=Disp_MENU3_SUB4;
-        break;
-      
-    case MENU4 :   str = Disp_MENU4; 
+       case MENU3_SUB4 :str = CopyFlashToRam(Disp_MENU3_SUBMAIN) ;
+                          str +=CopyFlashToRam(Disp_MENU3_SUB4);
+        break;   
+    case MENU4 :   str = CopyFlashToRam(Disp_MENU4); 
       break;
     case MENU4_SUB1 :  
             str = "Fw:  " + FW_Version;  // fw version compile time 21- 14 = 7 
       break;  
     case MENU4_SUB2 :   
           str = "Dev Id: " + EE_Id_EString;  // fw version compile time
-      break;
-          
-    case MENU5 :   str = Disp_MENU5;
+      break;        
+    case MENU5 :   str = CopyFlashToRam(Disp_MENU5);
       break;
     case MENU5_SUB1 :str =UpddateDateTimeBuffer();
         if(DisplayFlash() == 0){     
@@ -452,17 +519,17 @@ void UpdateDisplayMenu(void){
           str[20] = ' '; 
         }   
       break;  
-    case MENU5_SUB7 :str = Disp_MENU5_SUB7;
+    case MENU5_SUB7 :str = CopyFlashToRam(Disp_MENU5_SUB7);
         break; 
 
 
-       case MENU6 :str = Disp_MENU6;
+       case MENU6 :str = CopyFlashToRam(Disp_MENU6);
         break;
-       case MENU6_SUB1 :str = Disp_MENU6_SUB1;
+       case MENU6_SUB1 :str = CopyFlashToRam(Disp_MENU6_SUB1);
         break;
-       case MENU6_SUB2 :str = Disp_MENU6_SUB2;
+       case MENU6_SUB2 :str = CopyFlashToRam(Disp_MENU6_SUB2);
         break;
-       case MENU6_SUB3 :str = Disp_MENU6_SUB3;
+       case MENU6_SUB3 :str = CopyFlashToRam(Disp_MENU6_SUB3);
         break; 
     default: 
     break;

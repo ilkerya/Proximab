@@ -122,11 +122,11 @@ void RTC_TimeClock(){
 
  void  RTC_Init(){
   if (! rtc.begin()) {
-    Serial.println("Couldn't find RTC");
+    Serial.println(F("Couldn't find RTC"));
     //while (1);
   }
   if (! rtc.initialized()) {
-    Serial.println("RTC is NOT running!");
+    Serial.println(F("RTC is NOT running!"));
     // following line sets the RTC to the date & time this sketch was compiled
      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   //   RTC_Test = 18;
@@ -135,7 +135,7 @@ void RTC_TimeClock(){
     // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
   }
   else{
-    Serial.println("RTC is Running!");
+    Serial.println(F("RTC is Running!"));
   } 
 
   if(Serial) { // if serial port connected adjust it from computer
@@ -172,10 +172,10 @@ void RTC_TimeClock(){
     
   
    if (newData == true) {
-        Serial.print("This just in .................................. ");
+        Serial.print(F("This just in .................................. "));
           Serial.println(receivedChars);
           newData = false;            
-          Serial.print("Timer:");  
+          Serial.print(F("Timer:"));  
           Serial.println(Timer);
           unsigned int Year=0; 
           unsigned int Month=0; 
@@ -235,11 +235,11 @@ void RTC_TimeClock(){
           Code += receivedChars[7];
     */      
      
-
-   
+/*
+   Serial.print("EECode:");
 
   #ifdef ARDUINO_MEGA // 8 bit AVR 
-          Serial.print("EECode:");
+          
 
           EEPROM.write(4, receivedChars[4]);// high byte
           Serial.print(receivedChars[4]);
@@ -252,8 +252,25 @@ void RTC_TimeClock(){
 
            EEPROM.write(7, receivedChars[7]);// high byte         
           Serial.println(receivedChars[7]);
-
   #endif
+
+      #ifdef ARDUINO_DUE
+          dueFlashStorage.write(4, receivedChars[4]);// high byte
+          Serial.print(receivedChars[4]);
+
+          dueFlashStorage.write(5, receivedChars[5]);// high byte          
+          Serial.print(receivedChars[5]);       
+
+           dueFlashStorage.write(6, receivedChars[6]);// high byte         
+          Serial.print(receivedChars[6]);
+
+           dueFlashStorage.write(7, receivedChars[7]);// high byte         
+          Serial.println(receivedChars[7]);
+    
+    #endif
+*/
+        NVRam_Write_SerNo(&receivedChars[4]);
+    
           
         //  Serial.println(Code);  
 /*
@@ -264,11 +281,7 @@ void RTC_TimeClock(){
        */   
           delay(10);
 
-          UpdateDeviceEE();
-
-          
-        //EE_SerNoWrite2_EE();
-                         
+          NVRam_Read_SerNo();                        
       }  
     }
  }

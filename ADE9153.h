@@ -57,7 +57,7 @@ void EnergyMeterIC_Operation(void){
          EnergyMeterIC.commscheck = ade9153A.SPI_Init(SPI_SPEED,ADE9153A_CS_PIN); //Initialize SPI
       //   commscheck = OFF; // TEST ERROR CASE
         if (!EnergyMeterIC.commscheck) {
-           Serial.println("ADE9153A Shield not detected. Plug in Shield and reset the Arduino");  
+           Serial.println(F("ADE9153A Shield not detected. Plug in Shield and reset the Arduino"));  
             EnergyMeterIC.Error = ON;
             EnergyMeterIC.Mode = POWERIC_SETUP1; 
         }
@@ -92,32 +92,32 @@ void EnergyMeterIC_Operation(void){
       if(Values.Frequency < 0) Values.Frequency = 0;
       if(Values.Voltage < 30) Values.Frequency = 0;
 
-      Serial.print("RMS Current:\t");Serial.print(Values.Current); Serial.println(" A         ");
+      Serial.print(F("RMS Current:\t"));Serial.print(Values.Current); Serial.println(F(" A         "));
       //Serial.print(rmsVals.CurrentRMSValue/1000); Serial.println(" A");
 
-      Serial.print("RMS Voltage:\t");       Serial.print(Values.Voltage);Serial.println(" V      ");
+      Serial.print(F("RMS Voltage:\t"));       Serial.print(Values.Voltage);Serial.println(F(" V      "));
       //Serial.print(rmsVals.VoltageRMSValue/1000); Serial.println(" V");
   
-      Serial.print("Active Power:\t");        
+      Serial.print(F("Active Power:\t"));        
       Serial.print(Values.ActivePower);
       Serial.println(" W");
   
-      Serial.print("Reactive Power:\t");        
+      Serial.print(F("Reactive Power:\t"));        
       Serial.print(powerVals.FundReactivePowerValue/1000);
       Serial.println(" VAR");
   
-      Serial.print("Apparent Power:\t");        
+      Serial.print(F("Apparent Power:\t"));        
       Serial.print(powerVals.ApparentPowerValue/1000);
       Serial.println(" VA");
    
-      Serial.print("Power Factor:\t");        
+      Serial.print(F("Power Factor:\t"));        
       Serial.println(Values.PowerFactor);
 
-      Serial.print("Frequency:\t");        
+      Serial.print(F("Frequency:\t"));        
       Serial.print(pqVals.FrequencyValue);
       Serial.println(" Hz");
   
-      Serial.print("Temperature:\t");        
+      Serial.print(F("Temperature:\t"));        
       Serial.print(tempVal.TemperatureVal);
       Serial.println(" degC");
             
@@ -130,7 +130,7 @@ void EnergyMeterIC_Operation(void){
     case POWERIC_CALB1: // Calibrating The Current Channel Started           
         ade9153A.StartAcal_AINormal();
         EnergyMeterIC.Timer = 10; //20sec
-        Serial.println("Autocalibrating Current Channel Started");
+        Serial.println(F("Autocalibrating Current Channel Started"));
         EnergyMeterIC.Mode++;         
     break;
     case POWERIC_CALB2: // Calibrating The Current Channel Continues
@@ -139,13 +139,13 @@ void EnergyMeterIC_Operation(void){
     break;  
     case POWERIC_CALB3: // Calibrating The Current Channel Ends
         ade9153A.StopAcal();      
-        Serial.println("Autocalibrating Current Channel Ended"); 
+        Serial.println(F("Autocalibrating Current Channel Ended")); 
         EnergyMeterIC.Mode++;
     break;
     case POWERIC_CALB4: // Calibrating The Voltage Channel Starts
         ade9153A.StartAcal_AV();
         EnergyMeterIC.Timer = 20; // 40 sec
-        Serial.println("Autocalibrating Voltage Channel Started");   
+        Serial.println(F("Autocalibrating Voltage Channel Started"));   
         EnergyMeterIC.Mode++;               
     break;
     case POWERIC_CALB5: // Calibrating The Voltage Channel continues
@@ -156,7 +156,7 @@ void EnergyMeterIC_Operation(void){
     case POWERIC_CALB6: // Calibrating The Voltage Channel Ends
          ade9153A.StopAcal();
          EnergyMeterIC.Timer = 1;
-         Serial.println("Autocalibrating Voltage Channel Ended"); 
+         Serial.println(F("Autocalibrating Voltage Channel Ended")); 
          EnergyMeterIC.Mode++;   
     break;
     case POWERIC_CALB7: // wait to Read the Calibration Registers
@@ -165,13 +165,13 @@ void EnergyMeterIC_Operation(void){
     break; 
     case POWERIC_CALB8: // Final for Calibration Read The registers and go to normal Reading
       ade9153A.ReadAcalRegs(&acalVals);
-      Serial.print("AICC: ");
+      Serial.print(F("AICC: "));
       Serial.println(acalVals.AICC);
-      Serial.print("AICERT: ");
+      Serial.print(F("AICERT: "));
       Serial.println(acalVals.AcalAICERTReg);
-      Serial.print("AVCC: ");
+      Serial.print(F("AVCC: "));
       Serial.println(acalVals.AVCC);
-      Serial.print("AVCERT: ");
+      Serial.print(F("AVCERT: "));
       Serial.println(acalVals.AcalAVCERTReg);
       
       Igain = (-(acalVals.AICC / 838.190) - 1) * 134217728;
@@ -179,7 +179,7 @@ void EnergyMeterIC_Operation(void){
       ade9153A.SPI_Write_32(REG_AIGAIN, Igain);
       ade9153A.SPI_Write_32(REG_AVGAIN, Vgain);
       
-      Serial.println("Autocalibration Complete");
+      Serial.println(F("Autocalibration Complete"));
     //  EnergyMeterIC.Timer = 1;
       EnergyMeterIC.Mode++;
     break; 

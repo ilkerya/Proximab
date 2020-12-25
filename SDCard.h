@@ -41,8 +41,6 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-//File logfile;
-
 #define SD_NOT_Present 0
 #define SD1_TYPE 1
 #define SD2_TYPE 2
@@ -62,7 +60,6 @@ void GetFileSize(){
     }      
     else  FileSize.Total = 0;
 }
- 
 void ReadConfigFile(){
    File Config =  SD.open(ConfigFile);
    Config_Str = "";
@@ -72,27 +69,25 @@ void ReadConfigFile(){
         Config_Str += (char)(Config.read());
       }
       Config.close();
-      Serial.print("File Content: ");Serial.println(Config_Str);  
+      Serial.print(F("File Content: "));Serial.println(Config_Str);  
       Parse_FileString();
    }
    else{
-      Serial.print("error opening"); Serial.println(ConfigFile);    
+      Serial.print(F("error opening")); Serial.println(ConfigFile);    
    }
 }
-
-
 void SD_CardLogTask(){ 
-    Serial.print("SDCard.Status "); Serial.println(SDCard.Status); 
-    Serial.print("SDCard.FatError "); Serial.println(SDCard.FatError);  
-    Serial.print("Display.SleepEnable "); Serial.println(Display.SleepEnable); 
-    Serial.print("Display.OLED_Timer "); Serial.println(Display.OLED_Timer); 
+ //   Serial.print(F("SDCard.Status ")); Serial.println(SDCard.Status); 
+//    Serial.print(F("SDCard.FatError ")); Serial.println(SDCard.FatError);  
+ //   Serial.print(F("Display.SleepEnable ")); Serial.println(Display.SleepEnable); 
+ //   Serial.print(F("Display.OLED_Timer ")); Serial.println(Display.OLED_Timer); 
   if(!SDCard.LogEnable){ // log on of  from menu
       SDCard.LogBootInit = 0; // In order to start with the header next time
       return;
   }
    if(SDCard.PauseTimer){  
       return;   // sd card reread trial timer 
-   } 
+   }   
     if(SDCard.LogBootInit == OFF){
       SDCard.LogBootInit = ON;
       // put header + data           
@@ -100,15 +95,14 @@ void SD_CardLogTask(){
          SD_Card_Init();            
          dataString ="";
          SD_Card_Header_Preparation();dataString += "\n";         
-          SD_Card_Data_Preparation();   
-              
+          SD_Card_Data_Preparation();               
     }
     else{ // put  only data          
         SD_Card_Init();                  
         dataString ="";  
         SD_Card_Data_Preparation(); 
         SDCard.PauseCount = OFF;                                 
-    }   
+    } 
     File dataFile = SD.open(LOG_FILE, FILE_WRITE);
     // if the file is available, write to it:
     if (dataFile) {
@@ -116,51 +110,47 @@ void SD_CardLogTask(){
       FileSize.Total = dataFile.size();  
       dataFile.close();
       // print to the serial port too:
-      Serial.print("Data2 csv File:    ");
+      Serial.print(F("Data2 csv File:    "));
       Serial.println(dataString);  
     }      
   else {  
-      Serial.print("error opening : "); 
+      Serial.print(F("error opening : ")); 
       Serial.println(LOG_FILE);    
       FileSize.Total = 0;
-    }
+    }     
 }
 void SD_FAT_Check(void){
     if (!volume.init(card)) {
-         Serial.println("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card");      
+         Serial.println(F("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card"));      
          SDCard.Status = SD_NOT_Present; 
          SDCard.FatError = ON;       
     }
     else {        
-      Serial.print("Clusters:          ");
+      Serial.print(F("Clusters:          "));
       Serial.println(volume.clusterCount());
-      Serial.print("Blocks x Cluster:  ");
+      Serial.print(F("Blocks x Cluster:  "));
       Serial.println(volume.blocksPerCluster());
-      Serial.print("Total Blocks:      ");
+      Serial.print(F("Total Blocks:      "));
       Serial.println(volume.blocksPerCluster() * volume.clusterCount());
       Serial.println();
-
       // print the type and size of the first FAT-type volume
       uint32_t volumesize;
-      Serial.print("Volume type is:    FAT");
+      Serial.print(F("Volume type is:    FAT"));
       Serial.println(volume.fatType(), DEC);
-
       volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
       volumesize *= volume.clusterCount();       // we'll have a lot of clusters
       volumesize /= 2;                           // SD card blocks are always 512 bytes (2 blocks are 1KB)
-    Serial.print("Volume size (Kb):  ");
+    Serial.print(F("Volume size (Kb):  "));
     Serial.println(volumesize);
-    Serial.print("Volume size (Mb):  ");
+    Serial.print(F("Volume size (Mb):  "));
     volumesize /= 1024;
     Serial.println(volumesize);
-    Serial.print("Volume size (Gb):  ");
+    Serial.print(F("Volume size (Gb):  "));
     SDCard.Volume = (float)volumesize / 1024.0;
     Serial.println(SDCard.Volume);    
     //Serial.println((float)volumesize / 1024.0);
-
-    Serial.println("\nFiles found on the card (name, date and size in bytes): ");
+    Serial.println(F("\nFiles found on the card (name, date and size in bytes): "));
     root.openRoot(volume);
-
     // list all files in the card with date and size
     root.ls(LS_R | LS_DATE | LS_SIZE);
     }  
@@ -169,37 +159,36 @@ void SD_FAT_Check(void){
 void SD_Card_Info(void){
   SDCard.Status = SD_NOT_Present;
   SDCard.FatError = OFF;
-  Serial.print("\nInitializing SD card...");
-
+  Serial.print(F("\nInitializing SD card..."));
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
   if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {
-    Serial.println("initialization failed. Things to check:");
-    Serial.println("* is a card inserted?");
-    Serial.println("* is your wiring correct?");
-    Serial.println("* did you change the chipSelect pin to match your shield or module?");
+    Serial.println(F("initialization failed:"));
+   // Serial.println(F("* is a card inserted?"));
+   // Serial.println(F("* is your wiring correct?"));
+   // Serial.println(F("* did you change the chipSelect pin to match your shield or module?"));
   } 
   else {
     //Serial.println("Wiring is correct and a card is present."); 
     // print the type of card
     Serial.println();
-    Serial.print("Card type:         ");
+    Serial.print(F("Card type:         "));
     switch (card.type()) {
       case SD_CARD_TYPE_SD1:
-        Serial.println("SD1");
+        Serial.println(F("SD1"));
         SDCard.Status = SD1_TYPE;
       break;
       case SD_CARD_TYPE_SD2:
-        Serial.println("SD2");
+        Serial.println(F("SD2"));
         SDCard.Status = SD2_TYPE;
       break;
       case SD_CARD_TYPE_SDHC:
-        Serial.println("SDHC");
+        Serial.println(F("SDHC"));
         SDCard.Status = SDHC_TYPE;
       break;
       default:
         SDCard.Status = UNKNOWN_TYPE;
-        Serial.println("Unknown");
+        Serial.println(F("Unknown"));
     }
     SD_FAT_Check();
   }
@@ -208,7 +197,7 @@ void SD_Card_Info(void){
 void SD_Card_Init(){
   // see if the card is present and can be initialized:
   if (!SD.begin(SD_CS_PINOUT)) {
-    Serial.println("Card failed, or not present");
+    Serial.println(F("Card failed, or not present"));
       SDCard.Status = SD_NOT_Present;
       switch(SDCard.PauseCount){
           case 0: SDCard.PauseTimer = 10;SDCard.PauseCount++;

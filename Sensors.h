@@ -57,52 +57,47 @@ SdsDustSensor sds(rxPin, txPin);
 //https://github.com/mysensors/MySensorsArduinoExamples/blob/master/examples/LightLuxSensor/LightLuxSensor.ino
 
 void Sensors_PeripInit(void){
-  #ifdef SDCARD_EXISTS
-    SD_Card_Info();
-    SD_Card_Init();
-    GetFileSize();
-    ReadConfigFile();
-  #endif  
+
   RTC_Init();
 
   #ifdef TEMP_HUM_1_SENSOR_EXISTS
     SensorInit_Si072(SI072_FIRST_SENSOR); // TEMP HUM
   #else
-    Serial.print("No Sensor On Channel!!");Serial.print("SI072_FIRST_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_FIRST_SENSOR");
   #endif 
 
   #ifdef TEMP_HUM_2_SENSOR_EXISTS
     SensorInit_Si072(SI072_SECOND_SENSOR); // TEMP HUM
   #else
-    Serial.print("No Sensor On Channel!!");Serial.print("SI072_SECOND_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_SECOND_SENSOR");
   #endif 
 
   #ifdef TEMP_HUM_3_SENSOR_EXISTS
     SensorInit_Si072(SI072_THIRD_SENSOR); // TEMP HUM
   #else
-    Serial.print("No Sensor On Channel!!");Serial.print("SI072_THIRD_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_THIRD_SENSOR");
   #endif 
       
   #ifdef BAR_PRES_SENSOR_EXISTS 
      SensorAlt_Init();     //BAROMETRIC PRESSURE
   #else
-    Serial.println("No Bar.Pressure_Sensor!!");
+    Serial.println(F("No Bar.Pressure_Sensor!!"));
   #endif 
       
   #ifdef LIGHT_SENSOR_EXISTS  
     SensorLight_Init();  // LIGHT 
   #else
-    Serial.println("No Light_Sensor!!");
+    Serial.println(F("No Light_Sensor!!"));
   #endif
       
   #ifdef ACCL_GYRO_SENSOR_EXISTS 
     SensorACccel_GyroInit(); // ACCEL GYRO  
    #else
-    Serial.println("No Accel Gyro_Sensor!!");
+    Serial.println(F("No Accel Gyro_Sensor!!"));
   #endif  
   #ifdef PM25_DUST_SENSOR_EXISTS 
     Serial1.begin(9600);
-    Serial.print("PMSensor Serial Port Init ");
+    Serial.print(F("PMSensor Serial Port Init "));
    #endif 
 }
 void tcaselect(uint8_t i) {
@@ -152,10 +147,10 @@ void PrintPMValues(byte PMError, byte PMCount){
       }
       */
      Serial.println();  
-      Serial.print("PMCount ");Serial.println(PMCount);
-      Serial.print("PM25 ");Serial.println(Values.PM25);
-      Serial.print("PM10 ");Serial.println(Values.PM10);
-      Serial.print("PMError ");Serial.println(PMError);         
+      Serial.print(F("PMCount "));Serial.println(PMCount);
+      Serial.print(F("PM25 "));Serial.println(Values.PM25);
+      Serial.print(F("PM10 "));Serial.println(Values.PM10);
+      Serial.print(F("PMError "));Serial.println(PMError);         
 }
  void SerialPortPMSensor() {
     byte Rx;
@@ -207,24 +202,24 @@ void PrintPMValues(byte PMError, byte PMCount){
 void SensorACccel_GyroInit(){
     tcaselect(CHANNEL_ACCEL_GYRO);
     if (!IMU.begin()) {
-      Serial.println("Failed to initialize IMU!");
+      Serial.println(F("Failed to initialize IMU!"));
      // while (1);
     }
     else       
-      Serial.println("Acceloreometer & Gyro Initialized");
-    Serial.print("Accelerometer sample rate = ");
+      Serial.println(F("Acceloreometer & Gyro Initialized"));
+    Serial.print(F("Accelerometer sample rate = "));
     Serial.print(IMU.accelerationSampleRate());
-    Serial.println(" Hz");
+    Serial.println(F(" Hz"));
     Serial.println();
-    Serial.println("Acceleration in G's");
-    Serial.println("X\tY\tZ");
+    Serial.println(F("Acceleration in G's"));
+    Serial.println(F("X\tY\tZ"));
 
-    Serial.print("Gyroscope sample rate = ");
+    Serial.print(F("Gyroscope sample rate = "));
     Serial.print(IMU.gyroscopeSampleRate());
-    Serial.println(" Hz");
+    Serial.println(F(" Hz"));
     Serial.println();
-    Serial.println("Gyroscope in degrees/second");
-    Serial.println("X\tY\tZ");
+    Serial.println(F("Gyroscope in degrees/second"));
+    Serial.println(F("X\tY\tZ"));
   }
 void SensorAcccel_GyroRead(){
    tcaselect(CHANNEL_ACCEL_GYRO);
@@ -239,7 +234,7 @@ void SensorAcccel_GyroRead(){
       Serial.print('\t');
       Serial.println(Accelometer.z);
   }
-    else Serial.println("Accelometer Reading Problem");
+    else Serial.println(F("Accelometer Reading Problem"));
   
   if (IMU.gyroscopeAvailable()) {
       IMU.readGyroscope(Gyro.x, Gyro.y, Gyro.z);
@@ -250,28 +245,28 @@ void SensorAcccel_GyroRead(){
       Serial.print('\t');
       Serial.println(Gyro.z);
   }
-  else Serial.println("Gyroscope Reading Problem");
+  else Serial.println(F("Gyroscope Reading Problem"));
 }
 #endif  
 #ifdef TEMP_HUM_1_SENSOR_EXISTS  
 void SensorInit_Si072(byte Channel){
   // Temperature & Humidity Sensor
   if(Channel != NO_IC2_MULTIPLEXER)tcaselect(Channel);
-  Serial.print("Sensor_Channel:");Serial.print(Channel);
-  Serial.println("  Si7021 test!");
+  Serial.print(F("Sensor_Channel:"));Serial.print(Channel);
+  Serial.println(F("  Si7021 test!"));
   
   if (!THsensor.begin()) {
-    Serial.print("No Si7021 sensor On Channel: ");Serial.println(Channel);
+    Serial.print(F("No Si7021 sensor On Channel: "));Serial.println(Channel);
   //  delay(250);
   //  while (true)      
   }else{
-    Serial.print(" Si7021 sensor found!");
+    Serial.print(F(" Si7021 sensor found!"));
  //   Serial.print(" Rev(");
   //  Serial.print(THsensor.getRevision());
     THsensor.getRevision();
 //    Serial.print(")");
  //    Serial.print(" Serial "); //Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
-     Serial.print("Sensor_Channel:");Serial.println(Channel);
+     Serial.print(F("Sensor_Channel:"));Serial.println(Channel);
   //   Serial.print(" String : ");
     switch(Channel){
       case NO_IC2_MULTIPLEXER:break; 
@@ -303,7 +298,7 @@ void GerSerialNo(void){
       Serial.print(" Rev(");
     Serial.print(THsensor.getRevision());
     Serial.print(")");
-    Serial.print(" Serial #"); Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
+    Serial.print(F(" Serial #")); Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
 }
 
 
@@ -350,7 +345,7 @@ void SensorRead_Si072(unsigned char Channel){
    //     Serial.println(Values.TemperatureSi072_Ch3, 2);
        break; 
        default:
-        Serial.print("error");
+        Serial.print(F("error"));
        break;
     } 
     
@@ -359,13 +354,13 @@ void SensorRead_Si072(unsigned char Channel){
 #ifdef BAR_PRES_SENSOR_EXISTS 
 void SensorAlt_Init() {
   tcaselect(CHANNEL_BAROMETRIC);
-  Serial.println("BMP388 test");
+  Serial.println((F"BMP388 test"));
   if (!bmp.begin()) {
-    Serial.println("Could not find a valid BMP3 sensor, check wiring!");
+    Serial.println(F("Could not find a valid BMP3 sensor, check wiring!"));
     //while (1);
   }
   else {
-      Serial.println(" BMP388 sensor Valid!");
+      Serial.println(F(" BMP388 sensor Valid!"));
       // Set up oversampling and filter initialization
       bmp.setTemperatureOversampling(BMP3_OVERSAMPLING_8X);
       bmp.setPressureOversampling(BMP3_OVERSAMPLING_4X);
@@ -377,15 +372,15 @@ void SensorAlt_Init() {
 void SensorAlt_Read(){
     tcaselect(CHANNEL_BAROMETRIC);
     if (! bmp.performReading()) {
-    Serial.println("Failed to perform reading :(");
+    Serial.println(F("Failed to perform reading :("));
    // return;
   }
   else{
-    Serial.print("Temperature = ");
+    Serial.print(F("Temperature = "));
     Values.TemperatureBMP = bmp.temperature;
     Serial.print(Values.TemperatureBMP);
     Serial.print(" *C");
-    Serial.print("  Pressure = ");
+    Serial.print(F("  Pressure = "));
     Values.Pressure = bmp.pressure / 100.0;
     Serial.print(Values.Pressure);
     Serial.println(" hPa");
@@ -541,5 +536,106 @@ void WinSensor(){
     //delay(750);
 }
 #endif
+
+#ifdef VOLTAGE_MEASURE_EXISTS
+void CurrentVolt_Read() {
+  // https://www.onlinegdb.com/edit/Hkmlxi_08
+
+ 
+#ifdef ARDUINO_MEGA
+  ADCSRA |= (1 << ADEN); // enable adc
+#endif
+  delay(1);
+  Current_Mains_Raw = analogRead(4);
+  //  Current_Mains_Raw_Trim = Current_Mains_Raw;
+  //  delay(1);
+  //  239vac -> 4.94vdc
+  // 242  vac  5vdc  242/1024 = 0.2363281
+
+  //  238vac -> 3.10vdc  // 33K/8K2
+  // 383  vac  5vdc  383/1024 = 0.374874
+
+  CurrentArray[CurrentIndexer] = Current_Mains_Raw;
+  CurrentIndexer++;
+  if (CurrentIndexer >= 10) {
+    CurrentIndexer = 0;
+    unsigned int Cumulative = 0;
+    for (unsigned int i = 0; i < 10; i++) {
+      Cumulative += CurrentArray[i];
+    }
+#define Volt_Coeff 4.8828125 // rms 5v
+#define PeakToRms  1.4142135
+    // #define Rms_Coeff  6.90533966  // Volt_Coeff *  PeakToRms
+#define Rms_Coeff  4.8828125  // Volt_Coeff *  PeakToRms       
+    /*
+        Current_MainsAverage = ((Cumulative%10) * Volt_Coeff )/10000;
+       // then the decimal part
+       Current_MainsAverage += ((float)(Cumulative/10) * Volt_Coeff )/1000;
+    */
+    Current_Mains_Rms = ((Cumulative % 10) * Rms_Coeff ) / 10000;
+    // then the decimal part
+    Current_Mains_Rms += ((float)(Cumulative / 10) * Rms_Coeff ) / 1000;
+
+    //   Current_Mains_Rms = Current_MainsAverage * 1.414213;
+    //   Current_Mains_Av = Current_Mains_Rms / 1,11;
+    //  Current_MainsAverage = ((float)Cumulative * 5.044)/1000; // 2K2 // 4.7K // 2K2
+    //   Current_MainsAverage = ((float)Cumulative * 9.766)/1000;  //direct
+  }
+
+  //  Current_Mains = ((float)Current_Mains_Raw * Rms_Coeff)/1000;
+  // Current_Mains *= PeakToRms;
+
+  //   Current_Mains = ((float)Current_Mains_Raw * 5.044)/1000;
+  //   Current_Mains = ((float)Current_Mains_Raw * 9.766)/1000; // direct no voltage divider
+  Mains_Volt_Raw =  analogRead(1);
+  Mains_Volt =   (unsigned int)((float)Mains_Volt_Raw * 0.374874);
+
+#ifdef ARDUINO_MEGA
+  ADCSRA &= ~ (1 << ADEN);            // turn off ADC
+#endif
+
+}
+#endif 
+
+void SDS_DustSensor(void) {
+    #ifdef PM25_DUST_SENSOR_EXISTS
+      SerialPortPMSensor();
+/*
+ // PmResult pm = sds.queryPm();// queay mode
+  
+     PmResult pm = sds.readPm();// active mode
+  if (pm.isOk()) {
+    Values.PM25 = pm.pm25;
+    Values.PM10 = pm.pm10;
+    if (Values.PM25 >= 250.0)Values.PM25 = 250.0;
+    if (Values.PM10 >= 250.0)Values.PM25 = 250.0;
+
+    // if you want to just print the measured values, you can use toString() method as well
+      Serial.println(pm.toString());
+    
+  } else {
+    Serial.print("Pm2.5 Problem: ");
+ //   Serial.println(pm.statusToString());
+  }
+   */ 
+#endif
+
+}
+
+void WindSensorRead() {
+  /*
+     #ifdef ARDUINO_MEGA
+    ADCSRA |= (1 << ADEN); // enable adc
+         #endif
+    delay(1);
+    //  Values.WindRaw = analogRead(2);delay(1);
+    Values.WindMPH = analogRead(OUT_PINOUT);delay(1);
+    Values.WindTemp = analogRead(TMP_PINOUT);
+    WindSpeed_Calculation();
+    #ifdef ARDUINO_MEGA
+    ADCSRA &= ~ (1 << ADEN);            // turn off ADC
+    #endif
+  */
+}
 
     

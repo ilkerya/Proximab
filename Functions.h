@@ -10,6 +10,7 @@ ISR(TIMER1_OVF_vect){        // interrupt service routine that wraps a user defi
 void TC3_Handler(){
         TC_GetStatus(TC1, 0);
     #endif
+        digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);      
        
     IntTimer250++;
     IntTimer500 ++;
@@ -33,7 +34,7 @@ void TC3_Handler(){
       IntTimer1 = 0;
       Loop.Task_1Sec = ON;
       digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
-   
+ 
       if(Display.SleepEnable == ON){
         if(Display.OLED_Timer) Display.OLED_Timer--;   // sleep active
       }
@@ -65,12 +66,7 @@ void TC3_Handler(){
        //  digitalWrite(LED_RED, digitalRead(LED_RED) ^ 1);
      //   if(!digitalRead(KEY_LEFT) || !digitalRead(KEY_MID) || !digitalRead(KEY_RIGHT))
 }
-   
-
-
 // https://www.onlinegdb.com/edit/Hkmlxi_08
-
-
 
 void Log_Data_Write_SD(){
     #ifdef SDCARD_EXISTS
@@ -79,13 +75,16 @@ void Log_Data_Write_SD(){
 }
 
 void Common_Loop(){
+
   
   if (Loop.Task_250msec) {
     Loop.Task_250msec = OFF;
+
+    
 	  #ifdef OLEDDISPLAY_EXISTS
     // One time after wake up form sleep
     if (Display.OLED_Init == ON) {
-      Display_ReInit(20);
+      Display_ReInit_Start(20);
       Display.OLED_Init = OFF;
     }
     if (Display.OLED_Timer) {
@@ -95,6 +94,7 @@ void Common_Loop(){
 
       Display_SwitchOff();
     }
+    Display_ReInit_End();
 #endif
 #ifdef LEM_CURRENT_EXISTS
     AnalogValRead();
@@ -116,21 +116,14 @@ void Common_Loop(){
 #ifdef WIND_SENSOR_EXISTS
     WindSensorRead();
 #endif
-
 #ifdef TEMP_HUM_1_SENSOR_EXISTS
- 
-    SensorRead_Si072(SI072_FIRST_SENSOR); // MULTIPLEXER NO
-    
+    SensorRead_Si072(SI072_FIRST_SENSOR); // MULTIPLEXER NO  
 #endif
-#ifdef TEMP_HUM_2_SENSOR_EXISTS
-   
-    SensorRead_Si072(SI072_SECOND_SENSOR); // MULTIPLEXER NO
-    
+#ifdef TEMP_HUM_2_SENSOR_EXISTS  
+    SensorRead_Si072(SI072_SECOND_SENSOR); // MULTIPLEXER NO  
 #endif
-#ifdef TEMP_HUM_3_SENSOR_EXISTS
-  
+#ifdef TEMP_HUM_3_SENSOR_EXISTS 
     SensorRead_Si072(SI072_THIRD_SENSOR); // MULTIPLEXER NO
- 
 #endif
 
 #ifdef ENERGYMETER_EXISTS
@@ -168,8 +161,7 @@ void Common_Loop(){
       if(Values.Current < 1 && digitalRead(RELAY_OUT_2) ) digitalWrite(RELAY_OUT_2,LOW);     
 */
            //     digitalWrite(RELAY_OUT_2, digitalRead(RELAY_OUT_2) ^ 1);  
-  }
-  
+  }  
   if (Loop.Task_2Sec) {
     Loop.Task_2Sec = OFF;
     if (SampleTime == TASK_2SEC) Log_Data_Write_SD();
@@ -180,11 +172,9 @@ void Common_Loop(){
       if(SDCard.PauseTimer){
          SDCard.PauseTimer--;    
       }
-
         #ifdef ENERGYMETER_EXISTS   
              EnergyMeterIC_Operation();
         #endif
-
   }
   if (Loop.Task_5Sec) {
     Loop.Task_5Sec = OFF;
@@ -194,12 +184,8 @@ void Common_Loop(){
           SDS_DustSensor();
       #endif
 
-
-
-
     Relay_loop();
  
-
     Display.ValueTimer++;
     if (Display.ValueTimer > 4)Display.ValueTimer = 0;
 
@@ -220,113 +206,7 @@ void Common_Loop(){
 
 
   }
-  
 }
-
-#ifdef VOLTAGE_MEASURE_EXISTS
-
-void CurrentVolt_Read() {
-  // https://www.onlinegdb.com/edit/Hkmlxi_08
-
- 
-#ifdef ARDUINO_MEGA
-  ADCSRA |= (1 << ADEN); // enable adc
-#endif
-  delay(1);
-  Current_Mains_Raw = analogRead(4);
-  //  Current_Mains_Raw_Trim = Current_Mains_Raw;
-  //  delay(1);
-  //  239vac -> 4.94vdc
-  // 242  vac  5vdc  242/1024 = 0.2363281
-
-  //  238vac -> 3.10vdc  // 33K/8K2
-  // 383  vac  5vdc  383/1024 = 0.374874
-
-  CurrentArray[CurrentIndexer] = Current_Mains_Raw;
-  CurrentIndexer++;
-  if (CurrentIndexer >= 10) {
-    CurrentIndexer = 0;
-    unsigned int Cumulative = 0;
-    for (unsigned int i = 0; i < 10; i++) {
-      Cumulative += CurrentArray[i];
-    }
-#define Volt_Coeff 4.8828125 // rms 5v
-#define PeakToRms  1.4142135
-    // #define Rms_Coeff  6.90533966  // Volt_Coeff *  PeakToRms
-#define Rms_Coeff  4.8828125  // Volt_Coeff *  PeakToRms       
-    /*
-        Current_MainsAverage = ((Cumulative%10) * Volt_Coeff )/10000;
-       // then the decimal part
-       Current_MainsAverage += ((float)(Cumulative/10) * Volt_Coeff )/1000;
-    */
-    Current_Mains_Rms = ((Cumulative % 10) * Rms_Coeff ) / 10000;
-    // then the decimal part
-    Current_Mains_Rms += ((float)(Cumulative / 10) * Rms_Coeff ) / 1000;
-
-    //   Current_Mains_Rms = Current_MainsAverage * 1.414213;
-    //   Current_Mains_Av = Current_Mains_Rms / 1,11;
-    //  Current_MainsAverage = ((float)Cumulative * 5.044)/1000; // 2K2 // 4.7K // 2K2
-    //   Current_MainsAverage = ((float)Cumulative * 9.766)/1000;  //direct
-  }
-
-  //  Current_Mains = ((float)Current_Mains_Raw * Rms_Coeff)/1000;
-  // Current_Mains *= PeakToRms;
-
-  //   Current_Mains = ((float)Current_Mains_Raw * 5.044)/1000;
-  //   Current_Mains = ((float)Current_Mains_Raw * 9.766)/1000; // direct no voltage divider
-  Mains_Volt_Raw =  analogRead(1);
-  Mains_Volt =   (unsigned int)((float)Mains_Volt_Raw * 0.374874);
-
-#ifdef ARDUINO_MEGA
-  ADCSRA &= ~ (1 << ADEN);            // turn off ADC
-#endif
-
-}
-#endif 
-
-void SDS_DustSensor(void) {
-    #ifdef PM25_DUST_SENSOR_EXISTS
-      SerialPortPMSensor();
-/*
- // PmResult pm = sds.queryPm();// queay mode
-  
-     PmResult pm = sds.readPm();// active mode
-  if (pm.isOk()) {
-    Values.PM25 = pm.pm25;
-    Values.PM10 = pm.pm10;
-    if (Values.PM25 >= 250.0)Values.PM25 = 250.0;
-    if (Values.PM10 >= 250.0)Values.PM25 = 250.0;
-
-    // if you want to just print the measured values, you can use toString() method as well
-      Serial.println(pm.toString());
-    
-  } else {
-    Serial.print("Pm2.5 Problem: ");
- //   Serial.println(pm.statusToString());
-  }
-   */ 
-#endif
-
-}
-
-void WindSensorRead() {
-  /*
-     #ifdef ARDUINO_MEGA
-    ADCSRA |= (1 << ADEN); // enable adc
-         #endif
-    delay(1);
-    //  Values.WindRaw = analogRead(2);delay(1);
-    Values.WindMPH = analogRead(OUT_PINOUT);delay(1);
-    Values.WindTemp = analogRead(TMP_PINOUT);
-    WindSpeed_Calculation();
-    #ifdef ARDUINO_MEGA
-    ADCSRA &= ~ (1 << ADEN);            // turn off ADC
-    #endif
-  */
-}
-
-
-
 
 void IO_Settings() {
 
@@ -352,8 +232,9 @@ void IO_Settings() {
   pinMode(A1, INPUT_PULLUP);  //  
   */
   
-  pinMode(I2C_TIMEOUT, INPUT);  // 
- 
+//  pinMode(I2C_TIMEOUT, INPUT);  // 
+  pinMode(DEBUG_OUT, OUTPUT);  // 
+
   pinMode(ADE9153A_RESET_PIN, OUTPUT);  // ADE9153A_RESET_PIN
   digitalWrite(ADE9153A_RESET_PIN, HIGH);
   pinMode(ADE9153A_CS_PIN, OUTPUT);  // ADE9153A_SPI_SS_PIN
@@ -372,9 +253,10 @@ void IO_Settings() {
 
   digitalWrite(RELAY_OUT_2, LOW);
   pinMode(RELAY_OUT_2, OUTPUT);  // SS Pin high to avoid miscommunication
-
-  pinMode(SD_CS_PINOUT, OUTPUT);
-  digitalWrite(SD_CS_PINOUT, HIGH);
+  
+//  pinMode(SD_CS_PINOUT, OUTPUT);
+ // digitalWrite(SD_CS_PINOUT, HIGH);
+  
   pinMode(LED_GREEN, OUTPUT);           // set pin to input
   digitalWrite(LED_GREEN, LOW);       // turn on pullup resistors
   pinMode(LED_RED, OUTPUT);           // set pin to input
@@ -398,25 +280,19 @@ void MicroInit() {
   DisplaySetPowerIO();
   #endif
   
-  
-
-
-
-
   ResetCasePrint();
   //  SDCard.LogStatus = 0;      // default start with log off;
-#ifdef ARDUINO_MEGA // 8 bit AVR
-  EEDisplaySleepRead();
-  EEReadLog();
-  #endif
+
+  NVRam_Read_Standbye();
+  NVRam_Read_SampleTime();
   
   SDCard.LogBootInit = 0;  // put the header of the csv file
 
-  Serial.print("SDCard.LogEnable: ");
+  Serial.print(F("SDCard.LogEnable: "));
   Serial.print(SDCard.LogEnable);
-  Serial.print("    SampleTime: ");
+  Serial.print(F("    SampleTime: "));
   Serial.println(SampleTime);
-  Serial.print("    DisplaySleep: ");
+  Serial.print(F("    DisplaySleep: "));
   Serial.println(Display.SleepEnable);
 
 #ifdef ARDUINO_MEGA
@@ -439,8 +315,8 @@ void MicroInit() {
   //Compiled: Jul 21 2020 15:55:39 7.3.0
   //  ShowSerialCode();
 
-  UpdateDeviceEE();
-  Serial.print("EE_Id_EString: ") ;
+  NVRam_Read_SerNo();
+  Serial.print(F("EE_Id_EString: ")) ;
   Serial.print(EE_Id_EString.charAt(0));
   Serial.print(EE_Id_EString.charAt(1));
   Serial.print(EE_Id_EString.charAt(2));
@@ -454,16 +330,25 @@ void MicroInit() {
   LOG_FILE.setCharAt(6, EE_Id_EString.charAt(2));
   LOG_FILE.setCharAt(7, EE_Id_EString.charAt(3));
 
-  Serial.print("LOG_FILE: ") ;
+  Serial.print(F("LOG_FILE: ")) ;
   Serial.print(LOG_FILE);
   Serial.println() ;
 
-#ifndef DEBUG_SIMULATOR_MODE
+//#ifndef DEBUG_SIMULATOR_MODE
+
+
+   #ifdef SDCARD_EXISTS
+    SD_Card_Info();
+   SD_Card_Init();
+    GetFileSize();
+   ReadConfigFile(); // 2020.12.25
+  #endif  
+  
   Sensors_PeripInit();
   DateTimeBuf.Init = ON;
   #ifdef OLEDDISPLAY_EXISTS
   DisplayInit();   
-  #endif
+ // #endif
 #endif
 
 
@@ -480,7 +365,14 @@ void MicroInit() {
 #endif
 
 #ifdef ARDUINO_DUE
-    startTimer(TC1, 0, TC3_IRQn, 64); //TC1 channel 0, the IRQ for that channel and the desired frequency
+    startTimer(TC1, 0, TC3_IRQn, 50); //TC1 channel 0, the IRQ for that channel and the desired frequency 64
+        // 20 -> 50ms   1000/20 = 50
+        // 32 -> 32ms       
+        // 50 -> 20ms
+        // 51 -> 19.62 m2
+        // 52 -> 19.22 ms      
+        // 54 -> 18.63
+        // 64 -> 15.68 ms
 #endif
 
 }
@@ -602,10 +494,10 @@ void Relay_loop() {
       digitalWrite(RELAY_OUT_1,LOW);
   }
    // put your main code here, to run repeatedly:
-  Serial.print("RL1Min: ");Serial.println(RL1Min);
+  Serial.print(F("RL1Min: "));Serial.println(RL1Min);
   Serial.print(RLlVal+":  ");Serial.print(CompValue); 
-  Serial.print("     RELAY1: ");Serial.println(RELAY_OUT_1); 
-  Serial.print("RL1Max: ");Serial.println(RL1Max); 
+  Serial.print(F("     RELAY1: "));Serial.println(RELAY_OUT_1); 
+  Serial.print(F("RL1Max: "));Serial.println(RL1Max); 
   CompValue = 0;
   if( RL2Val != "Nan"){
     CompValue = GetValue(Relay2_Val);
@@ -617,8 +509,8 @@ void Relay_loop() {
   else{
        digitalWrite(RELAY_OUT_2,LOW);  
   }
-  Serial.print("RL2Min: ");Serial.println(RL2Min);
+  Serial.print(F("RL2Min: "));Serial.println(RL2Min);
   Serial.print(RL2Val+":  ");Serial.print(CompValue);
-  Serial.print("      RELAY2: ");Serial.println(RELAY_OUT_2);
-  Serial.print("RL2Max: ");Serial.println(RL2Max);  
+  Serial.print(F("      RELAY2: "));Serial.println(RELAY_OUT_2);
+  Serial.print(F("RL2Max: "));Serial.println(RL2Max);  
 }
