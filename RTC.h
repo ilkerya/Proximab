@@ -2,14 +2,9 @@
 //https://github.com/adafruit/Data-Logger-shield
 // https://forum.arduino.cc/index.php?topic=523216.0
 
-// DS1307
-
 RTC_PCF8523 rtc; // I2c Addres 0x68
 //char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 //static const char char daysOfTheWeek[7][12] = {"Sunday", "Monday", "Tuesdy", "Wedns.", "Thurs.", "Friday", "Satur."};
-
-
-
 
 void RTC_TimeClock(){
 
@@ -18,25 +13,7 @@ void RTC_TimeClock(){
     rtc.adjust(DateTime(DateTimeBuf.Year, DateTimeBuf.Month, DateTimeBuf.Day, DateTimeBuf.Hour, DateTimeBuf.Minute, DateTimeBuf.Second));
     return;
   }
-
     DateTime now = rtc.now();
-/*    
-    Serial.print(now.year(), DEC);
-    Serial.print('/');
-    Serial.print(now.month(), DEC);
-    Serial.print('/');
-    Serial.print(now.day(), DEC);
-    Serial.print(" (");
-    Serial.print(daysOfTheWeek[now.dayOfTheWeek()]);
-    Serial.print(") ");
-    Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
-    
-*/
 
     Str_DispTime = "";
     Str_DispTime += String(now.year(),DEC);   
@@ -56,9 +33,6 @@ void RTC_TimeClock(){
     if(now.second()<10)Str_DispTime += '0';   
      Str_DispTime += String(now.second(),DEC);
      Str_DispTime +=  ','; 
-
-
-
 
     Str_Date = "";
     Str_Date += String(now.year(),DEC);   
@@ -81,7 +55,6 @@ void RTC_TimeClock(){
      Str_Time += String(now.second(),DEC);
    //  Str_Time +=  ''; 
 
-
     if(DateTimeBuf.Init == ON){
       DateTimeBuf.Init = OFF;
       DateTimeBuf.Year = now.year();
@@ -91,36 +64,9 @@ void RTC_TimeClock(){
       DateTimeBuf.Minute = now.minute();
       DateTimeBuf.Second = now.second();
     }
-    
+}
 
-/*
-    Serial.print(" since midnight 1/1/1970 = ");
-    Serial.print(now.unixtime());
-    Serial.print("s = ");
-    Serial.print(now.unixtime() / 86400L);
-    Serial.println("d");
-
-    // calculate a date which is 7 days, 12 hours and 30 seconds into the future
-    DateTime future (now + TimeSpan(7,12,30,6));
-
-    Serial.print(" now + 7d + 12h + 30m + 6s: ");
-    Serial.print(future.year(), DEC);
-    Serial.print('/');
-    Serial.print(future.month(), DEC);
-    Serial.print('/');
-    Serial.print(future.day(), DEC);
-    Serial.print(' ');
-    Serial.print(future.hour(), DEC);
-    Serial.print(':');
-    Serial.print(future.minute(), DEC);
-    Serial.print(':');
-    Serial.print(future.second(), DEC);
-    Serial.println();
-    */
-
-    }
-
- void  RTC_Init(){
+void  RTC_Init(){
   if (! rtc.begin()) {
     Serial.println(F("Couldn't find RTC"));
     //while (1);
@@ -146,31 +92,29 @@ void RTC_TimeClock(){
  }
 
  void SerialPortRx() {
-    static byte ndx = 0;
+    static uint8_t ndx = 0;
     char endMarker = '\n';
-    byte Timer = 0;
+    uint8_t Timer = 0;
     char rc;
         // if (Serial.available() > 0) {
      while (Serial.available() > 0 && newData == false) {
         rc = Serial.read();
         Timer++; // 2020,05,27,21,14,23 19 characters + \0' // in total 21
 
-      if (rc != endMarker) {
+        if (rc != endMarker) {
             receivedChars[ndx] = rc;
             ndx++;
             if (ndx >= numChars) {
-          ndx = numChars - 1;
+              ndx = numChars - 1;
+          }
         }
-        }
-      else {
-        receivedChars[ndx] = '\0'; // terminate the string
-        ndx = 0;
-        newData = true;
-    }
-  }
-  //////////////////// end of while loop
-    
-  
+        else {
+          receivedChars[ndx] = '\0'; // terminate the string
+          ndx = 0;
+          newData = true;
+      }
+   }
+  //////////////////// end of while loop 
    if (newData == true) {
         Serial.print(F("This just in .................................. "));
           Serial.println(receivedChars);
@@ -186,133 +130,31 @@ void RTC_TimeClock(){
                
         if((Timer == 21) && (receivedChars[4] == ',' )&&(receivedChars[7] == ',') && 
            (receivedChars[10] == ',')&&  (receivedChars[13] == ',' )&& (receivedChars[16] == ',' )){
-          for(int i = 0; i<32; i ++ ){ // ascii 2 byte
+            for(int i = 0; i<32; i ++ ){ // ascii 2 byte
                 receivedChars[i] -= 48;          
-          }
-           Year  = 1000 * receivedChars[0];
-           Year  += 100 * receivedChars[1]; 
-           Year  += 10 * receivedChars[2];  
-           Year  += receivedChars[3];  
-           Month  += 10 * receivedChars[5];      
-           Month  += receivedChars[6];  
-           Day  += 10 * receivedChars[8];       
-           Day  += receivedChars[9];            
-           Hour  += 10 * receivedChars[11];  
-           Hour  += receivedChars[12]; 
-           Minute  += 10 * receivedChars[14];
-           Minute  += receivedChars[15]; 
-           Second  += 10 * receivedChars[17];    
-           Second  += receivedChars[18];
-           /*       
-              Serial.print("Year:");  
-              Serial.println(Year);
-               Serial.print("Month:");  
-              Serial.println(Month);
-              Serial.print("Day:");  
-              Serial.println(Day);
-
-              Serial.print("Hour:");  
-              Serial.println(Hour);
-              Serial.print("Minute:");  
-              Serial.println(Minute);
-              Serial.print("Second:");  
-              Serial.println(Second); 
-              */          
-              rtc.adjust(DateTime(Year, Month, Day, Hour, Minute, Second));
-        //      Serial.println("Date & Time Adjusted");
-               MainMenu = MENU5_SUB7;
-               DispExtTimeout();
-          }
-        if((Timer == 10) && (receivedChars[0] == 'E' )&&(receivedChars[1] == 'E') && (receivedChars[2] == 'E')&&  (receivedChars[3] == 'E' )){
-          // EE Serial Code Write
-          //receivedChars[4] == 'E' ;
-/*
-          unsigned int Code=0;
-       //   Code <<= 12;
-          Code += (receivedChars[4]<<12);          
-          Code += (receivedChars[5]<<8);
-          Code += (receivedChars[6]<<4);
-          Code += receivedChars[7];
-    */      
-     
-/*
-   Serial.print("EECode:");
-
-  #ifdef ARDUINO_MEGA // 8 bit AVR 
-          
-
-          EEPROM.write(4, receivedChars[4]);// high byte
-          Serial.print(receivedChars[4]);
-
-          EEPROM.write(5, receivedChars[5]);// high byte          
-          Serial.print(receivedChars[5]);       
-
-           EEPROM.write(6, receivedChars[6]);// high byte         
-          Serial.print(receivedChars[6]);
-
-           EEPROM.write(7, receivedChars[7]);// high byte         
-          Serial.println(receivedChars[7]);
-  #endif
-
-      #ifdef ARDUINO_DUE
-          dueFlashStorage.write(4, receivedChars[4]);// high byte
-          Serial.print(receivedChars[4]);
-
-          dueFlashStorage.write(5, receivedChars[5]);// high byte          
-          Serial.print(receivedChars[5]);       
-
-           dueFlashStorage.write(6, receivedChars[6]);// high byte         
-          Serial.print(receivedChars[6]);
-
-           dueFlashStorage.write(7, receivedChars[7]);// high byte         
-          Serial.println(receivedChars[7]);
-    
-    #endif
-*/
-        NVRam_Write_SerNo(&receivedChars[4]);
-    
-          
-        //  Serial.println(Code);  
-/*
-          EEPROM.write(4, receivedChars[4]);// high byte
-          EEPROM.write(5, receivedChars[5]);// low byte
-          EEPROM.write(6, receivedChars[6]);// high byte
-          EEPROM.write(7, receivedChars[7]);// low byte
-       */   
+            }
+            Year  = 1000 * receivedChars[0];
+            Year  += 100 * receivedChars[1]; 
+            Year  += 10 * receivedChars[2];  
+            Year  += receivedChars[3];  
+            Month  += 10 * receivedChars[5];      
+            Month  += receivedChars[6];  
+            Day  += 10 * receivedChars[8];       
+            Day  += receivedChars[9];            
+            Hour  += 10 * receivedChars[11];  
+            Hour  += receivedChars[12]; 
+            Minute  += 10 * receivedChars[14];
+            Minute  += receivedChars[15]; 
+            Second  += 10 * receivedChars[17];    
+            Second  += receivedChars[18];       
+            rtc.adjust(DateTime(Year, Month, Day, Hour, Minute, Second));
+            MainMenu = MENU5_SUB7;
+            DispExtTimeout();
+        }
+        if((Timer == 10) && (receivedChars[0] == 'E' )&&(receivedChars[1] == 'E') && (receivedChars[2] == 'E')&&  (receivedChars[3] == 'E' )){       
+          NVRam_Write_SerNo(&receivedChars[4]); 
           delay(10);
-
           NVRam_Read_SerNo();                        
-      }  
+        }  
     }
- }
-
-
-/*
- void RTC_SerialAdj() {
-  if (Serial.available() > 0) {
-    incomingStr = Serial.readString();  
-     Serial.print("I received: ");
-    Serial.print(incomingStr); 
-    Serial.println("");
-
-  // Send ADjTime from serial port to Adjust date & time from computer
-    if (incomingStr[0] == 'A')
-      if (incomingStr[1] == 'd')
-        if (incomingStr[2] == 'j')
-          
-            if (incomingStr[3] == 'T')
-              if (incomingStr[4] == 'i')
-                if (incomingStr[5] == 'm')
-                    if (incomingStr[6] == 'e')
-                    
-                    {
-                      rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); 
-                      Serial.println("AdjTime RTC routine Started");
-                      
-                    }
-    Serial.flush(); 
-  }
 }
-
-*/
- 

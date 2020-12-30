@@ -45,7 +45,7 @@ void EnergyMeterIC_Operation(void){
       digitalWrite(ADE9153A_RESET_PIN, HIGH);  
       digitalWrite(ADE9153A_RESET_PIN, LOW);
       delay(10);
-      Serial.println("Reset Done");
+      Serial.println(F("Reset Done"));
       digitalWrite(ADE9153A_RESET_PIN, HIGH);;
       EnergyMeterIC.Mode = POWERIC_SETUP2;//
     break;
@@ -100,26 +100,26 @@ void EnergyMeterIC_Operation(void){
   
       Serial.print(F("Active Power:\t"));        
       Serial.print(Values.ActivePower);
-      Serial.println(" W");
+      Serial.println(F(" W"));
   
       Serial.print(F("Reactive Power:\t"));        
       Serial.print(powerVals.FundReactivePowerValue/1000);
-      Serial.println(" VAR");
+      Serial.println(F(" VAR"));
   
       Serial.print(F("Apparent Power:\t"));        
       Serial.print(powerVals.ApparentPowerValue/1000);
-      Serial.println(" VA");
+      Serial.println(F(" VA"));
    
       Serial.print(F("Power Factor:\t"));        
       Serial.println(Values.PowerFactor);
 
       Serial.print(F("Frequency:\t"));        
       Serial.print(pqVals.FrequencyValue);
-      Serial.println(" Hz");
+      Serial.println(F(" Hz"));
   
       Serial.print(F("Temperature:\t"));        
       Serial.print(tempVal.TemperatureVal);
-      Serial.println(" degC");
+      Serial.println(F(" degC"));
             
       if (digitalRead(ADE9153A_CALB_BUTTON) == LOW){
          if(EnergyMeterIC.Mode == POWERIC_NORMAL) 

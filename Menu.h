@@ -42,14 +42,14 @@ void KeySensonsorRoll(){
       Display.SensorRollTimer = 30; // 2sec x 30 = 60 sec
       UpdateInfoQue();      
 }
-void DispEnable(bool Enable, byte Timer) {
+void DispEnable(bool Enable, uint8_t Timer) {
   if (Enable == ON) {
     Display.SleepEnable = ON; //go sleep
     Display.OLED_Timer = Timer;
   }
   else   Display.SleepEnable = OFF;    // no sleep
 }
-void DispEnable_4SD_Prblm(bool Enable, byte Timer) {
+void DispEnable_4SD_Prblm(bool Enable, uint8_t Timer) {
   if (Enable == ON) {
     //Display.SleepEnable = ON; //go sleep
     Display.OLED_Timer = Timer;
@@ -91,11 +91,11 @@ void NVRam_Read_SerNo() {
     c = (char)dueFlashStorage.read(NVRAM_ID4);
     EE_Id_EString += String(c);
    #endif
-    Serial.print(" Device Id: ");
+    Serial.print(F(" Device Id: "));
     Serial.println(EE_Id_EString);
 }
 void NVRam_Write_SerNo(char* p) {
-  Serial.print("EECode:");
+  Serial.print(F("EECode:"));
   #ifdef ARDUINO_MEGA // 8 bit AVR
           EEPROM.write(NVRAM_ID1, p[0]);// high byte
           EEPROM.write(NVRAM_ID2, p[1]);// high byte                 
@@ -134,12 +134,12 @@ void NVRam_Write_Standbye(bool Mode) {
 
 void NVRam_Read_Standbye(void) {
     #ifdef ARDUINO_MEGA
-        byte Read = EEPROM.read(SLEEP_LOG);// OFF
+        uint8_t Read = EEPROM.read(SLEEP_LOG);// OFF
         if(Read == OFF)DispEnable(OFF,0);
         if(Read == ON)DispEnable(ON,100);
     #endif
      #ifdef ARDUINO_DUE
-      byte Read =dueFlashStorage.read(SLEEP_LOG);
+      uint8_t Read =dueFlashStorage.read(SLEEP_LOG);
       if(Read == OFF)DispEnable(OFF,0);
       if(Read == ON)DispEnable(ON,100); // default
 
@@ -155,10 +155,10 @@ void NVRam_Write_SampleTime(byte Sample) {
 }
 void NVRam_Read_SampleTime(void) {
    #ifdef ARDUINO_MEGA // 8 bit AVR
-    byte Mode = EEPROM.read(ADDRES_LOG);// OFF
+    uint8_t Mode = EEPROM.read(ADDRES_LOG);// OFF
     #endif
    #ifdef ARDUINO_DUE // 32 bit ARM
-       byte Mode = dueFlashStorage.read(ADDRES_LOG);
+       uint8_t Mode = dueFlashStorage.read(ADDRES_LOG);
     #endif
     if((Mode== TASK_500MSEC)||(Mode== TASK_1SEC)||(Mode== TASK_2SEC)||(Mode== TASK_5SEC)||(Mode== TASK_10SEC)||(Mode== TASK_20SEC)||(Mode== TASK_60SEC)){
       SDCard.LogEnable = ON; 
@@ -193,36 +193,36 @@ void NVRam_Read_SampleTime(void) {
 void ResetCasePrint() {
 #ifdef ARDUINO_MEGA // 8 bit AVR 
     
-  byte RESET_CASE = MCUSR;
-  Serial.print("MCUSR: ");
+  uint8_t RESET_CASE = MCUSR;
+  Serial.print(F("MCUSR: "));
   Serial.println(RESET_CASE);
   if (MCUSR & WDRF) {
-    Serial.print("Rebooting from a Watchdog Reset");
+    Serial.print(F("Rebooting from a Watchdog Reset"));
   }
   else if (MCUSR & BORF) {
-    Serial.print("Rebooting from a Brown-out Reset");
+    Serial.print(F("Rebooting from a Brown-out Reset"));
   }
   else if (MCUSR & EXTRF) {
-    Serial.print("Rebooting from an External Reset");
+    Serial.print(F("Rebooting from an External Reset"));
   }
   else if (MCUSR & PORF) {
-    Serial.print("Rebooting from a Power On Reset");
+    Serial.print(F("Rebooting from a Power On Reset"));
   }
   if (MCUSR & (1 << WDRF)) {
     // a watchdog reset occurred
-    Serial.print("Rebooting from a Watchdog Reset");
+    Serial.print(F("Rebooting from a Watchdog Reset"));
   }
   if (MCUSR & (1 << BORF)) {
-    Serial.print("Rebooting from a Brown-out Reset");
+    Serial.print(F("Rebooting from a Brown-out Reset"));
   }
   //  a brownout reset occurred
   if (MCUSR & (1 << EXTRF)) {
     //  an external reset occurred
-    Serial.print("Rebooting from an External Reset");
+    Serial.print(F("Rebooting from an External Reset"));
   }
   if (MCUSR & (1 << PORF)) {
     //  a power on reset occurred
-    Serial.print("Rebooting from a Power On Reset");
+    Serial.print(F("Rebooting from a Power On Reset"));
   }
   //Clear register
   MCUSR = 0x00;
@@ -285,7 +285,6 @@ void Key_Functions(void) {
     EscMenuKey();
     KeyTimeOutStart();
     return;
-
   }
 }
 void DownMenuKey(void) {

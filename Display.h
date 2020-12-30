@@ -87,7 +87,7 @@ void DisplaySetPowerIO(){
     pinMode(OLED_POWER, OUTPUT);
     digitalWrite(OLED_POWER, HIGH);       // turn on pullup resistors    
 }
-void Display_ReInit_Start(byte Timer){
+void Display_ReInit_Start(uint8_t Timer){
     DisplaySetPowerIO();
     Display.OLED_Timer = Timer; // 10 sec
     Display.ReInit_Enable = ON;
@@ -149,20 +149,7 @@ void DisplayInit(void){
     delay(1300); // Pause for 2 seconds 
   #endif
 
-   
-    
-    Serial.println("Display Initing");
-    Serial.println("Display Initing");
-    Serial.println("Display Initing");
-    Serial.println("Display Initing");
-    Serial.println("Display Initing");
-      Serial.println(); 
-
-       Serial.println();
-       Serial.println();
-       Serial.println();
-       Serial.println();
-       Serial.println();
+  
 
  //   #ifdef ARDUINO_MEGA  
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //  SSD1306_EXTERNALVCC
@@ -170,11 +157,7 @@ void DisplayInit(void){
   
      // for(;;); // Don’t proceed, loop forever
       }
-      
       else {
-        Serial.println("Display ok");
-        Serial.println("Display ok");
-        Serial.println("Display ok");
 
     }
     //#endif
@@ -186,7 +169,7 @@ void DisplayInit(void){
  //    display.setTextColor(0);  //1     Black on white
     display.setCursor(0, 0);
     display.println();
-    display.println("DATALOG"); 
+    display.println(F("DATALOG")); 
       display.display();
 
      // Adafruit_SSD1306::dim  ( 1 ) //1 == lower brightness // 0 == full brightness
@@ -213,7 +196,7 @@ void testdrawchar(void) {
 }
 
 
-void UpdateDispSpChar(byte Index,byte Line){
+void UpdateDispSpChar(uint8_t Index,uint8_t Line){
    switch(Line){
       case 4:display.setCursor(36, 24);  //x,y                            
       break; 
@@ -472,7 +455,7 @@ void UpdateDisplayMenu(void){
     case MENU4 :   str = CopyFlashToRam(Disp_MENU4); 
       break;
     case MENU4_SUB1 :  
-            str = "Fw:  " + FW_Version;  // fw version compile time 21- 14 = 7 
+             str = "Fw: " + FW_Ver_String;  // fw version compile time 21- 14 = 7            
       break;  
     case MENU4_SUB2 :   
           str = "Dev Id: " + EE_Id_EString;  // fw version compile time

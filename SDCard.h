@@ -52,6 +52,41 @@ void SD_Card_Init();
 void SD_Card_Data_Preparation();
 void SD_Card_Header_Preparation();
 
+ 
+void Print_ARM_RegsFormat(uint32_t Reg){
+      uint32_t  temp = Reg & 0xFF000000;
+      Serial.print(temp >> 24,HEX);Serial.print('.'); 
+      temp = Reg & 0x00FF0000;
+      Serial.print(temp >> 16,HEX);Serial.print('.');       
+      temp = Reg & 0x0000FF00;
+      Serial.print(temp>> 8,HEX);Serial.print('.');
+       temp = Reg & 0x000000FF;
+      Serial.print(temp,HEX);Serial.print(':');
+      Serial.println(Reg,BIN);
+}
+
+void Print_ARM_SPI_Regs(void){
+      //Serial.print(F("Total Blocks:      "));
+       #ifdef ARDUINO_DUE //
+      uint32_t temp; uint16_t i;uint32_t Reg;
+       
+      
+      //Serial.println(SPI0->SPI_CSR[0],BIN);      
+      Serial.print(F("SPI_CSR0  "));     
+      Serial.println(SPI0->SPI_CSR[0] ,HEX);
+
+      Serial.print(F("SPI_CSR1  "));
+      Serial.println(SPI0->SPI_CSR[1],HEX);
+      Serial.print(F("SPI_CSR2  "));
+      Serial.println(SPI0->SPI_CSR[2],HEX);
+      
+      Serial.print(F("SPI_CSR3  "));
+      Serial.println(SPI0->SPI_CSR[3],HEX);    
+      //Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
+     #endif
+}
+
+    
 void GetFileSize(){
     File dataFile = SD.open(LOG_FILE, FILE_WRITE);
     if (dataFile) {
@@ -120,6 +155,8 @@ void SD_CardLogTask(){
     }     
 }
 void SD_FAT_Check(void){
+  Serial.println(F("FatCheck Start"));
+  Print_ARM_SPI_Regs();
     if (!volume.init(card)) {
          Serial.println(F("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card"));      
          SDCard.Status = SD_NOT_Present; 
@@ -153,16 +190,22 @@ void SD_FAT_Check(void){
     root.openRoot(volume);
     // list all files in the card with date and size
     root.ls(LS_R | LS_DATE | LS_SIZE);
-    }  
+    } 
+  Serial.println(F("FatCheck End"));
+  Print_ARM_SPI_Regs(); 
 }
 
 void SD_Card_Info(void){
   SDCard.Status = SD_NOT_Present;
   SDCard.FatError = OFF;
+  
+  Print_ARM_SPI_Regs();
+  
   Serial.print(F("\nInitializing SD card..."));
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
-  if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {
+ // if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
+  if (!card.init(SPI_QUARTER_SPEED, SD_CS_PINOUT)) {  //   // Sd2Card.h
     Serial.println(F("initialization failed:"));
    // Serial.println(F("* is a card inserted?"));
    // Serial.println(F("* is your wiring correct?"));
@@ -192,9 +235,13 @@ void SD_Card_Info(void){
     }
     SD_FAT_Check();
   }
+    Serial.println(F("Card Info End"));
+      Print_ARM_SPI_Regs();
 }
 
 void SD_Card_Init(){
+      Serial.println(F("SD_Card_Init Start"));
+      Print_ARM_SPI_Regs();
   // see if the card is present and can be initialized:
   if (!SD.begin(SD_CS_PINOUT)) {
     Serial.println(F("Card failed, or not present"));
@@ -242,6 +289,8 @@ void SD_Card_Init(){
       SDCard.LogBootInit = OFF;     
   }
   //SDCard.Status = SD_NOT_Present;
+        Serial.println(F("SD_Card_Init Start"));
+      Print_ARM_SPI_Regs();
 }
 void SD_Card_Header_Preparation(){
       char* p =(char*)&SD_CARD_ERR[0];  
@@ -261,7 +310,7 @@ void SD_Card_Header_Preparation(){
   
           //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
         //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";  
-        dataString += "FirmVers " + FW_Version +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + String(p) + ',' + "Volume: " +String(SDCard.Volume) + " GB" + ',' +
+        dataString += "FirmVers " + FW_Ver_String +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + String(p) + ',' + "Volume: " +String(SDCard.Volume) + " GB" + ',' +
         
        "Found Sensors Id's:"  +  ','  + String(SensorId.No1, HEX) +  ',' +  String(SensorId.No2, HEX) + ','  + String(SensorId.No3, HEX) + ',' ;
        

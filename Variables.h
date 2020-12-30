@@ -1,3 +1,5 @@
+// https://en.cppreference.com/w/cpp/types/integer
+
 static const unsigned char PROGMEM logo16_glcd_bmp[] =
 { B00000000, B11000000,
   B00000001, B11000000,
@@ -72,13 +74,13 @@ struct PQRegs pqVals;
 struct AcalRegs acalVals;
 struct Temperature tempVal;
 
-long Igain;
-long Vgain;
+uint32_t Igain;
+uint32_t Vgain;
       
 struct
 {
-  byte Mode = 0;
-  byte Timer = 0;
+  uint8_t Mode = 0;
+  uint8_t Timer = 0;
   bool Error = 0;
   bool commscheck;  
 }EnergyMeterIC;
@@ -96,9 +98,9 @@ String Display_Line6 ="Display....Line6.....";
 String Display_Line7 ="Display...Line7......";
 String Display_Line8 ="Display..Line8.......";
 
-String FW_Version ="" ;
-byte MainMenu =0;
-byte DispRollIndex[4] = {1,0,0,0};
+String FW_Ver_String ="";
+uint8_t MainMenu =0;
+uint8_t DispRollIndex[4] = {1,0,0,0};
 
 //2 1 0 0
 //3 2 1 0
@@ -116,24 +118,17 @@ String RLlVal, RL2Val;
 String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
 #define ELEMENTS 12
  const String KeyWords[12]   = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
-/*
-bool I2CSet = 0;
-byte I2CTimer = 0;
-bool I2Error = 0;
-#define ACK_TIMEOUT 12
-*/
-unsigned int IntTimer250 = 0;
-unsigned int  IntTimer500 = 0;
-unsigned int  IntTimer1 = 0;
-unsigned int  IntTimer2 = 0;
-unsigned int  IntTimer5 = 0;
-unsigned int  IntTimer10 = 0;
-unsigned int  IntTimer20 = 0;
-unsigned int  IntTimer60 = 0;
-
 
 struct
 {
+  uint16_t IntTimer250 = 0;
+  uint16_t  IntTimer500 = 0;
+  uint16_t  IntTimer1 = 0;
+  uint16_t  IntTimer2 = 0;
+  uint16_t  IntTimer5 = 0;
+  uint16_t  IntTimer10 = 0;
+  uint16_t  IntTimer20 = 0;
+  uint16_t  IntTimer60 = 0;  
   bool Task_250msec =0;
   bool Task_500msec =0;
   bool Task_1Sec =0;
@@ -153,7 +148,7 @@ struct
 #define TASK_20SEC 32
 #define TASK_60SEC 64  
 
-byte SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5sec 16 // 10sec 32 // 20sec 64  
+uint8_t SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5sec 16 // 10sec 32 // 20sec 64  
 
 // the logging file
 File logfile;
@@ -167,39 +162,39 @@ struct
   bool LogEnable;  // log on or off  eski LogStatus
   bool LogBootInit; // log on  init case  eski LogStatusInit
   bool Pause;  // At SD Problem Try Again
-  unsigned int PauseTimer;
-  unsigned int PauseCount;  
-  byte Status; 
+  uint16_t PauseTimer;
+  uint16_t PauseCount;  
+  uint8_t Status; 
   bool FatError;
   float Volume;
 }SDCard;
 
 struct
 {
-  unsigned long Total;  // log on or off
-  unsigned char Byte; // log on  init case
-  unsigned char Kbyte;
-  unsigned char Mbyte;
+  uint32_t Total;  // log on or off
+  uint8_t Byte; // log on  init case
+  uint8_t Kbyte;
+  uint8_t Mbyte;
 }FileSize;
 
 struct
 {
-  unsigned int Logger=0;
-  byte BoardTimeOut = 0;
+  uint16_t Logger=0;
+  uint8_t BoardTimeOut = 0;
   bool BoardTimeOutEnb = 0;  
   bool Left_Rel = 0;
   bool Mid_Rel = 0;
   bool Right_Rel = 0;
   bool Released = 0;
-  byte TimeOut = 0;
+  uint8_t TimeOut = 0;
   bool TimeOutEnb = 0;
 }Key;
 
 struct
 {
-  long No1;
-  long No2;
-  long No3;    
+  uint32_t No1;
+  uint32_t No2;
+  uint32_t No3;    
 }SensorId;
 
 //String Sensor_Info_SDS= "";
@@ -208,12 +203,12 @@ struct
 //static const char SD_Type[4][14] = {"SD1 Card " , "SD2 Card " , "SDHC Card " , "Card Problem    !"};
 
 
-const byte numChars = 32;
+const uint8_t numChars = 32;
 char receivedChars[numChars]; // an array to store the received data
 boolean newData = false;
 
 #define BUF_LENGTH 60
-byte PMBuffer[BUF_LENGTH];
+uint8_t PMBuffer[BUF_LENGTH];
 
 struct
 {
@@ -234,9 +229,9 @@ struct
   float PM25=0; //
   float PM10=0; //   
   float WindRaw;   // 35        
-  unsigned int WindMPH;    // 31
-  unsigned int WindTemp;   // 35
-  unsigned int Luminosity;  
+  uint16_t WindMPH;    // 31
+  uint16_t WindTemp;   // 35
+  uint16_t Luminosity;  
 }Values;
 #ifdef   ACCL_GYRO_SENSOR_EXISTS 
 struct
@@ -270,16 +265,16 @@ String Str_Date="";
 String Str_DispTime="";
 struct
 {
-  unsigned int Year=0; 
-  unsigned int Month=0; 
-  unsigned int Day=0;                       
-  unsigned int Hour=0; 
-  unsigned int Minute=0; 
-  unsigned int Second=0;
+  uint16_t Year=0; 
+  uint16_t Month=0; 
+  uint16_t Day=0;                       
+  uint16_t Hour=0; 
+  uint16_t Minute=0; 
+  uint16_t Second=0;
   bool Init=0; 
   bool RTC_Update=0;   
-  unsigned int Disp_UpdateTimer=0; 
-  unsigned int Disp_Flash=0;     
+  uint16_t Disp_UpdateTimer=0; 
+  uint16_t Disp_Flash=0;     
 }DateTimeBuf;
 
 
@@ -287,17 +282,17 @@ struct
 {
   bool RTC_Update=0; 
   bool OLED_Init = 0 ; 
-  unsigned char MenuTimeout=0; 
-  unsigned char Flash=0; 
-  int OLED_Timer = 0; 
+  uint8_t MenuTimeout=0; 
+  uint8_t Flash=0; 
+  uint16_t OLED_Timer = 0; 
   bool InitDelay = 0;
   bool SleepEnable = 0;
-  byte ValueTimer = 0; 
+  uint8_t ValueTimer = 0; 
   bool ExpSens1 =0;
   bool ExpSens2 =0;
   bool ExpSens3 =0;
-  byte SensorRollTimer = 0;
-  byte ReInit_Timer = 2;
+  uint8_t SensorRollTimer = 0;
+  uint8_t ReInit_Timer = 2;
   bool ReInit_Enable = OFF;
 }Display;
 

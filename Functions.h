@@ -12,26 +12,26 @@ void TC3_Handler(){
     #endif
         digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);      
        
-    IntTimer250++;
-    IntTimer500 ++;
-    IntTimer1 ++;
-    IntTimer2 ++;
-    IntTimer5 ++;
-    IntTimer10 ++;
-    IntTimer20 ++;   
-    IntTimer60 ++;   
+    Loop.IntTimer250++;
+    Loop.IntTimer500 ++;
+    Loop.IntTimer1 ++;
+    Loop.IntTimer2 ++;
+    Loop.IntTimer5 ++;
+    Loop.IntTimer10 ++;
+    Loop.IntTimer20 ++;   
+    Loop.IntTimer60 ++;   
 
-    if(IntTimer250 >= 13){
-      IntTimer250 = 0;
+    if(Loop.IntTimer250 >= 13){
+      Loop.IntTimer250 = 0;
       Loop.Task_250msec = ON;
      // I2_ACK_Reset();
     }
-    if(IntTimer500 >= 25){ // 500 msec
-      IntTimer500 = 0;
+    if(Loop.IntTimer500 >= 25){ // 500 msec
+      Loop.IntTimer500 = 0;
       Loop.Task_500msec = ON;  
     }
-    if(IntTimer1 >= 50){  // 1 sec
-      IntTimer1 = 0;
+    if(Loop.IntTimer1 >= 50){  // 1 sec
+      Loop.IntTimer1 = 0;
       Loop.Task_1Sec = ON;
       digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
  
@@ -41,25 +41,25 @@ void TC3_Handler(){
       else Display.OLED_Timer = 32768; // no sleep    
       if(Display.InitDelay == OFF)Display.InitDelay = ON;           
     }
-    if(IntTimer2 >= 100){ // 2 sec
-      IntTimer2 = 0;
+    if(Loop.IntTimer2 >= 100){ // 2 sec
+      Loop.IntTimer2 = 0;
       Loop.Task_2Sec = ON;
       //PrintDisplayBuffer();
     }
-    if(IntTimer5 >= 250){  // 5 sec
-      IntTimer5 = 0;
+    if(Loop.IntTimer5 >= 250){  // 5 sec
+      Loop.IntTimer5 = 0;
       Loop.Task_5Sec = ON;
     }
-    if(IntTimer10 >= 500){  // 10 sec
-      IntTimer10 = 0;
+    if(Loop.IntTimer10 >= 500){  // 10 sec
+      Loop.IntTimer10 = 0;
       Loop.Task_10Sec = ON;
     }
-    if(IntTimer20 >= 1000){  // 20 sec
-      IntTimer20 = 0;
+    if(Loop.IntTimer20 >= 1000){  // 20 sec
+      Loop.IntTimer20 = 0;
       Loop.Task_20Sec = ON;
     }
-    if(IntTimer60 >= 3000){  // 60 sec
-      IntTimer60 = 0;
+    if(Loop.IntTimer60 >= 3000){  // 60 sec
+      Loop.IntTimer60 = 0;
       Loop.Task_60Sec = ON;
     }        
     Key_Functions();
@@ -75,12 +75,8 @@ void Log_Data_Write_SD(){
 }
 
 void Common_Loop(){
-
-  
   if (Loop.Task_250msec) {
     Loop.Task_250msec = OFF;
-
-    
 	  #ifdef OLEDDISPLAY_EXISTS
     // One time after wake up form sleep
     if (Display.OLED_Init == ON) {
@@ -95,10 +91,10 @@ void Common_Loop(){
       Display_SwitchOff();
     }
     Display_ReInit_End();
-#endif
-#ifdef LEM_CURRENT_EXISTS
-    AnalogValRead();
-#endif
+    #endif
+    #ifdef LEM_CURRENT_EXISTS
+        AnalogValRead();
+    #endif
 
   }
   if (Loop.Task_500msec) {
@@ -165,7 +161,6 @@ void Common_Loop(){
   if (Loop.Task_2Sec) {
     Loop.Task_2Sec = OFF;
     if (SampleTime == TASK_2SEC) Log_Data_Write_SD();
-
       UpdateDispRoll();
       PrintDisplayBuffer();
 
@@ -179,7 +174,6 @@ void Common_Loop(){
   if (Loop.Task_5Sec) {
     Loop.Task_5Sec = OFF;
     if (SampleTime == TASK_5SEC) Log_Data_Write_SD();
-
       #ifdef PM25_DUST_SENSOR_EXISTS  
           SDS_DustSensor();
       #endif
@@ -188,23 +182,18 @@ void Common_Loop(){
  
     Display.ValueTimer++;
     if (Display.ValueTimer > 4)Display.ValueTimer = 0;
-
   }
   if (Loop.Task_10Sec) {
     Loop.Task_10Sec = OFF;
     if (SampleTime == TASK_10SEC) Log_Data_Write_SD();
- 
   }
   if (Loop.Task_20Sec) {
     Loop.Task_20Sec = OFF;
     if (SampleTime == TASK_20SEC) Log_Data_Write_SD();
-
   }
   if (Loop.Task_60Sec) {
     Loop.Task_60Sec = OFF;
     if (SampleTime == TASK_60SEC) Log_Data_Write_SD();
-
-
   }
 }
 
@@ -305,13 +294,11 @@ void MicroInit() {
   ADCSRA &= ~ (1 << ADEN);            // turn off ADC to save power ,, enable when needed and turn off again
 #endif
       // Aug.03.2020 19:03:33
-  FW_Version = String (__DATE__)  +  String ( __TIME__ ), // 11 1 8 // 20
-  //  FW_Version.remove(17,3); // Remove from from index=7 through the end of the string
-  FW_Version.remove(7, 4); // Remove 2 characters starting at index=7
-  FW_Version.setCharAt(3 , '.');
- // FW_Version.setCharAt(6 , '.');
+  FW_Ver_String = String (__DATE__)  +  String ( __TIME__ ), // 11 1 8 // 20
+  FW_Ver_String.remove(7, 4); // Remove 2 characters starting at index=7
+  FW_Ver_String.setCharAt(3 , '.');
 
-  //Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__);
+  Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__);
   //Compiled: Jul 21 2020 15:55:39 7.3.0
   //  ShowSerialCode();
 
@@ -464,7 +451,7 @@ void Parse_FileString(){
 #define Relay1_Val 8
 #define Relay2_Val 4
 
-float GetValue(byte Relay){
+float GetValue(uint8_t Relay){
   String Val = "";
   if(Relay == Relay1_Val) Val =  RLlVal;
   else if(Relay == Relay2_Val) Val =  RL2Val;

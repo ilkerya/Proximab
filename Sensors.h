@@ -20,7 +20,7 @@
    
 // Differenatial I2C communication
 // https://www.sparkfun.com/products/14685      //I2c multiplexer
-// https://www.sparkfun.com/products/14589      // I2c sigle ended 2 diffrential 
+// https://www.sparkfun.com/products/14589      // I2c single ended 2 differential 
 // https://cdn.sparkfun.com/assets/c/4/7/0/9/SparkFun_Differential_I2C_Breakout_PCA9615_Qwiic.pdf
 
 // https://cdn.sparkfun.com/assets/parts/1/2/2/7/5/Laser_Dust_Sensor_Control_Protocol_V1.3.pdf
@@ -63,19 +63,19 @@ void Sensors_PeripInit(void){
   #ifdef TEMP_HUM_1_SENSOR_EXISTS
     SensorInit_Si072(SI072_FIRST_SENSOR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_FIRST_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_FIRST_SENSOR"));
   #endif 
 
   #ifdef TEMP_HUM_2_SENSOR_EXISTS
     SensorInit_Si072(SI072_SECOND_SENSOR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_SECOND_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_SECOND_SENSOR"));
   #endif 
 
   #ifdef TEMP_HUM_3_SENSOR_EXISTS
     SensorInit_Si072(SI072_THIRD_SENSOR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print("SI072_THIRD_SENSOR");
+    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_THIRD_SENSOR"));
   #endif 
       
   #ifdef BAR_PRES_SENSOR_EXISTS 
@@ -134,7 +134,7 @@ void I2_ACK_Reset(void){
 }
 */
 #ifdef PM25_DUST_SENSOR_EXISTS  
-void PrintPMValues(byte PMError, byte PMCount){
+void PrintPMValues(uint8_t PMError, uint8_t PMCount){
   /*
       Serial.println();
       for(int i=0; i<BUF_LENGTH;i++){  
@@ -153,12 +153,12 @@ void PrintPMValues(byte PMError, byte PMCount){
       Serial.print(F("PMError "));Serial.println(PMError);         
 }
  void SerialPortPMSensor() {
-    byte Rx;
-    byte RxCount=0;
-    unsigned int PM25Val=0;
-    unsigned int PM10Val=0;
-     byte PMError = 0; 
-     byte PMCount = 0; 
+    uint8_t Rx;
+    uint8_t RxCount=0;
+    uint16_t PM25Val=0;
+    uint16_t PM10Val=0;
+     uint8_t PMError = 0; 
+     uint8_t PMCount = 0; 
      unsigned char checksum = 32; 
     if (Serial1.available()) {
         for(int i=0; i<BUF_LENGTH;i++){   
@@ -249,7 +249,7 @@ void SensorAcccel_GyroRead(){
 }
 #endif  
 #ifdef TEMP_HUM_1_SENSOR_EXISTS  
-void SensorInit_Si072(byte Channel){
+void SensorInit_Si072(uint8_t Channel){
   // Temperature & Humidity Sensor
   if(Channel != NO_IC2_MULTIPLEXER)tcaselect(Channel);
   Serial.print(F("Sensor_Channel:"));Serial.print(Channel);
@@ -289,13 +289,13 @@ void SensorInit_Si072(byte Channel){
              Serial.println(SensorId.No3,HEX);            
        break; 
        default:
-              Serial.print("error");
+              Serial.print(F("error"));
        break;
     }  
   }
 }
 void GerSerialNo(void){
-      Serial.print(" Rev(");
+      Serial.print(F(" Rev("));
     Serial.print(THsensor.getRevision());
     Serial.print(")");
     Serial.print(F(" Serial #")); Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
@@ -325,7 +325,7 @@ void SensorRead_Si072(unsigned char Channel){
  
        break; 
        default:
-        Serial.print("error");
+        Serial.print(F("error"));
        break;
     }
  
@@ -354,7 +354,7 @@ void SensorRead_Si072(unsigned char Channel){
 #ifdef BAR_PRES_SENSOR_EXISTS 
 void SensorAlt_Init() {
   tcaselect(CHANNEL_BAROMETRIC);
-  Serial.println((F"BMP388 test"));
+  Serial.println(F("BMP388 test"));
   if (!bmp.begin()) {
     Serial.println(F("Could not find a valid BMP3 sensor, check wiring!"));
     //while (1);
@@ -379,15 +379,15 @@ void SensorAlt_Read(){
     Serial.print(F("Temperature = "));
     Values.TemperatureBMP = bmp.temperature;
     Serial.print(Values.TemperatureBMP);
-    Serial.print(" *C");
+    Serial.print(F(" *C"));
     Serial.print(F("  Pressure = "));
     Values.Pressure = bmp.pressure / 100.0;
     Serial.print(Values.Pressure);
-    Serial.println(" hPa");
-    Serial.print("Altitude = ");
+    Serial.println(F(" hPa"));
+    Serial.print(F("Altitude = "));
     Values.Altitude = bmp.readAltitude(SEALEVELPRESSURE_HPA);
     Serial.print(Values.Altitude);
-    Serial.println(" m");
+    Serial.println(F(" m"));
   }
 }
 #endif
@@ -512,7 +512,7 @@ void WinSensor(){
     // Serial.print("\t");
     if (windADunits < 350 ) windADunits = 350; // min 350 for 
   
-    Serial.print("windADunits");Serial.println(windADunits);
+    Serial.print(F("windADunits"));Serial.println(windADunits);
     Values.WindMPH =  pow((((float)windADunits - 264.0) / 85.6814), 3.36814);
   //  float windMPH =  pow((((float)windADunits - 264.0) / 85.6814), 3.36814);
    // Serial.print(windMPH);

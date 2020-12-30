@@ -196,11 +196,11 @@ void Common_Loop();
 void ResetCasePrint();
 void IO_Settings();
 void MicroInit(void);
-void Display_ReInit_Start(byte Timer);
+void Display_ReInit_Start(uint8_t Timer);
 void Display_ReInit_End(void);
 
 void  RTC_Init();
-void  SensorInit_Si072(byte);
+void  SensorInit_Si072(uint8_t);
 void  SensorAlt_Init();
 void  SensorLight_Init();
 void  SensorACccel_GyroInit();
@@ -221,15 +221,15 @@ void UpdateInfoLine();
 void UpdateDisplayMenu();
 void UpdateSD_LogTime();
 void UpdateFileSize();
-void UpdateProperLine(byte Index, byte Line);
+void UpdateProperLine(uint8_t Index, uint8_t Line);
 
 void EscMenuKey(void);
 void EnterMenuKey(void);
 void DownMenuKey(void);
 void UpMenuKey(void);
-void SetSampling(unsigned int Time);
-void DispEnable(bool Enable, byte Timer);
-void DispEnable_4SD_Prblm(bool Enable, byte Timer);
+void SetSampling(uint16_t Time);
+void DispEnable(bool Enable, uint8_t Timer);
+void DispEnable_4SD_Prblm(bool Enable, uint8_t Timer);
 
 void  DispExtTimeout(void);
 void   DisplayMenu(void);
@@ -245,8 +245,8 @@ void Log_Data_Write_SD(void);
 
 void Parse_FileString(void);
 void Relay_loop(void) ;
-float GetValue(byte Relay);
-String LimitCopyDisplayStr(String str, byte MaxNumber);
+float GetValue(uint8_t Relay);
+String LimitCopyDisplayStr(String str, uint8_t MaxNumber);
 void EnergyMeterIC_Operation(void);
 void I2_ACK_Reset(void);
 
@@ -254,51 +254,10 @@ void I2_ACK_Reset(void);
 void SetResetLog(bool Enable);
 void NVRam_Write_LogStatus(bool Mode);
 void NVRam_Read_SampleTime(void);
-void NVRam_Write_SampleTime(byte Sample);
+void NVRam_Write_SampleTime(uint8_t Sample);
 void NVRam_Read_Standbye(void);
 void NVRam_Write_Standbye(bool Mode);
 void NVRam_Read_SerNo(void);
 void NVRam_Write_SerNo(char* p);
 
 void Due_Memory();
-
-
-// C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries
-// Location of Main Librarires
-
-// Set Origin
-//   git remote add origin git@github.com:ilkerya/Pangolin.git
-//  https://github.com/ilkerya/Pangolin
-//  https://blog.plover.com/prog/git-ff-error.html
-// C:\Users\Yagciilk\Documents\Arduino\libraries
-// C:\Program Files (x86)\Arduino\libraries   
-// C:\Projects\Pangolin\Pangolin\ArduinoCore\include  default AtmelStudio Project lib locations
-/*
-git add .
-git commit -m "Comment"
-git push https://github.com/ilkerya/Pangolin.git master
-*/
-/*
-First Time
-git init
-git add README.md
-
-GitHub Bash Commands
-Adding new file
-https://help.github.com/articles/adding-a-file-to-a-repository-using-the-command-line/#platform-windows
-
-git add .
-git commit -m "Add existing file"
-// For Common git
-git push https://github.com/ilkerya/Pangolin master
-// For Electrolux git
-git push  http://git.int.electrolux.com/ilkerya/Phoenix_Pangolin.git master
-https://help.github.com/articles/fetching-a-remote/
-http://git.int.electrolux.com/ilkerya/Phoenix_Mobile.git
-
-In case in the first push gives error use below command
-git remote add origin remote repository URL
-git push origin master
-
-git push https://github.com/ilkerya/Phoenix master --force
-*/

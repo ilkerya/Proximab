@@ -1,11 +1,11 @@
-char Dispbuffer[22];  // make sure this is large enough for the largest string it must hold
-char* CopyFlashToRam(const char* p){
+ char Dispbuffer[22];  // make sure this is large enough for the largest string it must hold
+ char* CopyFlashToRam(const char* p){
   //length.Dispbuffer; 
-    for (byte i = 0; i < 22; i++) {
+    for (uint8_t i = 0; i < 22; i++) {
       Dispbuffer[i] = 0;
     }
-    for (byte i = 0; i < strlen_P(p); i++) {
-      char c = pgm_read_byte_near(p + i);
+    for (uint8_t i = 0; i < strlen_P(p); i++) {
+       char c = pgm_read_byte_near(p + i);
       Dispbuffer[i] = c;
       //Serial.print(c);
     }
@@ -96,15 +96,40 @@ void PrintDisplayBuffer(void){
     Serial.print(F("    Sensor2: "));Serial.print(SensorId.No2,HEX);
     Serial.print(F("    Sensor3: "));Serial.print(SensorId.No3,HEX);
     
-
     Serial.println();   
     //Compiled: Jul 21 2020 15:55:39 7.3.0
-    Serial.println( "Compiled: " + FW_Version  + ' ' + __VERSION__);  // 11 1 8
-   // Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__); 
+    Serial.print(F("Compiled: ")); 
+    Serial.print(FW_Ver_String);  // 11 1 8
+    Serial.print(F("     Version: ")); 
+    Serial.println(F(__VERSION__));  // 11 1 8   
+    Serial.print(F("File: ")); 
+    Serial.println(F(__FILE__));  // 11 1 8 
+    Serial.print(F("Cpp Standart: ")); 
+    Serial.println(__cplusplus);  // 11 1      
+    Serial.print(F("Line: ")); 
+    Serial.println(__LINE__);  // 11 1 8   
 
+    int result = system(NULL);  
+    Serial.print(F("int result = system(NULL): ")); 
+    Serial.println(result);  // 11 1 8   
+    rename(argv[1]);
+       
+    Serial.println();         
+    Serial.println();   
+    
+//61164
+//2890
+    
+  /*  
+     Serial.print(F("GNUC: ")); 
+    Serial.println(__GNUC__ );  
+     Serial.print(F("GNUC_MINOR: ")); 
+    Serial.println(__GNUC_MINOR__ );  
+     Serial.print(F("GNUC_PATCHLEVEL: ")); 
+    Serial.println(__GNUC_PATCHLEVEL__  );  
+*/
     Serial.print(F("RELAY 1:"));Serial.println(digitalRead(RELAY_OUT_1));
     Serial.print(F("RELAY 2:"));Serial.println(digitalRead(RELAY_OUT_2));   
-     
      
     Serial.println();
     Serial.println();     
@@ -159,7 +184,7 @@ const char* myName() {
 }
 */
 #define MAXNOCHAR 4
-void UpdateProperLine(byte Index, byte Line){
+void UpdateProperLine(uint8_t Index, uint8_t Line){
     String str = String(Index)+ ".";    
     switch(Index){
       case 0: 
@@ -228,7 +253,7 @@ void UpdateProperLine(byte Index, byte Line){
              }              
              else if(EnergyMeterIC.Mode == POWERIC_NORMAL){            
                 str +=String(Values.Current)+ "A "; // 3/4/2 = 9
-                str +=String((unsigned int)Values.Voltage)+ "V "; //4/2  =15
+                str +=String((uint16_t)Values.Voltage)+ "V "; //4/2  =15
                 str += String(Values.Frequency)+ "Hz"; //4 = 22               
              }        
              else if((EnergyMeterIC.Mode == POWERIC_SETUP1) || (EnergyMeterIC.Mode == POWERIC_SETUP2) || (EnergyMeterIC.Mode == POWERIC_SETUP3)){
@@ -298,7 +323,7 @@ void UpdateProperLine(byte Index, byte Line){
       default: str = "default";
       break; 
     }
-    int Length = str.length();
+    uint16_t Length = str.length();
     if(Length > MAX_DISPLAY_CHAR){
       str =  String(Index) +  "..." + String(Line)+  ".error";
     }

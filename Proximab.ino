@@ -9,13 +9,12 @@
  // EEEEf567 
  // 115200 baud Both NL & CR
  // put leading zero for numbers less than 10
-
  //*********************************************************************
- 
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
 // C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
-  #define ARDUINO_MEGA // 8 bit AVR
- //#define ARDUINO_DUE // ARM Cortex M3
+
+  #define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
+// #define ARDUINO_DUE // ARM Cortex M3
 
 //#pragma 
 //#pragma
@@ -87,16 +86,20 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 
 
 void setup() {
+  //remove("test.txt");
 
-  MicroInit();
-
-  #ifdef ARDUINO_DUE // 
+    MicroInit();
+    #ifdef ARDUINO_DUE // 
     Due_Memory();
+      
     #endif
 
 }
 // the loop function runs over and over again forever
 void loop() {
+
+    
+    
     Common_Loop(); 
        #ifdef ARDUINO_MEGA // 8 bit AVR 
         wdt_reset();
@@ -133,43 +136,5 @@ void Due_Memory() {
   sprintf(Txt, "Stack RAM Used:     %d\n",   ramend - stack_ptr);                Serial.print(Txt);
   sprintf(Txt, "Estimated Free RAM: %d\n\n", stack_ptr - heapend + mi.fordblks); Serial.println(Txt);
       //dueFlashStorage.write(0,b1);
-
-/*
-  char *p1;
-  p1 = (char*)malloc( 8);  // allocate 50 bytes of memeory
-  if(p1 == NULL) Serial.print("memory cannot be allocated\n");
-  
-  p1= (char*)realloc(p1,16);
-  if(p1 == NULL) Serial.print("memory cannot be allocated\n");
-  
-  char *p2;
-  p2 = (char*)calloc( 4,sizeof(int));  // allocate 50 bytes of memry with siz of each element all mem st 0 
-  if(p2 == NULL) Serial.print("memory cannot be allocated\n");  
-   
-  free(p2);
-*/
-/*
-        byte b1 = 3;
-    byte b2 = 4;
-    dueFlashStorage.write(ADR1,b1);  
-    dueFlashStorage.write(ADR2,b2);  
-
-   // dueFlashStorage.write(*p1,b1);  
-   // dueFlashStorage.write(*(p1+1),b2);
-     
-    byte i = dueFlashStorage.read(ADR1); 
-    byte j = dueFlashStorage.read(ADR2);
-
-  Serial.print("i:");
-  Serial.println(i);
-
-   Serial.print("j:");
-  Serial.println(j); 
-     byte Mode_Read = dueFlashStorage.read(ADDRES_LOG);
-     Serial.print("Mode_Read:");
-    Serial.println(Mode_Read); 
-    */
-     
-
 }
 #endif
