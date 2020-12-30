@@ -69,18 +69,20 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 // C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
 
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
-// C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
 
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Defs.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\RTC.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\SDCard.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\UserInt.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Display.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Sensors.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\ADE9153.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Menu.h"
-#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Functions.h"
+
+//Path   "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
+
+#include  "Defs.h"
+#include  "Variables.h"
+#include  "RTC.h"
+#include  "SDCard.h"
+#include  "UserInt.h"
+#include  "Display.h"
+#include  "Sensors.h"
+#include  "ADE9153.h"
+#include  "Menu.h"
+#include  "Functions.h"
 
 
 

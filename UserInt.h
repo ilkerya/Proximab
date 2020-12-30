@@ -112,7 +112,7 @@ void PrintDisplayBuffer(void){
     int result = system(NULL);  
     Serial.print(F("int result = system(NULL): ")); 
     Serial.println(result);  // 11 1 8   
-    rename(argv[1]);
+   // rename(argv[1]);
        
     Serial.println();         
     Serial.println();   

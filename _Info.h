@@ -55,3 +55,14 @@ https://reference.digilentinc.com/reference/instrumentation/analog-discovery-2/s
 // C:\Users\Yagciilk\Documents\Arduino\libraries
 // C:\Program Files (x86)\Arduino\libraries   
 // C:\Projects\Pangolin\Pangolin\ArduinoCore\include  default AtmelStudio Project lib locations
+
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Defs.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\RTC.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\SDCard.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\UserInt.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Display.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Sensors.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\ADE9153.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Menu.h"
+#include  "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Functions.h"
