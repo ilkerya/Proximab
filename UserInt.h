@@ -1,5 +1,5 @@
- char Dispbuffer[22];  // make sure this is large enough for the largest string it must hold
- char* CopyFlashToRam(const char* p){
+char Dispbuffer[22];  // make sure this is large enough for the largest string it must hold
+char* CopyFlashToRam(const char* p){
   //length.Dispbuffer; 
     for (uint8_t i = 0; i < 22; i++) {
       Dispbuffer[i] = 0;
@@ -13,7 +13,6 @@
     return Dispbuffer;
 }
 void UpdateDisplayBuffer(void){  
-    //Display_Line1 = String(Str_Date) + "   " + String(Str_Time);
     Display_Line1 = Str_Date + "   " + Str_Time;
   #ifdef SDCARD_EXISTS
   
@@ -91,29 +90,47 @@ void PrintDisplayBuffer(void){
       Serial.println();   
 
     // Additionals
-    Serial.print(F("DevId: "));Serial.print(EE_Id_EString);
+    Serial.print(F("DevId: "));Serial.print(Device_Id);
+    
     Serial.print(F("    Sensor1: "));Serial.print(SensorId.No1,HEX);
     Serial.print(F("    Sensor2: "));Serial.print(SensorId.No2,HEX);
     Serial.print(F("    Sensor3: "));Serial.print(SensorId.No3,HEX);
     
     Serial.println();   
     //Compiled: Jul 21 2020 15:55:39 7.3.0
-    Serial.print(F("Compiled: ")); 
-    Serial.print(FW_Ver_String);  // 11 1 8
     Serial.print(F("     Version: ")); 
-    Serial.println(F(__VERSION__));  // 11 1 8   
+    Serial.println(F(__VERSION__));  // 11 1 8  
     Serial.print(F("File: ")); 
     Serial.println(F(__FILE__));  // 11 1 8 
+ 
     Serial.print(F("Cpp Standart: ")); 
     Serial.println(__cplusplus);  // 11 1      
     Serial.print(F("Line: ")); 
     Serial.println(__LINE__);  // 11 1 8   
 
+    Serial.print(F("DATE: ")); 
+    Serial.println(__DATE__);  // 11 1 8        
+    Serial.print(F("TIME: ")); 
+    Serial.println(__TIME__);  // 11 1 8  
+    Serial.print(F("Repository: "));  
+    char c;
+    for (byte k = 0; k < strlen_P(Repository); k++){
+      c = pgm_read_byte_near(Repository + k);
+      Serial.print(c);
+    } 
+        Serial.println();    
+    char buffer[75];
+    for (int i = 0; i < 5; i++) {
+      strcpy_P(buffer, (char *)pgm_read_word(&(Terminal_table[i])));  // Necessary casts and dereferencing, just copy.
+      Serial.println(buffer);
+    }
+
+    
+/*
     int result = system(NULL);  
     Serial.print(F("int result = system(NULL): ")); 
     Serial.println(result);  // 11 1 8   
-   // rename(argv[1]);
-       
+  */      
     Serial.println();         
     Serial.println();   
     
@@ -174,13 +191,6 @@ char* UpdateTempHumSensor(byte Que, float Temperature, float Humidity){
         char char_array[Length+ 1]; 
         strcpy(char_array, str.c_str());       
         return &char_array[0];
-}
-*/
-/*
-const char* myName() {
-  String s = "String";   
-  char *name = "Ilker";
-  return name;
 }
 */
 #define MAXNOCHAR 4

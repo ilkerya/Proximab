@@ -154,7 +154,9 @@ void  RTC_Init(){
         if((Timer == 10) && (receivedChars[0] == 'E' )&&(receivedChars[1] == 'E') && (receivedChars[2] == 'E')&&  (receivedChars[3] == 'E' )){       
           NVRam_Write_SerNo(&receivedChars[4]); 
           delay(10);
-          NVRam_Read_SerNo();                        
+          NVRam_Read_SerNo();
+          UpdateLogFileId(); 
+          SDCard.LogBootInit = 0; // restart logging from 0                       
         }  
     }
 }

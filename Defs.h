@@ -1,11 +1,11 @@
-
+/*
 #if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
     #error Select Only One Platform
 #endif
  #if !(!defined (ARDUINO_MEGA) ^ !defined (ARDUINO_DUE)) 
     #error Select At Least One Platform
 #endif
-
+*/
 
 /*
 typedef  byte               uint8;
@@ -175,6 +175,7 @@ C:\Program Files (x86)\Arduino\libraries
 
 #define MENU4_SUB1 65
 #define MENU4_SUB2 66
+#define MENU4_SUB3 67
 
 #define MENU5_SUB1 81
 #define MENU5_SUB2 82
@@ -191,6 +192,12 @@ C:\Program Files (x86)\Arduino\libraries
 
 #define KEYDISP_TIMER 40
 
+#define SD_NOT_Present 0
+#define SD1_TYPE 1
+#define SD2_TYPE 2
+#define SDHC_TYPE 3
+#define UNKNOWN_TYPE 4
+
 // function prototypes
 void Common_Loop(); 
 void ResetCasePrint();
@@ -198,6 +205,11 @@ void IO_Settings();
 void MicroInit(void);
 void Display_ReInit_Start(uint8_t Timer);
 void Display_ReInit_End(void);
+
+void SD_Card_Info(void);
+void SD_Card_Init(void);
+void SD_Card_Data_Preparation(void);
+void SD_Card_Header_Preparation(void);
 
 void  RTC_Init();
 void  SensorInit_Si072(uint8_t);
@@ -259,5 +271,7 @@ void NVRam_Read_Standbye(void);
 void NVRam_Write_Standbye(bool Mode);
 void NVRam_Read_SerNo(void);
 void NVRam_Write_SerNo(char* p);
+void UpdateLogFileId(void);
+char* CopyFlashToRam(const char* );
 
 void Due_Memory();

@@ -4,7 +4,7 @@
 */
  //for setting date&time open arduino serial monitor and send the data stream
  //   Year,Month,Date,Hour,Minute;Second
- //   2020,05,27,21,14,23
+ //   2021,01,04,23,30,00
  //  2020,12,24,22,48,55
  // EEEEf567 
  // 115200 baud Both NL & CR
@@ -14,7 +14,8 @@
 // C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
 
   #define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
-// #define ARDUINO_DUE // ARM Cortex M3
+// #define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
+ //#define CHIPKIT_MAX32 // PIC32MX795F512L
 
 //#pragma 
 //#pragma
@@ -44,8 +45,7 @@
 #define ARM_MATH_CM0PLUS
 
 
-  #ifdef ARDUINO_DUE // ARM 32 bit
-
+#ifdef ARDUINO_DUE // ARM 32 bit
 void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
   pmc_set_writeprotect(false);
   pmc_enable_periph_clk((uint32_t)irq);
@@ -67,12 +67,10 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 
 // C:\Projects\Pangolin\..   Atmel Studio Project Path
 // C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
-
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
 
-
 //Path   "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
-
+ 
 #include  "Defs.h"
 #include  "Variables.h"
 #include  "RTC.h"
@@ -85,28 +83,24 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
 #include  "Functions.h"
 
 
-
-
 void setup() {
-  //remove("test.txt");
-
     MicroInit();
     #ifdef ARDUINO_DUE // 
-    Due_Memory();
-      
+      Due_Memory(); 
     #endif
-
 }
 // the loop function runs over and over again forever
 void loop() {
-
-    
-    
     Common_Loop(); 
        #ifdef ARDUINO_MEGA // 8 bit AVR 
         wdt_reset();
          wdt_enable(WDTO_8S);
      #endif
+       #ifdef ARDUINO_DUE // 
+       // wdt_reset();
+       // wdt_enable(WDTO_8S);
+     #endif
+     
 }  
 #ifdef ARDUINO_DUE // 
 

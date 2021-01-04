@@ -41,18 +41,7 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-#define SD_NOT_Present 0
-#define SD1_TYPE 1
-#define SD2_TYPE 2
-#define SDHC_TYPE 3
-#define UNKNOWN_TYPE 4
 
-void SD_Card_Info();
-void SD_Card_Init();
-void SD_Card_Data_Preparation();
-void SD_Card_Header_Preparation();
-
- 
 void Print_ARM_RegsFormat(uint32_t Reg){
       uint32_t  temp = Reg & 0xFF000000;
       Serial.print(temp >> 24,HEX);Serial.print('.'); 
@@ -96,9 +85,12 @@ void GetFileSize(){
     else  FileSize.Total = 0;
 }
 void ReadConfigFile(){
-   File Config =  SD.open(ConfigFile);
+  // File Config =  SD.open(ConfigFile);
+   File Config =  SD.open(CopyFlashToRam(ConfigFile));
+   
    Config_Str = "";
    if (Config) {
+      Serial.print(F("Config File "));
       Serial.println(ConfigFile);  
       while (Config.available()) {
         Config_Str += (char)(Config.read());
@@ -293,7 +285,8 @@ void SD_Card_Init(){
       Print_ARM_SPI_Regs();
 }
 void SD_Card_Header_Preparation(){
-      char* p =(char*)&SD_CARD_ERR[0];  
+      //char* p =(char*)&SD_CARD_ERR[0]; 
+      char* p =NULL;   
       switch(SDCard.Status){
         case SD1_TYPE :  p= (char*)SD1_CARD; 
         break;
@@ -303,14 +296,15 @@ void SD_Card_Header_Preparation(){
         break;
       //  case SD_NO_FAT :p= NO_FAT;
      //   break;
-        case 0 :p=(char*) SD_CARD_ERR;
-        default: //SD_Card_Reset = OFF;//unknown  
+        case SD_NOT_Present :
+        default:
+              p=(char*) SD_CARD_ERR;
         break;     
     }
   
           //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
         //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";  
-        dataString += "FirmVers " + FW_Ver_String +  ",Dev_Id:" + EE_Id_EString + ',' + "SD Type: " + String(p) + ',' + "Volume: " +String(SDCard.Volume) + " GB" + ',' +
+        dataString += "FirmVers " + String(__DATE__) + ' ' + String(__TIME__) +  ",Dev_Id:" + String(Device_Id) + ',' + "SD Type: " + String(p) + ',' + "Volume: " +String(SDCard.Volume) + " GB" + ',' +
         
        "Found Sensors Id's:"  +  ','  + String(SensorId.No1, HEX) +  ',' +  String(SensorId.No2, HEX) + ','  + String(SensorId.No3, HEX) + ',' ;
        

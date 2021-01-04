@@ -68,31 +68,20 @@ void SetResetLog(bool Enable) {
     } 
 }
 void NVRam_Read_SerNo() {
-    char c;
-    EE_Id_EString = "";
-    
    #ifdef ARDUINO_MEGA // 8 bit AVR 
-    c = (char)EEPROM.read(NVRAM_ID1);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(NVRAM_ID2);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(NVRAM_ID3);
-    EE_Id_EString += String(c);
-    c = (char)EEPROM.read(NVRAM_ID4);
-    EE_Id_EString += String(c);
+    Device_Id[0] = (char)EEPROM.read(NVRAM_ID1);
+    Device_Id[1] = (char)EEPROM.read(NVRAM_ID2);
+    Device_Id[2] = (char)EEPROM.read(NVRAM_ID3);
+    Device_Id[3] = (char)EEPROM.read(NVRAM_ID4);
   #endif
    #ifdef ARDUINO_DUE // 8 bit AVR
-    c = (char)dueFlashStorage.read(NVRAM_ID1);
-    EE_Id_EString += String(c);
-    c = (char)dueFlashStorage.read(NVRAM_ID2);
-    EE_Id_EString += String(c);
-    c = (char)dueFlashStorage.read(NVRAM_ID3);
-    EE_Id_EString += String(c);
-    c = (char)dueFlashStorage.read(NVRAM_ID4);
-    EE_Id_EString += String(c);
+    Device_Id[0] = (char)dueFlashStorage.read(NVRAM_ID1);
+    Device_Id[1] = (char)dueFlashStorage.read(NVRAM_ID2);
+    Device_Id[2] = (char)dueFlashStorage.read(NVRAM_ID3);
+    Device_Id[3] = (char)dueFlashStorage.read(NVRAM_ID4);
    #endif
-    Serial.print(F(" Device Id: "));
-    Serial.println(EE_Id_EString);
+   Serial.print(F("Device_Id: ")) ;
+   Serial.println(Device_Id);  
 }
 void NVRam_Write_SerNo(char* p) {
   Serial.print(F("EECode:"));
@@ -119,6 +108,9 @@ void NVRam_Write_LogStatus(bool Mode) {
       if (Mode == OFF)dueFlashStorage.write(ADDRES_LOG, OFF); // OFF
       else dueFlashStorage.write(ADDRES_LOG, SampleTime);// ON
     #endif    
+    #ifdef CHIPKIT_MAX32 // 32 bit ARM
+      Mode = 0;
+    #endif 
       
 }
 void NVRam_Write_Standbye(bool Mode) {
@@ -129,21 +121,24 @@ void NVRam_Write_Standbye(bool Mode) {
     #ifdef ARDUINO_DUE
       if (Mode == OFF)dueFlashStorage.write(SLEEP_LOG, OFF); // OFF
       else dueFlashStorage.write(SLEEP_LOG, ON);// ON
+    #endif 
+    #ifdef CHIPKIT_MAX32 // 32 bit ARM
+      Mode = 0;
     #endif       
 }
 
 void NVRam_Read_Standbye(void) {
     #ifdef ARDUINO_MEGA
         uint8_t Read = EEPROM.read(SLEEP_LOG);// OFF
-        if(Read == OFF)DispEnable(OFF,0);
-        if(Read == ON)DispEnable(ON,100);
     #endif
      #ifdef ARDUINO_DUE
       uint8_t Read =dueFlashStorage.read(SLEEP_LOG);
-      if(Read == OFF)DispEnable(OFF,0);
-      if(Read == ON)DispEnable(ON,100); // default
-
     #endif
+       #ifdef CHIPKIT_MAX32 // 32 bit ARM
+       uint8_t Read = 0;
+    #endif 
+      if(Read == OFF)DispEnable(OFF,0);
+      if(Read == ON)DispEnable(ON,100); // default 
 }
 void NVRam_Write_SampleTime(byte Sample) {
   #ifdef ARDUINO_MEGA
@@ -152,6 +147,9 @@ void NVRam_Write_SampleTime(byte Sample) {
      #ifdef ARDUINO_DUE 
     dueFlashStorage.write(ADDRES_LOG,Sample); 
   #endif
+     #ifdef CHIPKIT_MAX32 // 32 bit ARM
+       
+    #endif  
 }
 void NVRam_Read_SampleTime(void) {
    #ifdef ARDUINO_MEGA // 8 bit AVR
@@ -160,6 +158,9 @@ void NVRam_Read_SampleTime(void) {
    #ifdef ARDUINO_DUE // 32 bit ARM
        uint8_t Mode = dueFlashStorage.read(ADDRES_LOG);
     #endif
+   #ifdef CHIPKIT_MAX32 // 32 bit ARM
+       uint8_t Mode = 0;
+    #endif    
     if((Mode== TASK_500MSEC)||(Mode== TASK_1SEC)||(Mode== TASK_2SEC)||(Mode== TASK_5SEC)||(Mode== TASK_10SEC)||(Mode== TASK_20SEC)||(Mode== TASK_60SEC)){
       SDCard.LogEnable = ON; 
       SampleTime =  Mode;
@@ -189,7 +190,14 @@ void NVRam_Read_SampleTime(void) {
     }
   */
 }
-
+void UpdateLogFileId(void){
+    LOG_FILE[4] = Device_Id[0];
+    LOG_FILE[5] = Device_Id[1];
+    LOG_FILE[6] = Device_Id[2];
+    LOG_FILE[7] = Device_Id[3];
+    Serial.print(F("LOG_FILE: ")) ;
+    Serial.println(LOG_FILE);
+}
 void ResetCasePrint() {
 #ifdef ARDUINO_MEGA // 8 bit AVR 
     
@@ -381,8 +389,11 @@ void UpMenuKey(void) {
       break;
     case MENU4_SUB1 :   MainMenu = MENU4_SUB2; 
       break;  
-    case MENU4_SUB2 :   MainMenu = MENU4_SUB1; 
-      break;    
+    case MENU4_SUB2 :   MainMenu = MENU4_SUB3; 
+      break;   
+    case MENU4_SUB3 :   MainMenu = MENU4_SUB1; 
+      break;
+       
      case MENU5 : MainMenu = MENU6;
       break;     
      case MENU6 : MainMenu = MENU1;
@@ -480,7 +491,9 @@ void EscMenuKey(void) {
     case MENU4_SUB1 :   MainMenu = MENU4; 
       break;  
     case MENU4_SUB2 :   MainMenu = MENU4; 
-      break;       
+      break;   
+    case MENU4_SUB3 :   MainMenu = MENU4; 
+      break;           
     case MENU5 : MainMenu = MENU_NULL;
       break;
     case MENU1_SUB1 :  MainMenu =  MENU1;//
@@ -620,18 +633,16 @@ void EnterMenuKey(void) {
     case MENU3_SUB3 :  
       
       break;
-    case MENU3_SUB4 :  
-      
+    case MENU3_SUB4 :     
       break;   
-    case MENU4 :   MainMenu = MENU4_SUB1;  
-       
+    case MENU4 :   MainMenu = MENU4_SUB1;       
       break;
     case MENU4_SUB1 :   MainMenu = MENU4_SUB2; 
-
       break;  
-    case MENU4_SUB2 :   MainMenu = MENU4_SUB1; 
-
-      break;      
+    case MENU4_SUB2 :   MainMenu = MENU4_SUB3; 
+      break;    
+    case MENU4_SUB3 :   MainMenu = MENU4_SUB1; 
+      break;         
     case MENU5 :        MainMenu = MENU5_SUB1;
         DateTimeBuf.Init = ON;       
       break;

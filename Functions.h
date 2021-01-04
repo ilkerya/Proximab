@@ -293,37 +293,15 @@ void MicroInit() {
 #ifdef ARDUINO_MEGA
   ADCSRA &= ~ (1 << ADEN);            // turn off ADC to save power ,, enable when needed and turn off again
 #endif
-      // Aug.03.2020 19:03:33
-  FW_Ver_String = String (__DATE__)  +  String ( __TIME__ ), // 11 1 8 // 20
-  FW_Ver_String.remove(7, 4); // Remove 2 characters starting at index=7
-  FW_Ver_String.setCharAt(3 , '.');
 
   Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__);
   //Compiled: Jul 21 2020 15:55:39 7.3.0
   //  ShowSerialCode();
 
   NVRam_Read_SerNo();
-  Serial.print(F("EE_Id_EString: ")) ;
-  Serial.print(EE_Id_EString.charAt(0));
-  Serial.print(EE_Id_EString.charAt(1));
-  Serial.print(EE_Id_EString.charAt(2));
-  Serial.print(EE_Id_EString.charAt(3));
-  Serial.println() ;
-
-  // String LOG_FILE =  "LOG_xxxx.csv";
-  // Rename Log File with the device Id
-  LOG_FILE.setCharAt(4, EE_Id_EString.charAt(0));
-  LOG_FILE.setCharAt(5, EE_Id_EString.charAt(1));
-  LOG_FILE.setCharAt(6, EE_Id_EString.charAt(2));
-  LOG_FILE.setCharAt(7, EE_Id_EString.charAt(3));
-
-  Serial.print(F("LOG_FILE: ")) ;
-  Serial.print(LOG_FILE);
-  Serial.println() ;
+  UpdateLogFileId();
 
 //#ifndef DEBUG_SIMULATOR_MODE
-
-
    #ifdef SDCARD_EXISTS
     SD_Card_Info();
    SD_Card_Init();

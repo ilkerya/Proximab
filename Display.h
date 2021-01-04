@@ -118,12 +118,13 @@ void Display_ReInit_End(){
     }
     
   #endif
-    #ifdef ARDUINO_MEGA
+#if defined (ARDUINO_MEGA)  | defined (CHIPKIT_MAX32) 
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //    SSD1306_EXTERNALVCC
         Serial.println(F("SSD1306 allocation failed"));
             //for(;;); // Don’t proceed, loop forever
     }
-      #endif
+#endif
+      
      Serial.println(F("Display ReInitilized"));  
  //   display.clearDisplay();
  //   display.setTextSize(3);
@@ -134,6 +135,7 @@ void Display_ReInit_End(){
  //   display.println();
 //    display.println("DATALOG"); 
  //   display.display();
+    
   #endif
 }
 
@@ -455,11 +457,19 @@ void UpdateDisplayMenu(void){
     case MENU4 :   str = CopyFlashToRam(Disp_MENU4); 
       break;
     case MENU4_SUB1 :  
-             str = "Fw: " + FW_Ver_String;  // fw version compile time 21- 14 = 7            
+             str = "Fw: " + String(__DATE__) + ' ' + String(__TIME__); 
+             //Fw: mmm dd yyyy hh:mm:ss //24 
+           //  str.setCharAt(10 , '.');     
+             str.remove(11, 2); // Remove 2 characters starting at index=11
+             str.remove(7, 1); // Remove 1 characters starting at index=7             
+                            
       break;  
     case MENU4_SUB2 :   
-          str = "Dev Id: " + EE_Id_EString;  // fw version compile time
-      break;        
+          str = "Dev Id: " + String(Device_Id);  // fw version compile time
+      break;   
+    case MENU4_SUB3 :   
+          str = CopyFlashToRam(Disp_MENU4_SUB3); 
+      break;      
     case MENU5 :   str = CopyFlashToRam(Disp_MENU5);
       break;
     case MENU5_SUB1 :str =UpddateDateTimeBuffer();

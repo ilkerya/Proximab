@@ -17,11 +17,7 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
   B01111100, B11110000,
   B01110000, B01110000,
   B00000000, B00110000 };
-  
 //char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
-  
-//static const char Disp_MENU_NULL_ENT[]  PROGMEM  = "ENTER     "; // 10
-//static const char Disp_MENU_NULL_ESC[] PROGMEM = "     ESC";
 static const char Disp_MENU_NULL[]    PROGMEM = "ENTER             ESC";
 static const char Disp_MENU1[] PROGMEM =     "LOG START & STOP MENU";
 static const char Disp_MENU2[] PROGMEM =     "LOG SAMPLE TIME MENU ";
@@ -38,13 +34,7 @@ static const char Disp_MENU1_SUB1[] PROGMEM = "LOG START            ";
 static const char Disp_MENU1_SUB2[] PROGMEM = "LOG STOP             "; 
 static const char Disp_MENU1_SUB3[] PROGMEM = "LOG Started !        ";
 static const char Disp_MENU1_SUB4[] PROGMEM = "LOG Stopped !        "; 
-//static const char Disp_MENU1_SUB4[] PROGMEM = "Stopped !";
-static const char Disp_MENU3_SUBMAIN[] PROGMEM = "STANDBYE ";  
-static const char Disp_MENU3_SUB1[] PROGMEM = "Enable "; 
-static const char Disp_MENU3_SUB2[] PROGMEM = "Disable";  
-static const char Disp_MENU3_SUB3[] PROGMEM = "Updated! On";
-static const char Disp_MENU3_SUB4[] PROGMEM = "Updated! Off";
-  
+
 static const char Disp_MENU2_SUB[] PROGMEM = "Enter -> ";  //9
 static const char Disp_MENU2_SUB1[] PROGMEM = " 0.5 Sec    "; //12
 static const char Disp_MENU2_SUB2[] PROGMEM = " 1 Sec      "; //12
@@ -55,6 +45,14 @@ static const char Disp_MENU2_SUB6[] PROGMEM = " 20 Sec     "; //12
 static const char Disp_MENU2_SUB7[] PROGMEM = " 60 Sec     "; //12
 static const char Disp_MENU2_SUB8[] PROGMEM = "Sample Time Updated !";
 
+static const char Disp_MENU3_SUBMAIN[] PROGMEM = "STANDBYE ";  
+static const char Disp_MENU3_SUB1[] PROGMEM = "Enable "; 
+static const char Disp_MENU3_SUB2[] PROGMEM = "Disable";  
+static const char Disp_MENU3_SUB3[] PROGMEM = "Updated! On";
+static const char Disp_MENU3_SUB4[] PROGMEM = "Updated! Off";
+                                           // "LOG START & STOP MENU";
+  static const char Disp_MENU4_SUB3[] PROGMEM = "Term:115200 8n1 NL&CR";
+//static const char Disp_MENU4_SUB3[] PROGMEM = "Ser:115200 baud NL&CR";
 static const char SD1_CARD[] PROGMEM = "SD1 Card "; 
 static const char SD2_CARD[] PROGMEM = "SD2 Card ";
 static const char SDHC_CARD[] PROGMEM ="SDHC Card "; 
@@ -65,18 +63,23 @@ static const char SETTINGUP[] PROGMEM     = "SettingUp"; //21-3
 static const char  CALIBRATING[] PROGMEM  = "Calibrating";
 static const char  ICERROR[]   PROGMEM    = " IC Error";
 
-#ifdef ENERGYMETER_EXISTS
+static const char  Repository[] PROGMEM = "https://github.com/ilkerya/Proximab";
+static const char  Terminal_1[] PROGMEM = "For Adjusting date&time send as below format";
+static const char  Terminal_2[] PROGMEM = "Year,Month,Date,Hour,Minute;Second";
+static const char  Terminal_3[] PROGMEM = "2020,05,27,21,14,23";
+static const char  Terminal_4[] PROGMEM = "For Adjusting serialID send as below format";
+static const char  Terminal_5[] PROGMEM = "EEEExxxx as4 digit HEX format";
+const char *const Terminal_table[] PROGMEM = {Terminal_1, Terminal_2, Terminal_3, Terminal_4, Terminal_5};
 
+#ifdef ENERGYMETER_EXISTS
 struct EnergyRegs energyVals;  //Energy register values are read and stored in EnergyRegs structure
 struct PowerRegs powerVals;    //Metrology data can be accessed from these structures
 struct RMSRegs rmsVals;  
 struct PQRegs pqVals;
 struct AcalRegs acalVals;
 struct Temperature tempVal;
-
 uint32_t Igain;
 uint32_t Vgain;
-      
 struct
 {
   uint8_t Mode = 0;
@@ -98,7 +101,7 @@ String Display_Line6 ="Display....Line6.....";
 String Display_Line7 ="Display...Line7......";
 String Display_Line8 ="Display..Line8.......";
 
-String FW_Ver_String ="";
+
 uint8_t MainMenu =0;
 uint8_t DispRollIndex[4] = {1,0,0,0};
 
@@ -153,8 +156,10 @@ uint8_t SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5se
 // the logging file
 File logfile;
 String dataString = "";
-String LOG_FILE =  "LOG_xxxx.csv";
-static const String ConfigFile  = "ADConfig.txt";
+char LOG_FILE[] =  "LOG_xxxx.csv";
+const char ConfigFile[] PROGMEM =  "RLConfig.txt";
+char Device_Id[5] = {'0','0','0','0','\0'}; 
+
 String Config_Str = "";
 
 struct
@@ -190,12 +195,15 @@ struct
   bool TimeOutEnb = 0;
 }Key;
 
-struct
+struct  
 {
   uint32_t No1;
   uint32_t No2;
   uint32_t No3;    
-}SensorId;
+} SensorId;
+
+//struct Sensors SensorId;
+//2874
 
 //String Sensor_Info_SDS= "";
 
@@ -258,7 +266,7 @@ struct
 #define NVRAM_ID3 6
 #define NVRAM_ID4 7
 
-String EE_Id_EString =""; 
+
 
 String Str_Time="";
 String Str_Date="";
