@@ -15,7 +15,9 @@
 
   #define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
 // #define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
- //#define CHIPKIT_MAX32 // PIC32MX795F512L
+// #define CHIPKIT_MAX32 // PIC32MX795F512L
+// #define ARDUINO_MKRZERO // ARM Cortex M0
+
 
 //#pragma 
 //#pragma
@@ -24,11 +26,12 @@
     #include <EEPROM.h>
     #include <avr/wdt.h>
   #endif
-  #ifdef ARDUINO_DUE // ARM 32 bit
+  #ifdef ARDUINO_DUE // ARM CortexM3 32 bit
     #include <malloc.h>
     #include <DueFlashStorage.h>
     DueFlashStorage dueFlashStorage;
   #endif
+ 
   
 #include <RTClib.h>
 #include <Adafruit_Si7021.h>
@@ -61,9 +64,80 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
  // tc->TC_CHANNEL[channel].TC_IDR=~(TC_IER_CPCS | TC_IER_CPAS);
   NVIC_EnableIRQ(irq);
 }
+#endif
+ #ifdef ARDUINO_MKRZERO // ARM Cortex M0
+//Configures the TC to generate output events at the sample frequency.
+//Configures the TC in Frequency Generation mode, with an event output once
+//each time the audio sample frequency period expires.
+//https://gist.github.com/nonsintetic/ad13e70f164801325f5f552f84306d6f
+ void tcConfigure(int sampleRate)
+{
+      //1000 -> 1000 ms
+    //10000 -> 100 ms
+    //50000 -> 20ms
+ // select the generic clock generator used as source to the generic clock multiplexer
+ GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
+ while (GCLK->STATUS.bit.SYNCBUSY);
+
+ tcReset(); //reset TC5
+
+ // Set Timer counter 5 Mode to 16 bits, it will become a 16bit counter ('mode1' in the datasheet)
+ TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;
+ // Set TC5 waveform generation mode to 'match frequency'
+ TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;
+ //set prescaler
+ //the clock normally counts at the GCLK_TC frequency, but we can set it to divide that frequency to slow it down
+ //you can use different prescaler divisons here like TC_CTRLA_PRESCALER_DIV1 to get a different range
+ TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024 | TC_CTRLA_ENABLE; //it will divide GCLK_TC frequency by 1024
+ //set the compare-capture register. 
+ //The counter will count up to this value (it's a 16bit counter so we use uint16_t)
+ //this is how we fine-tune the frequency, make it count to a lower or higher value
+ //system clock should be 1MHz (8MHz/8) at Reset by default
+ TC5->COUNT16.CC[0].reg = (uint16_t) (SystemCoreClock / sampleRate);
+ while (tcIsSyncing());
+ 
+ // Configure interrupt request
+ NVIC_DisableIRQ(TC5_IRQn);
+ NVIC_ClearPendingIRQ(TC5_IRQn);
+ NVIC_SetPriority(TC5_IRQn, 0);
+ NVIC_EnableIRQ(TC5_IRQn);
+
+ // Enable the TC5 interrupt request
+ TC5->COUNT16.INTENSET.bit.MC0 = 1;
+ while (tcIsSyncing()); //wait until TC5 is done syncing 
+} 
+
+//Function that is used to check if TC5 is done syncing
+//returns true when it is done syncing
+bool tcIsSyncing()
+{
+  return TC5->COUNT16.STATUS.reg & TC_STATUS_SYNCBUSY;
+}
+
+//This function enables TC5 and waits for it to be ready
+void tcStartCounter()
+{
+  TC5->COUNT16.CTRLA.reg |= TC_CTRLA_ENABLE; //set the CTRLA register
+  while (tcIsSyncing()); //wait until snyc'd
+}
+
+//Reset TC5 
+void tcReset()
+{
+  TC5->COUNT16.CTRLA.reg = TC_CTRLA_SWRST;
+  while (tcIsSyncing());
+  while (TC5->COUNT16.CTRLA.bit.SWRST);
+}
+
+//disable TC5
+void tcDisable()
+{
+  TC5->COUNT16.CTRLA.reg &= ~TC_CTRLA_ENABLE;
+  while (tcIsSyncing());
+}
+
 
 #endif
-
 
 // C:\Projects\Pangolin\..   Atmel Studio Project Path
 // C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
@@ -100,6 +174,10 @@ void loop() {
        // wdt_reset();
        // wdt_enable(WDTO_8S);
      #endif
+    #ifdef ARDUINO_MKRZERO 
+
+      #endif   
+     
      
 }  
 #ifdef ARDUINO_DUE // 
@@ -111,6 +189,7 @@ char *ramend=(char *)0x20088000;
 char Txt[256];
   
 void Due_Memory() {
+  
   char *heapend=sbrk(0);
   register char * stack_ptr asm("sp");
   struct mallinfo mi = mallinfo();
@@ -132,5 +211,6 @@ void Due_Memory() {
   sprintf(Txt, "Stack RAM Used:     %d\n",   ramend - stack_ptr);                Serial.print(Txt);
   sprintf(Txt, "Estimated Free RAM: %d\n\n", stack_ptr - heapend + mi.fordblks); Serial.println(Txt);
       //dueFlashStorage.write(0,b1);
+      
 }
 #endif

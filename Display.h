@@ -1,29 +1,37 @@
 
 //https://github.com/adafruit/Adafruit_SSD1306
-
 // https://upload.wikimedia.org/wikipedia/commons/f/f8/Codepage-437.png
 
 #ifdef OLEDDISPLAY_EXISTS
-
-#ifdef FIRST_PROTOTYPE
-  #define OLED_GND 46// 13
-  #define OLED_POWER 44// 13
-  #define OLED_CS    40// 13
-  #define OLED_RESET 38
-  #define OLED_DC    36// 12  // common 50
-  #define OLED_CLK   34 //13 // common  52
-  #define OLED_MOSI  32// 11 //common 51
-#endif
-#ifdef AD9153_PROTOTYPE
-
-  #define OLED_GND 42// 13
-  #define OLED_POWER 40// 13
-  #define OLED_CS    36// 13
-  #define OLED_RESET 34
-  #define OLED_DC    32// 12  // common 50
-  #define OLED_CLK   30 //13 // common  52
-  #define OLED_MOSI  28// 11 //common 51
-#endif
+  #if defined (ARDUINO_MEGA) | defined (ARDUINO_DUE) 
+    #ifdef FIRST_PROTOTYPE
+      #define OLED_GND 46// 13
+      #define OLED_POWER 44// 13
+      #define OLED_CS    40// 13
+      #define OLED_RESET 38
+      #define OLED_DC    36// 12  // common 50
+      #define OLED_CLK   34 //13 // common  52
+      #define OLED_MOSI  32// 11 //common 51
+    #endif
+    #ifdef AD9153_PROTOTYPE
+      #define OLED_GND 42// 13
+      #define OLED_POWER 40// 13
+      #define OLED_CS    36// 13
+      #define OLED_RESET 34
+      #define OLED_DC    32// 12  // common 50
+      #define OLED_CLK   30 //13 // common  52
+      #define OLED_MOSI  28// 11 //common 51
+    #endif
+  #endif
+  #ifdef ARDUINO_MKRZERO
+    #define OLED_GND A2// 13
+    #define OLED_POWER A3// 13
+    #define OLED_CS    A5// 13
+    #define OLED_RESET A6
+    #define OLED_DC    0// 12  // common 50
+    #define OLED_CLK   1 //13 // common  52
+    #define OLED_MOSI  2// 11 //common 51
+  #endif
 
 #define NUMFLAKES 10
 #define XPOS 0
@@ -109,14 +117,12 @@ void Display_ReInit_End(){
   
   
    // delay(300); // Pause for 2 seconds // critical
-   
-  #ifdef ARDUINO_DUE 
+#if defined  ARDUINO_DUE | defined (ARDUINO_MKRZERO) 
     delay(1300); // Pause for 2 seconds 
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //    SSD1306_EXTERNALVCC
         Serial.println(F("SSD1306 allocation failed"));
             //for(;;); // Don’t proceed, loop forever
     }
-    
   #endif
 #if defined (ARDUINO_MEGA)  | defined (CHIPKIT_MAX32) 
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //    SSD1306_EXTERNALVCC
@@ -124,6 +130,8 @@ void Display_ReInit_End(){
             //for(;;); // Don’t proceed, loop forever
     }
 #endif
+
+
       
      Serial.println(F("Display ReInitilized"));  
  //   display.clearDisplay();
@@ -151,17 +159,12 @@ void DisplayInit(void){
     delay(1300); // Pause for 2 seconds 
   #endif
 
-  
-
  //   #ifdef ARDUINO_MEGA  
     if(!display.begin(SSD1306_SWITCHCAPVCC)) {  //  SSD1306_EXTERNALVCC
         Serial.println(F("SSD1306 allocation failed"));
-  
-     // for(;;); // Don’t proceed, loop forever
+        // for(;;); // Don’t proceed, loop forever
       }
-      else {
 
-    }
     //#endif
        display.dim(0); // lower brightness 
    // display.begin(SSD1306_SWITCHCAPVCC);

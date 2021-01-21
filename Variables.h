@@ -80,13 +80,16 @@ struct AcalRegs acalVals;
 struct Temperature tempVal;
 uint32_t Igain;
 uint32_t Vgain;
-struct
+
+struct EnergyIcVariables
 {
   uint8_t Mode = 0;
   uint8_t Timer = 0;
   bool Error = 0;
   bool commscheck;  
-}EnergyMeterIC;
+};
+
+EnergyIcVariables EnergyMeterIC ;
 
 #endif  
 
@@ -122,16 +125,16 @@ String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
 #define ELEMENTS 12
  const String KeyWords[12]   = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
 
-struct
+struct TaskOrg
 {
-  uint16_t IntTimer250 = 0;
-  uint16_t  IntTimer500 = 0;
-  uint16_t  IntTimer1 = 0;
-  uint16_t  IntTimer2 = 0;
-  uint16_t  IntTimer5 = 0;
-  uint16_t  IntTimer10 = 0;
-  uint16_t  IntTimer20 = 0;
-  uint16_t  IntTimer60 = 0;  
+  uint16_t  IntTimer_250 = 0;
+  uint16_t  IntTimer_500 = 0;
+  uint16_t  IntTimer_1 = 0;
+  uint16_t  IntTimer_2 = 0;
+  uint16_t  IntTimer_5 = 0;
+  uint16_t  IntTimer_10 = 0;
+  uint16_t  IntTimer_20 = 0;
+  uint16_t  IntTimer_60 = 0;  
   bool Task_250msec =0;
   bool Task_500msec =0;
   bool Task_1Sec =0;
@@ -140,8 +143,9 @@ struct
   bool Task_10Sec =0;
   bool Task_20Sec =0;
   bool Task_60Sec =0;
-}Loop;
+};
 
+ TaskOrg Loop;
 
 #define TASK_500MSEC  1
 #define TASK_1SEC 2
@@ -162,7 +166,7 @@ char Device_Id[5] = {'0','0','0','0','\0'};
 
 String Config_Str = "";
 
-struct
+struct SDCard_Variables
 {
   bool LogEnable;  // log on or off  eski LogStatus
   bool LogBootInit; // log on  init case  eski LogStatusInit
@@ -172,17 +176,21 @@ struct
   uint8_t Status; 
   bool FatError;
   float Volume;
-}SDCard;
+};
 
-struct
+SDCard_Variables SDCard;
+
+struct FileSize_Variables
 {
   uint32_t Total;  // log on or off
   uint8_t Byte; // log on  init case
   uint8_t Kbyte;
   uint8_t Mbyte;
-}FileSize;
+};
 
-struct
+FileSize_Variables FileSize;
+
+struct Key_Variables
 {
   uint16_t Logger=0;
   uint8_t BoardTimeOut = 0;
@@ -193,16 +201,18 @@ struct
   bool Released = 0;
   uint8_t TimeOut = 0;
   bool TimeOutEnb = 0;
-}Key;
+};
 
-struct  
+Key_Variables Key;
+
+struct  Sensors
 {
   uint32_t No1;
   uint32_t No2;
   uint32_t No3;    
-} SensorId;
+} ;
 
-//struct Sensors SensorId;
+Sensors SensorId;
 //2874
 
 //String Sensor_Info_SDS= "";

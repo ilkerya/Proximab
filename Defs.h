@@ -1,3 +1,5 @@
+
+// 001BC5067010E312
 /*
 #if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
     #error Select Only One Platform
@@ -40,9 +42,6 @@ C:\Program Files (x86)\Arduino\libraries
 //#define LEM_CURRENT_EXISTS
 //#define VOLTAGE_MEASURE_EXISTS
 
-
-
-
 #define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC Related IOs
 
  // #define DEBUG_SIMULATOR_MODE // For DEbugging As A Simulator
@@ -51,12 +50,10 @@ C:\Program Files (x86)\Arduino\libraries
 
 #define ARM_MATH_CM0PLUS
 
-
 #define RELAY_OUT_1 23
 #define RELAY_OUT_2 53
 
 //#include "SdsDustSensor.h" // https://github.com/lewapek/sds-dust-sensors-arduino-library
-
 /*
  #define SI072_FIRST_SENSOR 7  // multiplexer Channel 7 first blu box prot
  #define SI072_SECOND_SENSOR 1 // first prot  0      0
@@ -84,8 +81,6 @@ C:\Program Files (x86)\Arduino\libraries
 #define POWERIC_CALB9  12
 #define POWERIC_CALB10 13
 
-
-
  #define SI072_FIRST_SENSOR 7  // multiplexer Channel 7 first blu box prot
  #define SI072_SECOND_SENSOR 3 // first prot  0      0
  #define SI072_THIRD_SENSOR 2 // sec1                2 
@@ -108,7 +103,6 @@ C:\Program Files (x86)\Arduino\libraries
 
   #define TDI         A7
   #define TDO         A6
-  #define TMS         A5
   #define TCK         A4
   #define ANALOG3         A3
   #define ANALOG2         A2
@@ -119,20 +113,28 @@ C:\Program Files (x86)\Arduino\libraries
   #define KEY_RIGHT       13
   #define KEY_MID         12
   #define KEY_LEFT        11
-  const int SD_CS_PINOUT = 10;
- // #define SD_CS_PINOUT    10  
+
+  #define TMS         A5
+
+#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
+  // const int SD_CS_PINOUT = 10;
+      #define SD_CS_PINOUT    10  
+#endif
+
+
+  
   #define LED_RED        9  // L1
     #ifdef ENERGYMETER_EXISTS
   #define ADE9153A_CS_PIN  8 
       #endif      
   #define  LED_GREEN         7 //L2
-     #ifdef ENERGYMETER_EXISTS 
+#ifdef ENERGYMETER_EXISTS 
   #define ADE9153A_RED_LED 6                 //On-board LED pin 
   #define ADE9153A_CALB_BUTTON   5         
   #define ADE9153A_RESET_PIN     4  
   #define ADE9153A_IRQ_PIN       3
   #define ADE9153A_ZX_DREADY_PIN 2
-    #endif
+#endif
   #define TX_OUTPUT_PIN          1 //ON BOARD PROGRAMMING & DEBUG RESERVED
   #define RX_INPUT_PIN           0  //ON BOARD PROGRAMMING & DEBUG RESERVED
 
@@ -140,11 +142,8 @@ C:\Program Files (x86)\Arduino\libraries
   #define RV_PINOUT 1 // RV output of the sensor
   #define TMP_PINOUT 0 // analogRead(TMP_PINOUT);
 
-
-
 #define MAX_DISPLAY_CHAR 21
 #define  MAXSHOWLINE 6  // define how many lines for sensorts to show including fw info line 
-
 
 #define MENU_NULL 0
 #define MENU1   16

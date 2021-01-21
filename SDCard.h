@@ -41,7 +41,6 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-
 void Print_ARM_RegsFormat(uint32_t Reg){
       uint32_t  temp = Reg & 0xFF000000;
       Serial.print(temp >> 24,HEX);Serial.print('.'); 
@@ -51,15 +50,14 @@ void Print_ARM_RegsFormat(uint32_t Reg){
       Serial.print(temp>> 8,HEX);Serial.print('.');
        temp = Reg & 0x000000FF;
       Serial.print(temp,HEX);Serial.print(':');
-      Serial.println(Reg,BIN);
+      Serial.println(Reg,BIN);  
 }
 
 void Print_ARM_SPI_Regs(void){
       //Serial.print(F("Total Blocks:      "));
        #ifdef ARDUINO_DUE //
-      uint32_t temp; uint16_t i;uint32_t Reg;
+     // uint32_t temp; uint16_t i;uint32_t Reg;
        
-      
       //Serial.println(SPI0->SPI_CSR[0],BIN);      
       Serial.print(F("SPI_CSR0  "));     
       Serial.println(SPI0->SPI_CSR[0] ,HEX);
@@ -72,6 +70,50 @@ void Print_ARM_SPI_Regs(void){
       Serial.print(F("SPI_CSR3  "));
       Serial.println(SPI0->SPI_CSR[3],HEX);    
       //Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
+    // https://developer.arm.com/documentation/dui0417/d/programmer-s-reference/status-and-system-control-registers/pll-initialization-register--sys-pll-init
+/*
+      Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[24],HEX);  
+       Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[25],HEX);  
+      Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[26],HEX);     
+*/
+      Serial.println(PMC->PMC_SCER ,HEX);   
+       Serial.println (REG_PMC_SCER, BIN);   
+
+      Serial.println(PMC->PMC_MCKR ,HEX);   
+       Serial.println (REG_PMC_MCKR, BIN);
+//https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf
+
+      Serial.println(PMC->CKGR_PLLAR ,HEX);   
+       Serial.println (REG_CKGR_PLLAR, BIN);
+       
+      
+      Serial.println(PMC->PMC_PCK[0] ,HEX);
+
+  //Code Example to select divider 4 for peripheral index 43 (0x2B) and enable its clock:
+    //write_register(PMC_PCR,0x1002102B)
+    //REG_PMC_PCR = 0x0000002B;
+    
+    
+    //Code Example to read the divider of the same peripheral:
+    // write_register(PMC_PCR,0x0000002B)
+   // read_register(PMC_PCR)
+    //REG_PMC_PCR = 0x0000002B;
+        Serial.println (PMC->PMC_PCR, BIN);   
+
+     
+       Serial.println (REG_PMC_WPMR, BIN);
+       Serial.println (REG_PMC_SCSR, BIN);
+
+
+      Serial.println(REG_PMC_WPMR ,HEX);        
+       
+//https://forum.arduino.cc/index.php?topic=218033.0
+      
+              
+      
      #endif
 }
 
@@ -196,8 +238,13 @@ void SD_Card_Info(void){
   Serial.print(F("\nInitializing SD card..."));
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
- // if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
-  if (!card.init(SPI_QUARTER_SPEED, SD_CS_PINOUT)) {  //   // Sd2Card.h
+#ifdef ARDUINO_MKRZERO 
+  if (!card.init(SPI_HALF_SPEED, SDCARD_SS_PIN)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
+#endif
+#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
+  if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
+#endif      
+ // if (!card.init(SPI_QUARTER_SPEED, SD_CS_PINOUT)) {  //   // Sd2Card.h
     Serial.println(F("initialization failed:"));
    // Serial.println(F("* is a card inserted?"));
    // Serial.println(F("* is your wiring correct?"));
@@ -228,14 +275,19 @@ void SD_Card_Info(void){
     SD_FAT_Check();
   }
     Serial.println(F("Card Info End"));
-      Print_ARM_SPI_Regs();
+    Print_ARM_SPI_Regs();
 }
 
 void SD_Card_Init(){
       Serial.println(F("SD_Card_Init Start"));
       Print_ARM_SPI_Regs();
-  // see if the card is present and can be initialized:
+#ifdef ARDUINO_MKRZERO 
+      if (!SD.begin(SDCARD_SS_PIN)) {
+#endif
+#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
   if (!SD.begin(SD_CS_PINOUT)) {
+#endif   
+  
     Serial.println(F("Card failed, or not present"));
       SDCard.Status = SD_NOT_Present;
       switch(SDCard.PauseCount){

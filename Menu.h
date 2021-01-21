@@ -134,6 +134,9 @@ void NVRam_Read_Standbye(void) {
      #ifdef ARDUINO_DUE
       uint8_t Read =dueFlashStorage.read(SLEEP_LOG);
     #endif
+     #ifdef ARDUINO_MKRZERO
+        uint8_t Read = 0;  
+      #endif
        #ifdef CHIPKIT_MAX32 // 32 bit ARM
        uint8_t Read = 0;
     #endif 
@@ -158,6 +161,9 @@ void NVRam_Read_SampleTime(void) {
    #ifdef ARDUINO_DUE // 32 bit ARM
        uint8_t Mode = dueFlashStorage.read(ADDRES_LOG);
     #endif
+     #ifdef ARDUINO_MKRZERO
+        uint8_t Mode = 0;  
+      #endif    
    #ifdef CHIPKIT_MAX32 // 32 bit ARM
        uint8_t Mode = 0;
     #endif    

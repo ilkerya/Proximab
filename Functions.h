@@ -10,28 +10,42 @@ ISR(TIMER1_OVF_vect){        // interrupt service routine that wraps a user defi
 void TC3_Handler(){
         TC_GetStatus(TC1, 0);
     #endif
-        digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);      
-       
-    Loop.IntTimer250++;
-    Loop.IntTimer500 ++;
-    Loop.IntTimer1 ++;
-    Loop.IntTimer2 ++;
-    Loop.IntTimer5 ++;
-    Loop.IntTimer10 ++;
-    Loop.IntTimer20 ++;   
-    Loop.IntTimer60 ++;   
 
-    if(Loop.IntTimer250 >= 13){
-      Loop.IntTimer250 = 0;
+     #ifdef ARDUINO_MKRZERO
+void TC5_Handler (void) {
+  
+      #endif 
+    
+     #ifdef CHIPKIT_MAX32
+  //  void __ISR(_TIMER_2_VECTOR, i p l 3 ) myISR function ( void ){
+void JustAFunction(){
+    //  ISR(TIMER1_OVF_vect){
+    #endif  
+    #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE)//  | defined (ARDUINO_MKRZERO)
+          digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);   
+    #endif
+    #if defined (ARDUINO_MKRZERO) | defined (CHIPKIT_MAX32)
+          digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);   
+    #endif     
+    Loop.IntTimer_250++;
+    Loop.IntTimer_500 ++;
+    Loop.IntTimer_1 ++;
+    Loop.IntTimer_2 ++;
+    Loop.IntTimer_5 ++;
+    Loop.IntTimer_10 ++;
+    Loop.IntTimer_20 ++;   
+    Loop.IntTimer_60 ++;   
+
+    if(Loop.IntTimer_250 >= 13){
+      Loop.IntTimer_250 = 0;
       Loop.Task_250msec = ON;
-     // I2_ACK_Reset();
     }
-    if(Loop.IntTimer500 >= 25){ // 500 msec
-      Loop.IntTimer500 = 0;
+    if(Loop.IntTimer_500 >= 25){ // 500 msec
+      Loop.IntTimer_500 = 0;
       Loop.Task_500msec = ON;  
     }
-    if(Loop.IntTimer1 >= 50){  // 1 sec
-      Loop.IntTimer1 = 0;
+    if(Loop.IntTimer_1 >= 50){  // 1 sec
+      Loop.IntTimer_1 = 0;
       Loop.Task_1Sec = ON;
       digitalWrite(LED_GREEN, digitalRead(LED_GREEN) ^ 1);  
  
@@ -41,30 +55,34 @@ void TC3_Handler(){
       else Display.OLED_Timer = 32768; // no sleep    
       if(Display.InitDelay == OFF)Display.InitDelay = ON;           
     }
-    if(Loop.IntTimer2 >= 100){ // 2 sec
-      Loop.IntTimer2 = 0;
+    if(Loop.IntTimer_2 >= 100){ // 2 sec
+      Loop.IntTimer_2 = 0;
       Loop.Task_2Sec = ON;
       //PrintDisplayBuffer();
     }
-    if(Loop.IntTimer5 >= 250){  // 5 sec
-      Loop.IntTimer5 = 0;
+    if(Loop.IntTimer_5 >= 250){  // 5 sec
+      Loop.IntTimer_5 = 0;
       Loop.Task_5Sec = ON;
     }
-    if(Loop.IntTimer10 >= 500){  // 10 sec
-      Loop.IntTimer10 = 0;
+    if(Loop.IntTimer_10 >= 500){  // 10 sec
+      Loop.IntTimer_10 = 0;
       Loop.Task_10Sec = ON;
     }
-    if(Loop.IntTimer20 >= 1000){  // 20 sec
-      Loop.IntTimer20 = 0;
+    if(Loop.IntTimer_20 >= 1000){  // 20 sec
+      Loop.IntTimer_20 = 0;
       Loop.Task_20Sec = ON;
     }
-    if(Loop.IntTimer60 >= 3000){  // 60 sec
-      Loop.IntTimer60 = 0;
+    if(Loop.IntTimer_60 >= 3000){  // 60 sec
+      Loop.IntTimer_60 = 0;
       Loop.Task_60Sec = ON;
     }        
     Key_Functions();
        //  digitalWrite(LED_RED, digitalRead(LED_RED) ^ 1);
      //   if(!digitalRead(KEY_LEFT) || !digitalRead(KEY_MID) || !digitalRead(KEY_RIGHT))
+     #ifdef ARDUINO_MKRZERO
+         TC5->COUNT16.INTFLAG.bit.MC0 = 1; //Writing a 1 to INTFLAG.bit.MC0 clears the interrupt so that it will run again
+     #endif
+
 }
 // https://www.onlinegdb.com/edit/Hkmlxi_08
 
@@ -202,6 +220,32 @@ void IO_Settings() {
 #ifdef FIRST_PROTOTYPE
 
 #endif
+
+#ifdef ARDUINO_MKRZERO
+  digitalWrite(OLED_GND, LOW);
+  pinMode(OLED_GND, OUTPUT);  // 
+
+
+    pinMode(A4, INPUT);  
+  digitalWrite(OLED_CS, LOW);
+  pinMode(OLED_CS, OUTPUT);  //
+   digitalWrite(OLED_RESET, LOW);
+  pinMode(OLED_RESET, OUTPUT);  // 
+
+
+
+   digitalWrite(OLED_DC, LOW);
+  pinMode(OLED_DC, OUTPUT);  // 
+  digitalWrite(OLED_CLK, LOW);
+  pinMode(OLED_CLK, OUTPUT);  // 
+  digitalWrite(OLED_MOSI, LOW);
+  pinMode(OLED_MOSI, OUTPUT);  // 
+
+  digitalWrite(OLED_POWER, HIGH);
+  pinMode(OLED_POWER, OUTPUT);  // 
+  
+#endif
+
 #ifdef ENERGYMETER_EXISTS
 /*
   pinMode(A5, INPUT);  // 
@@ -209,11 +253,11 @@ void IO_Settings() {
   pinMode(A3, INPUT);  // 
   pinMode(A2, INPUT);  // 
   pinMode(A1, INPUT);  // 
-  digitalWrite(A5, HIGH);
   digitalWrite(A4, HIGH);
   digitalWrite(A3, HIGH);
   digitalWrite(A2, HIGH);
   digitalWrite(A1, HIGH);
+
   pinMode(A5, INPUT_PULLUP);  //
   pinMode(A4, INPUT_PULLUP);  //
   pinMode(A3, INPUT_PULLUP);  //
@@ -262,7 +306,7 @@ void IO_Settings() {
 
 }
 void MicroInit() {
-  Display_Line4[5] ='\0';
+ // Display_Line4[5] ='\0';
   Serial.begin(115200);
   IO_Settings();
   #ifdef OLEDDISPLAY_EXISTS
@@ -338,6 +382,10 @@ void MicroInit() {
         // 52 -> 19.22 ms      
         // 54 -> 18.63
         // 64 -> 15.68 ms
+#endif
+ #ifdef ARDUINO_MKRZERO // ARM Cortex M0
+  tcConfigure(50000); //configure the timer to run at <sampleRate>Hertz
+  tcStartCounter(); //starts the timer
 #endif
 
 }
