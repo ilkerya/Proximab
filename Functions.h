@@ -27,6 +27,15 @@ void JustAFunction(){
     #if defined (ARDUINO_MKRZERO) | defined (CHIPKIT_MAX32)
           digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);   
     #endif     
+
+
+    #if  defined KEY_DIGITAL
+      Key_Functions_Digital();
+    #endif
+    #if  defined KEY_ANALOG  
+      Key_Functions_Analog(analogRead(KEY_ANALOG_IN));
+    #endif
+    
     Loop.IntTimer_250++;
     Loop.IntTimer_500 ++;
     Loop.IntTimer_1 ++;
@@ -76,7 +85,7 @@ void JustAFunction(){
       Loop.IntTimer_60 = 0;
       Loop.Task_60Sec = ON;
     }        
-    Key_Functions();
+
        //  digitalWrite(LED_RED, digitalRead(LED_RED) ^ 1);
      //   if(!digitalRead(KEY_LEFT) || !digitalRead(KEY_MID) || !digitalRead(KEY_RIGHT))
      #ifdef ARDUINO_MKRZERO
@@ -225,16 +234,13 @@ void IO_Settings() {
   digitalWrite(OLED_GND, LOW);
   pinMode(OLED_GND, OUTPUT);  // 
 
-
-    pinMode(A4, INPUT);  
+  pinMode(A4, INPUT);  
   digitalWrite(OLED_CS, LOW);
   pinMode(OLED_CS, OUTPUT);  //
    digitalWrite(OLED_RESET, LOW);
   pinMode(OLED_RESET, OUTPUT);  // 
 
-
-
-   digitalWrite(OLED_DC, LOW);
+  digitalWrite(OLED_DC, LOW);
   pinMode(OLED_DC, OUTPUT);  // 
   digitalWrite(OLED_CLK, LOW);
   pinMode(OLED_CLK, OUTPUT);  // 
@@ -286,7 +292,7 @@ void IO_Settings() {
 
   digitalWrite(RELAY_OUT_2, LOW);
   pinMode(RELAY_OUT_2, OUTPUT);  // SS Pin high to avoid miscommunication
-  
+
 //  pinMode(SD_CS_PINOUT, OUTPUT);
  // digitalWrite(SD_CS_PINOUT, HIGH);
   
@@ -304,6 +310,8 @@ void IO_Settings() {
   pinMode(KEY_RIGHT, INPUT);           // set pin to input
   pinMode(KEY_RIGHT, INPUT_PULLUP);
 
+
+//  pinMode(KEY_ANALOG, INPUT);  // 
 }
 void MicroInit() {
  // Display_Line4[5] ='\0';
@@ -335,7 +343,8 @@ void MicroInit() {
 #endif
 
 #ifdef ARDUINO_MEGA
-  ADCSRA &= ~ (1 << ADEN);            // turn off ADC to save power ,, enable when needed and turn off again
+//  ADCSRA &= ~ (1 << ADEN);            // turn off ADC to save power ,, enable when needed and turn off again
+    ADCSRA |= (1 << ADEN); // enable adc
 #endif
 
   Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__);
@@ -343,8 +352,10 @@ void MicroInit() {
   //  ShowSerialCode();
 
   NVRam_Read_SerNo();
+  NVRam_Read_QueNo();
+  UpdateLogFileNo();
   UpdateLogFileId();
-
+  
 //#ifndef DEBUG_SIMULATOR_MODE
    #ifdef SDCARD_EXISTS
     SD_Card_Info();

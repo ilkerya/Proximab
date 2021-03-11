@@ -41,81 +41,7 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-void Print_ARM_RegsFormat(uint32_t Reg){
-      uint32_t  temp = Reg & 0xFF000000;
-      Serial.print(temp >> 24,HEX);Serial.print('.'); 
-      temp = Reg & 0x00FF0000;
-      Serial.print(temp >> 16,HEX);Serial.print('.');       
-      temp = Reg & 0x0000FF00;
-      Serial.print(temp>> 8,HEX);Serial.print('.');
-       temp = Reg & 0x000000FF;
-      Serial.print(temp,HEX);Serial.print(':');
-      Serial.println(Reg,BIN);  
-}
 
-void Print_ARM_SPI_Regs(void){
-      //Serial.print(F("Total Blocks:      "));
-       #ifdef ARDUINO_DUE //
-     // uint32_t temp; uint16_t i;uint32_t Reg;
-       
-      //Serial.println(SPI0->SPI_CSR[0],BIN);      
-      Serial.print(F("SPI_CSR0  "));     
-      Serial.println(SPI0->SPI_CSR[0] ,HEX);
-
-      Serial.print(F("SPI_CSR1  "));
-      Serial.println(SPI0->SPI_CSR[1],HEX);
-      Serial.print(F("SPI_CSR2  "));
-      Serial.println(SPI0->SPI_CSR[2],HEX);
-      
-      Serial.print(F("SPI_CSR3  "));
-      Serial.println(SPI0->SPI_CSR[3],HEX);    
-      //Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
-    // https://developer.arm.com/documentation/dui0417/d/programmer-s-reference/status-and-system-control-registers/pll-initialization-register--sys-pll-init
-/*
-      Serial.print(F("PLLADIV[24]  "));
-      Serial.println(SYS_PLL_INIT->PLLADIV[24],HEX);  
-       Serial.print(F("PLLADIV[24]  "));
-      Serial.println(SYS_PLL_INIT->PLLADIV[25],HEX);  
-      Serial.print(F("PLLADIV[24]  "));
-      Serial.println(SYS_PLL_INIT->PLLADIV[26],HEX);     
-*/
-      Serial.println(PMC->PMC_SCER ,HEX);   
-       Serial.println (REG_PMC_SCER, BIN);   
-
-      Serial.println(PMC->PMC_MCKR ,HEX);   
-       Serial.println (REG_PMC_MCKR, BIN);
-//https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf
-
-      Serial.println(PMC->CKGR_PLLAR ,HEX);   
-       Serial.println (REG_CKGR_PLLAR, BIN);
-       
-      
-      Serial.println(PMC->PMC_PCK[0] ,HEX);
-
-  //Code Example to select divider 4 for peripheral index 43 (0x2B) and enable its clock:
-    //write_register(PMC_PCR,0x1002102B)
-    //REG_PMC_PCR = 0x0000002B;
-    
-    
-    //Code Example to read the divider of the same peripheral:
-    // write_register(PMC_PCR,0x0000002B)
-   // read_register(PMC_PCR)
-    //REG_PMC_PCR = 0x0000002B;
-        Serial.println (PMC->PMC_PCR, BIN);   
-
-     
-       Serial.println (REG_PMC_WPMR, BIN);
-       Serial.println (REG_PMC_SCSR, BIN);
-
-
-      Serial.println(REG_PMC_WPMR ,HEX);        
-       
-//https://forum.arduino.cc/index.php?topic=218033.0
-      
-              
-      
-     #endif
-}
 
     
 void GetFileSize(){
@@ -144,6 +70,25 @@ void ReadConfigFile(){
    else{
       Serial.print(F("error opening")); Serial.println(ConfigFile);    
    }
+}
+void UpdateFileQue(){
+    uint16_t Que= (LOG_FILE[6]-48) *10;
+    Que += LOG_FILE[7]-48;
+  //  Serial.print(F("Que ")); Serial.println(Que); 
+    #define MAXLOGFILESIZE 1048576 //2048
+    if(FileSize.Total > MAXLOGFILESIZE){ // 1Mbyte 
+       if(Que<100){
+          Que++;
+          LOG_FILE[6] =  (Que/10)+48;   
+          LOG_FILE[7] =  (Que%10)+48;
+          File_Que[0] =  LOG_FILE[6];
+          File_Que[1] =  LOG_FILE[7];
+          NVRam_Write_QueNo(&File_Que[0]);
+       //   Serial.print(F("NVRAM_QUE1 "));Serial.println( EEPROM.read(NVRAM_QUE1)); 
+      //    Serial.print(F("NVRAM_QUE2 "));Serial.println( EEPROM.read(NVRAM_QUE2)); 
+       }       
+    } 
+  //  Serial.print(F("LOG_FILE6.7 ")); Serial.print(LOG_FILE[6]);Serial.print(LOG_FILE[7]);
 }
 void SD_CardLogTask(){ 
  //   Serial.print(F("SDCard.Status ")); Serial.println(SDCard.Status); 
@@ -177,16 +122,19 @@ void SD_CardLogTask(){
     if (dataFile) {
       dataFile.println(dataString);
       FileSize.Total = dataFile.size();  
+          //  Serial.println(dataFile.position()); // 2021.03.09 
+          //  Serial.println(FileSize.Total); // 2021.03.09 
       dataFile.close();
       // print to the serial port too:
       Serial.print(F("Data2 csv File:    "));
       Serial.println(dataString);  
+      UpdateFileQue(); 
     }      
   else {  
       Serial.print(F("error opening : ")); 
       Serial.println(LOG_FILE);    
       FileSize.Total = 0;
-    }     
+    }   
 }
 void SD_FAT_Check(void){
   Serial.println(F("FatCheck Start"));
@@ -489,5 +437,75 @@ void SD_Card_Data_Preparation(){
       #ifdef PROGRELAY_EXISTS    
       dataString +=  String(digitalRead(RELAY_OUT_1))+ ','+ String(digitalRead(RELAY_OUT_2));  
       #endif 
+}
+void Print_ARM_RegsFormat(uint32_t Reg){
+      uint32_t  temp = Reg & 0xFF000000;
+      Serial.print(temp >> 24,HEX);Serial.print('.'); 
+      temp = Reg & 0x00FF0000;
+      Serial.print(temp >> 16,HEX);Serial.print('.');       
+      temp = Reg & 0x0000FF00;
+      Serial.print(temp>> 8,HEX);Serial.print('.');
+       temp = Reg & 0x000000FF;
+      Serial.print(temp,HEX);Serial.print(':');
+      Serial.println(Reg,BIN);  
+}
+
+void Print_ARM_SPI_Regs(void){
+      //Serial.print(F("Total Blocks:      "));
+       #ifdef ARDUINO_DUE //
+     // uint32_t temp; uint16_t i;uint32_t Reg;
+       
+      //Serial.println(SPI0->SPI_CSR[0],BIN);      
+      Serial.print(F("SPI_CSR0  "));     
+      Serial.println(SPI0->SPI_CSR[0] ,HEX);
+
+      Serial.print(F("SPI_CSR1  "));
+      Serial.println(SPI0->SPI_CSR[1],HEX);
+      Serial.print(F("SPI_CSR2  "));
+      Serial.println(SPI0->SPI_CSR[2],HEX);
+      
+      Serial.print(F("SPI_CSR3  "));
+      Serial.println(SPI0->SPI_CSR[3],HEX);    
+      //Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
+    // https://developer.arm.com/documentation/dui0417/d/programmer-s-reference/status-and-system-control-registers/pll-initialization-register--sys-pll-init
+/*
+      Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[24],HEX);  
+       Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[25],HEX);  
+      Serial.print(F("PLLADIV[24]  "));
+      Serial.println(SYS_PLL_INIT->PLLADIV[26],HEX);     
+*/
+      Serial.println(PMC->PMC_SCER ,HEX);   
+       Serial.println (REG_PMC_SCER, BIN);   
+
+      Serial.println(PMC->PMC_MCKR ,HEX);   
+       Serial.println (REG_PMC_MCKR, BIN);
+//https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf
+
+      Serial.println(PMC->CKGR_PLLAR ,HEX);   
+       Serial.println (REG_CKGR_PLLAR, BIN);
+            
+      Serial.println(PMC->PMC_PCK[0] ,HEX);
+
+  //Code Example to select divider 4 for peripheral index 43 (0x2B) and enable its clock:
+    //write_register(PMC_PCR,0x1002102B)
+    //REG_PMC_PCR = 0x0000002B;
+    
+    
+    //Code Example to read the divider of the same peripheral:
+    // write_register(PMC_PCR,0x0000002B)
+   // read_register(PMC_PCR)
+    //REG_PMC_PCR = 0x0000002B;
+        Serial.println (PMC->PMC_PCR, BIN);   
+    
+       Serial.println (REG_PMC_WPMR, BIN);
+       Serial.println (REG_PMC_SCSR, BIN);
+
+      Serial.println(REG_PMC_WPMR ,HEX);        
+       
+//https://forum.arduino.cc/index.php?topic=218033.0             
+      
+     #endif
 }
 #endif

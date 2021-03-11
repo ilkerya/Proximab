@@ -1,15 +1,6 @@
 
 // 001BC5067010E312
 /*
-#if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
-    #error Select Only One Platform
-#endif
- #if !(!defined (ARDUINO_MEGA) ^ !defined (ARDUINO_DUE)) 
-    #error Select At Least One Platform
-#endif
-*/
-
-/*
 typedef  byte               uint8;
 typedef  signed char        int8;
 typedef  unsigned char      uint8;
@@ -41,6 +32,9 @@ C:\Program Files (x86)\Arduino\libraries
 //#define WIND_SENSOR_EXISTS  
 //#define LEM_CURRENT_EXISTS
 //#define VOLTAGE_MEASURE_EXISTS
+
+//#define KEY_DIGITAL
+#define KEY_ANALOG
 
 #define AD9153_PROTOTYPE  // AD9153 Power Monitoring IC Related IOs
 
@@ -93,6 +87,7 @@ C:\Program Files (x86)\Arduino\libraries
 
 #ifdef FIRST_PROTOTYPE
   //  const int chipSelect = 10; // mega SS for SD Card  
+  #define KEY_UP 5 // 12//4 //RED
   #define KEY_RIGHT 2//12//2 //
   #define LED_GREEN 3// 11//3 // GREEN
   #define LED_RED 4 // 12//4 //RED
@@ -100,11 +95,12 @@ C:\Program Files (x86)\Arduino\libraries
   #define KEY_LEFT 6//13//6 // ok
 #endif
 
-
   #define TDI         A7
   #define TDO         A6
   #define TCK         A4
-  #define ANALOG3         A3
+  #define TMS         A5
+  #define ANALOG4      A4  
+  #define KEY_ANALOG_IN   A3
   #define ANALOG2         A2
   #define ANALOG1         A1
   
@@ -113,16 +109,13 @@ C:\Program Files (x86)\Arduino\libraries
   #define KEY_RIGHT       13
   #define KEY_MID         12
   #define KEY_LEFT        11
-
-  #define TMS         A5
+  #define KEY_UP 12 
 
 #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
   // const int SD_CS_PINOUT = 10;
       #define SD_CS_PINOUT    10  
 #endif
 
-
-  
   #define LED_RED        9  // L1
     #ifdef ENERGYMETER_EXISTS
   #define ADE9153A_CS_PIN  8 
@@ -197,6 +190,23 @@ C:\Program Files (x86)\Arduino\libraries
 #define SDHC_TYPE 3
 #define UNKNOWN_TYPE 4
 
+
+#if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
+    #error Select Only One Platform-> ARDUINO_MEGA or ARDUINO_DUE
+#endif
+
+ #if !(!defined (ARDUINO_MEGA) ^ !defined (ARDUINO_DUE)) 
+    #error Select At Least One Platform -> ARDUINO_MEGA or ARDUINO_DUE
+#endif
+
+#if defined (KEY_DIGITAL)  & defined (KEY_ANALOG) 
+    #error Select Only One Type -> KEY_DIGITAL or KEY_ANALOG
+#endif
+
+ #if !(!defined (KEY_DIGITAL) ^ !defined (KEY_ANALOG)) 
+    #error Select At Least One Type -> KEY_DIGITAL or KEY_ANALOG
+#endif
+
 // function prototypes
 void Common_Loop(); 
 void ResetCasePrint();
@@ -232,6 +242,7 @@ void UpdateInfoLine();
 void UpdateDisplayMenu();
 void UpdateSD_LogTime();
 void UpdateFileSize();
+void ConvertFileSize(uint32_t);// Line3  
 void UpdateProperLine(uint8_t Index, uint8_t Line);
 
 void EscMenuKey(void);
@@ -270,6 +281,9 @@ void NVRam_Read_Standbye(void);
 void NVRam_Write_Standbye(bool Mode);
 void NVRam_Read_SerNo(void);
 void NVRam_Write_SerNo(char* p);
+void NVRam_Read_QueNo(void);
+void NVRam_Write_QueNo(char* p);
+
 void UpdateLogFileId(void);
 char* CopyFlashToRam(const char* );
 

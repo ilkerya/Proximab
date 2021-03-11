@@ -18,7 +18,8 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
   B01110000, B01110000,
   B00000000, B00110000 };
 //char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
-static const char Disp_MENU_NULL[]    PROGMEM = "ENTER             ESC";
+static const char Disp_MENU_NULL[]  PROGMEM = "ENTER             ESC";
+static const char Disp_MENU_ERROR[] PROGMEM = " KEY ERROR !         ";
 static const char Disp_MENU1[] PROGMEM =     "LOG START & STOP MENU";
 static const char Disp_MENU2[] PROGMEM =     "LOG SAMPLE TIME MENU ";
 static const char Disp_MENU3[] PROGMEM =     "DISPLAY STANDBYE MENU";
@@ -160,10 +161,11 @@ uint8_t SampleTime = TASK_2SEC; // 250msec 1 // 500 2 // 1Sec 4 // 2sec 8 // 5se
 // the logging file
 File logfile;
 String dataString = "";
-char LOG_FILE[] =  "LOG_xxxx.csv";
+//char LOG_FILE[] =  "LOG_xxxx.csv";
+char LOG_FILE[] =  "Lxxxx_01.csv";
 const char ConfigFile[] PROGMEM =  "RLConfig.txt";
 char Device_Id[5] = {'0','0','0','0','\0'}; 
-
+char File_Que[3] = {'0','0','\0'}; 
 String Config_Str = "";
 
 struct SDCard_Variables
@@ -192,12 +194,19 @@ FileSize_Variables FileSize;
 
 struct Key_Variables
 {
+  uint32_t Adc = 0;
   uint16_t Logger=0;
   uint8_t BoardTimeOut = 0;
   bool BoardTimeOutEnb = 0;  
+  bool Left_Press = 0;
+  bool Mid_Press = 0;
+  bool Right_Press = 0;
+  bool Up_Press = 0; 
   bool Left_Rel = 0;
   bool Mid_Rel = 0;
   bool Right_Rel = 0;
+  bool Up_Rel = 0;  
+  bool Error = 0;  
   bool Released = 0;
   uint8_t TimeOut = 0;
   bool TimeOutEnb = 0;
@@ -222,7 +231,7 @@ Sensors SensorId;
 
 
 const uint8_t numChars = 32;
-char receivedChars[numChars]; // an array to store the received data
+char rxarr[numChars]; // an array to store the received data
 boolean newData = false;
 
 #define BUF_LENGTH 60
@@ -276,6 +285,8 @@ struct
 #define NVRAM_ID3 6
 #define NVRAM_ID4 7
 
+#define NVRAM_QUE1 14
+#define NVRAM_QUE2 15
 
 
 String Str_Time="";

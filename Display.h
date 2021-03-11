@@ -14,8 +14,8 @@
       #define OLED_MOSI  32// 11 //common 51
     #endif
     #ifdef AD9153_PROTOTYPE
-      #define OLED_GND 42// 13
-      #define OLED_POWER 40// 13
+      #define OLED_GND 40// 13
+      #define OLED_POWER 38// 13
       #define OLED_CS    36// 13
       #define OLED_RESET 34
       #define OLED_DC    32// 12  // common 50
@@ -267,6 +267,8 @@ void displayValues(void)
 
     display.setCursor(0, 8);
     display.print(Display_Line2);   //10
+   
+   //   Display_Line2 =  String(KeyAdc);
   
     display.setCursor(0, 16);
     display.print(Display_Line3);   //10 
@@ -289,7 +291,14 @@ void displayValues(void)
       UpdateDispSpChar(DispRollIndex[3], 7); // Line 7
  
     display.setCursor(0, 56); // 8th line
-    display.print(Display_Line8);   //10 
+   // display.print(Display_Line8);   //10 
+
+     display.print(Key.Adc);
+     display.print(" L");display.print(Key.Left_Press);
+     display.print(" M");display.print(Key.Mid_Press);
+     display.print(" R");display.print(Key.Right_Press);
+     display.print(" U");display.print(Key.Up_Press);          
+     display.print(" Rl");display.print(Key.Released);   
 /*
     if( DispExpLin8_1){
       DispExpLin8_1 = OFF;
@@ -348,6 +357,12 @@ String UpddateDateTimeBuffer(void){
   
 void UpdateDisplayMenu(void){
   String str;
+  if(Key.Error) {
+    str = CopyFlashToRam(Disp_MENU_ERROR);
+    Display_Line8 = str;
+    return;
+  }
+  
   switch(MainMenu){
     case MENU_NULL : 
       str = CopyFlashToRam(Disp_MENU_NULL);

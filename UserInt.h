@@ -17,7 +17,8 @@ void UpdateDisplayBuffer(void){
   #ifdef SDCARD_EXISTS
   
     UpdateSD_LogTime();// Line2
-    UpdateFileSize();// Line3
+ //   UpdateFileSize();// Line3
+    ConvertFileSize(FileSize.Total);// Line3  
   #endif	
     
     UpdateProperLine(DispRollIndex[0], 4); // Line 4
@@ -27,6 +28,53 @@ void UpdateDisplayBuffer(void){
     
     // DisplayFullSensors();   
     UpdateDisplayMenu(); // Line8    
+}
+// Flash // RAM   // Usage
+// 61438 // 2856  // UpdateFileSize
+// 61926 // 2848 // ConvertFileSize with log
+// 61898 // 2848 // ConvertFileSize without log
+void ConvertFileSize(uint32_t Number){
+  #define MAXDIGIT 10  // max 10 char 9.999.999.999 max 10GB
+  #define ARRSIZE 21
+    char str[ARRSIZE]; uint8_t i = 0;uint8_t Digit = 1;uint32_t Division=1 ;
+    //Serial.print("Number ");Serial.println(Number);
+    for( i = 0; i < ARRSIZE; i++)
+       str[i] = ' '; //clean all    
+              
+   for(uint32_t j = Number ; j >= 10; j /= 10){
+         Digit++;
+         Division *= 10;
+   }
+    i = MAXDIGIT- Digit; // max 10 char 9.999.999.999 max 10GB 
+    for(; Digit != 0; Digit--){
+        str[i++] =  (Number /Division) +'0';
+        if((Digit == 10) ||  (Digit == 4) || (Digit == 7)){
+            str[i++] ='.';
+        }
+        Number %= Division;
+        Division /= 10;
+    }
+    str[i++] = ' ';   //10 1
+    str[i++] = 'B';
+    str[i++] = 'y';
+    str[i++] = 't';
+    str[i++] = 'e';
+    str[i++] = 's';  
+    for( i = 0; i < ARRSIZE; i++){
+      Display_Line3[i] =  str[i];
+    }
+    /*
+   // i= ARRSIZE;
+    Display_Line3[i++] = ' ';   //10 1
+    Display_Line3[i++] = 'B';
+    Display_Line3[i++] = 'y';
+    Display_Line3[i++] = 't';
+    Display_Line3[i++] = 'e';
+    Display_Line3[i++] = 's';  
+    */
+     // Display_Line3 += " Bytes";
+    //  Serial.print("Display_Line3 ");Serial.println(Display_Line3);
+   //     Serial.print(str[i]);
 }
 
 void UpdateFileSize(){
@@ -293,8 +341,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
              }    
              else   //str += CALIBRATING;//str += "Calibrating!";  // 3/4/2  
                       str += CopyFlashToRam(CALIBRATING);               
-            #endif   
-                   
+            #endif                    
      break; 
      case 6:
       //str += Display_LineTry;
@@ -305,8 +352,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
                   else str += String(Values.PM25,0);
             #endif               
      break;  
-     case 7:  
-   
+     case 7:    
           str += "R1:" +String(digitalRead(RELAY_OUT_1))+ " "; //7 + 1     
          // str +=  String((unsigned int)RL1Min) +   RLlVal  +  String((unsigned int)RL1Max);
           for(int i = 0; i < MAXNOCHAR; i++){
@@ -315,11 +361,9 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           str += " " +  RLlVal + " ";   
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr4[i];
-          }  
-          
+          }        
       break;  
-      case 8:    
-      
+      case 8:       
           str += "R2:" +String(digitalRead(RELAY_OUT_2))+ " "; //7 + 1
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr6[i];  // Limit Str length to 4 20.4 // 124. // 1378
@@ -327,8 +371,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           str += " " +  RL2Val + " "; 
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr8[i];
-          }  
-          
+          }        
       break;                
       default: str = "default";
       break; 

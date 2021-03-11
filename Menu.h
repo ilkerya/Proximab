@@ -8,7 +8,7 @@ void KeyTimeOutCheck(void) {
     }
   }
 }
-
+  
 void KeyTimeOutStart(void) {
   Key.BoardTimeOutEnb = ON;
   Key.BoardTimeOut  = 24;// 24 sec
@@ -66,6 +66,34 @@ void SetResetLog(bool Enable) {
       SDCard.LogEnable = OFF;
       NVRam_Write_LogStatus(OFF);
     } 
+}
+void NVRam_Read_QueNo() {
+   #ifdef ARDUINO_MEGA // 8 bit AVR 
+    File_Que[0] = (char)EEPROM.read(NVRAM_QUE1);
+    File_Que[1] = (char)EEPROM.read(NVRAM_QUE2);
+
+  #endif
+   #ifdef ARDUINO_DUE // 8 bit AVR
+    File_Que[0] = (char)dueFlashStorage.read(NVRAM_QUE1);
+    File_Que[1] = (char)dueFlashStorage.read(NVRAM_QUE2);
+   #endif
+   Serial.print(F("File_Que: ")) ;
+   Serial.println(File_Que);  
+}
+
+
+void NVRam_Write_QueNo(char* p) {
+  Serial.print(F("File_Que:"));
+  #ifdef ARDUINO_MEGA // 8 bit AVR
+          EEPROM.write(NVRAM_QUE1, p[0]);// high byte
+          EEPROM.write(NVRAM_QUE2, p[1]);// high byte                         
+    #endif
+    #ifdef ARDUINO_DUE
+          dueFlashStorage.write(NVRAM_QUE1, p[0]);// high byte
+          dueFlashStorage.write(NVRAM_QUE2, p[1]);// high byte                
+      
+    #endif
+         Serial.println(p[0]);Serial.println(p[1]);
 }
 void NVRam_Read_SerNo() {
    #ifdef ARDUINO_MEGA // 8 bit AVR 
@@ -196,11 +224,29 @@ void NVRam_Read_SampleTime(void) {
     }
   */
 }
+
+void UpdateLogFileNo(void){
+  uint16_t No = (File_Que[0]-48)*10;
+  No += (File_Que[1]-48);
+
+  Serial.print(F("    No: "));
+  Serial.println(No);
+  if(No >= 100){
+      File_Que[0] =  '0';
+      File_Que[1] =  '1';  
+      NVRam_Write_QueNo(&File_Que[0]);
+  }
+}
+
 void UpdateLogFileId(void){
-    LOG_FILE[4] = Device_Id[0];
-    LOG_FILE[5] = Device_Id[1];
-    LOG_FILE[6] = Device_Id[2];
-    LOG_FILE[7] = Device_Id[3];
+    LOG_FILE[1] = Device_Id[0];
+    LOG_FILE[2] = Device_Id[1];
+    LOG_FILE[3] = Device_Id[2];
+    LOG_FILE[4] = Device_Id[3];
+    
+    LOG_FILE[6] =  File_Que[0];   
+    LOG_FILE[7] =  File_Que[1];  
+    
     Serial.print(F("LOG_FILE: ")) ;
     Serial.println(LOG_FILE);
 }
@@ -243,8 +289,73 @@ void ResetCasePrint() {
 
     #endif
 }
+void Key_Functions_Analog(uint32_t Adc) {
+    Key.Adc = Adc;
+    Key.Mid_Press = OFF;
+    Key.Right_Press = OFF;
+    Key.Up_Press = OFF;
+    Key.Left_Press = OFF;
+    if((Key.Adc < 404) &&(Key.Adc > 384)){
+      Key.Released = ON;
+      Key.Error = OFF;
+      return;
+    }
+    else if((Key.Adc < 110) &&(Key.Adc > 84))Key.Left_Press = ON;
+    else if((Key.Adc < 358) &&(Key.Adc > 334))Key.Up_Press = ON;
+    else if((Key.Adc < 588) &&(Key.Adc > 564))Key.Mid_Press = ON;
+    else if((Key.Adc < 478) &&(Key.Adc > 440))Key.Right_Press = ON;   
+    else  {
+      Key.Error = ON;
+      return;
+    }
+    Key.Error = OFF;
+  if (!Key.Released)return;
+  Key.Released = OFF;
+  DisplayWakeUp();
 
-void Key_Functions(void) {
+  if (Key.Left_Press) EnterMenuKey();
+  if (Key.Mid_Press) DownMenuKey();
+  if (Key.Right_Press) EscMenuKey();
+  if (Key.Up_Press)   UpMenuKey();
+    KeyTimeOutStart();
+  /*
+  if (Key.Released && Key.Left_Press) {
+    //Key.Released = OFF;
+    DisplayWakeUp();
+    EnterMenuKey();
+    KeyTimeOutStart();
+    return;
+  }
+  
+  
+  if (Key.Released && Key.Mid_Press) {
+   // Key.Released = OFF;
+    DisplayWakeUp();
+    UpMenuKey();   
+    KeyTimeOutStart(); 
+    return;
+  }
+
+  if (Key.Released && Key.Right_Press) {
+   // Key.Released = OFF;
+    DisplayWakeUp();
+    EscMenuKey();
+    KeyTimeOutStart(); 
+    return;
+  }
+ 
+  if (Key.Released && Key.Up_Press ){
+   // Key.Released = OFF;
+    DisplayWakeUp();
+    DownMenuKey(); 
+    KeyTimeOutStart();
+    return;
+  }
+  */
+}
+
+void Key_Functions_Digital(void) {
+
   if (!Key.Left_Rel && !Key.Mid_Rel && !Key.Right_Rel) {
     Key.Released = ON;
   }
@@ -344,18 +455,33 @@ void DownMenuKey(void) {
       break;
    case MENU2_SUB8 :  
       break;
+      
     case MENU5_SUB1 :  
+        DateTimeBuf.Year--;
+        if (DateTimeBuf.Year < 2021)DateTimeBuf.Year = 2040;
       break;
-    case MENU5_SUB2 :  
+    case MENU5_SUB2 :
+         DateTimeBuf.Month--;
+        if (DateTimeBuf.Month < 1)DateTimeBuf.Month = 12;
       break;
     case MENU5_SUB3 :  
+        DateTimeBuf.Day --; 
+        if (DateTimeBuf.Day < 1)DateTimeBuf.Day = 31;
       break;
-    case MENU5_SUB4 :  
+    case MENU5_SUB4 :
+        DateTimeBuf.Hour --;
+        if (DateTimeBuf.Hour < 1)DateTimeBuf.Hour = 23;  
       break;
     case MENU5_SUB5 :  
+        DateTimeBuf.Minute --;
+        if (DateTimeBuf.Minute < 1)DateTimeBuf.Minute = 59;  
       break;
     case MENU5_SUB6 :  
+         DateTimeBuf.Second --;
+        if (DateTimeBuf.Second < 1)DateTimeBuf.Second = 59;    
       break;
+
+      
      case MENU5_SUB7 :      
       break;
     case MENU6_SUB1:  //     
@@ -438,8 +564,8 @@ void UpMenuKey(void) {
       break;
     case MENU5_SUB1 :  
         DateTimeBuf.Year++;
-        if (DateTimeBuf.Year > 2030)DateTimeBuf.Year = 2020;
-        if (DateTimeBuf.Year < 2020)DateTimeBuf.Year = 2020;
+        if (DateTimeBuf.Year > 2040)DateTimeBuf.Year = 2021;
+      //  if (DateTimeBuf.Year < 2020)DateTimeBuf.Year = 2020;
       break;
     case MENU5_SUB2 :
          DateTimeBuf.Month++;

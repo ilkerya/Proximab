@@ -94,22 +94,22 @@ void  RTC_Init(){
  void SerialPortRx() {
     static uint8_t ndx = 0;
     char endMarker = '\n';
-    uint8_t Timer = 0;
+    uint8_t Counter = 0;
     char rc;
         // if (Serial.available() > 0) {
      while (Serial.available() > 0 && newData == false) {
         rc = Serial.read();
-        Timer++; // 2020,05,27,21,14,23 19 characters + \0' // in total 21
+        Counter++; // 2020,05,27,21,14,23 19 characters + \0' // in total 21
 
         if (rc != endMarker) {
-            receivedChars[ndx] = rc;
+            rxarr[ndx] = rc;
             ndx++;
             if (ndx >= numChars) {
               ndx = numChars - 1;
           }
         }
         else {
-          receivedChars[ndx] = '\0'; // terminate the string
+          rxarr[ndx] = '\0'; // terminate the string
           ndx = 0;
           newData = true;
       }
@@ -117,10 +117,10 @@ void  RTC_Init(){
   //////////////////// end of while loop 
    if (newData == true) {
         Serial.print(F("This just in .................................. "));
-          Serial.println(receivedChars);
+          Serial.println(rxarr);
           newData = false;            
-          Serial.print(F("Timer:"));  
-          Serial.println(Timer);
+          Serial.print(F("Counter:"));  
+          Serial.println(Counter);
           unsigned int Year=0; 
           unsigned int Month=0; 
           unsigned int Day=0;                       
@@ -128,35 +128,44 @@ void  RTC_Init(){
           unsigned int Minute=0; 
           unsigned int Second=0; 
                
-        if((Timer == 21) && (receivedChars[4] == ',' )&&(receivedChars[7] == ',') && 
-           (receivedChars[10] == ',')&&  (receivedChars[13] == ',' )&& (receivedChars[16] == ',' )){
+        if((Counter == 21) && (rxarr[4] == ',' )&&(rxarr[7] == ',') && 
+           (rxarr[10] == ',')&&  (rxarr[13] == ',' )&& (rxarr[16] == ',' )){
             for(int i = 0; i<32; i ++ ){ // ascii 2 byte
-                receivedChars[i] -= 48;          
+                rxarr[i] -= 48;          
             }
-            Year  = 1000 * receivedChars[0];
-            Year  += 100 * receivedChars[1]; 
-            Year  += 10 * receivedChars[2];  
-            Year  += receivedChars[3];  
-            Month  += 10 * receivedChars[5];      
-            Month  += receivedChars[6];  
-            Day  += 10 * receivedChars[8];       
-            Day  += receivedChars[9];            
-            Hour  += 10 * receivedChars[11];  
-            Hour  += receivedChars[12]; 
-            Minute  += 10 * receivedChars[14];
-            Minute  += receivedChars[15]; 
-            Second  += 10 * receivedChars[17];    
-            Second  += receivedChars[18];       
+            Year  = 1000 * rxarr[0];
+            Year  += 100 * rxarr[1]; 
+            Year  += 10 * rxarr[2];  
+            Year  += rxarr[3];  
+            Month  += 10 * rxarr[5];      
+            Month  += rxarr[6];  
+            Day  += 10 * rxarr[8];       
+            Day  += rxarr[9];            
+            Hour  += 10 * rxarr[11];  
+            Hour  += rxarr[12]; 
+            Minute  += 10 * rxarr[14];
+            Minute  += rxarr[15]; 
+            Second  += 10 * rxarr[17];    
+            Second  += rxarr[18];       
             rtc.adjust(DateTime(Year, Month, Day, Hour, Minute, Second));
             MainMenu = MENU5_SUB7;
             DispExtTimeout();
         }
-        if((Timer == 10) && (receivedChars[0] == 'E' )&&(receivedChars[1] == 'E') && (receivedChars[2] == 'E')&&  (receivedChars[3] == 'E' )){       
-          NVRam_Write_SerNo(&receivedChars[4]); 
-          delay(10);
-          NVRam_Read_SerNo();
-          UpdateLogFileId(); 
-          SDCard.LogBootInit = 0; // restart logging from 0                       
+        if((Counter == 11) && (rxarr[0] == 'F' )&&(rxarr[1] == 'I') && (rxarr[2] == 'L')&&  (rxarr[3] == 'E' )
+                                                &&(rxarr[4] == 'Q') && (rxarr[5] == 'U')&&  (rxarr[6] == 'E' )){  
+            NVRam_Write_QueNo(&rxarr[7]);                
+            delay(10);
+            NVRam_Read_QueNo();
+            UpdateLogFileId(); 
+            SDCard.LogBootInit = 0; // restart logging from 0                       
         }  
+        if((Counter == 11) && (rxarr[0] == 'D' )&&(rxarr[1] == 'E') && (rxarr[2] == 'V')&& 
+                                                    (rxarr[3] == 'I' ) &&(rxarr[4] == 'D' )){       
+            NVRam_Write_SerNo(&rxarr[5]); 
+            delay(10);
+            NVRam_Read_SerNo();
+            UpdateLogFileId(); 
+            SDCard.LogBootInit = 0; // restart logging from 0                       
+        }        
     }
 }

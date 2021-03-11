@@ -4,9 +4,11 @@
 */
  //for setting date&time open arduino serial monitor and send the data stream
  //   Year,Month,Date,Hour,Minute;Second
- //   2021,01,04,23,30,00
- //  2020,12,24,22,48,55
- // EEEEf567 
+ //   2021,03,07,23,03,50
+ //  2020,12,24,22,48,55 TIME DATE COMMAND 
+ // DEVIDf567   // DEV ID COMMAND
+ // FILEQUE01 // FILE NO COMMAND
+ // https://www.browserling.com/tools/random-hex
  // 115200 baud Both NL & CR
  // put leading zero for numbers less than 10
  //*********************************************************************
@@ -17,7 +19,7 @@
 // #define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
 // #define CHIPKIT_MAX32 // PIC32MX795F512L
 // #define ARDUINO_MKRZERO // ARM Cortex M0
-
+  
 
 //#pragma 
 //#pragma
