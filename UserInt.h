@@ -252,14 +252,14 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
       
           if (!isnan(Values.TemperatureSi072_Ch1)) {
             str += String(Values.TemperatureSi072_Ch1,1);
-            str += " C";  Display.ExpSens1 = ON;                           
+            str += F(" C");  Display.ExpSens1 = ON;                           
           }
-          else  str += "------";       
+          else  str += F("------");       
           if (!isnan(Values.Humidity_Ch1)) {
-            str +=" %";
+            str +=F(" %");
             str += String((int)Values.Humidity_Ch1); // 10...
           }
-          else   str +="----"; 
+          else   str +=F("----"); 
           str += ' ' + String(SensorId.No1, HEX);
           
      break;
@@ -267,14 +267,14 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           //str = "4."; // temp sensor2
           if (!isnan(Values.TemperatureSi072_Ch2)) {
             str += String(Values.TemperatureSi072_Ch2,1);
-            str += " C";   Display.ExpSens2 = ON;               //  str += '°'; 
+            str += F(" C");   Display.ExpSens2 = ON;               //  str += '°'; 
           }
-          else  str += "------";        
+          else  str += F("------");        
           if (!isnan(Values.Humidity_Ch2)) {
-            str +=" %";
+            str +=F(" %");
             str += String((int)Values.Humidity_Ch2); // 
           }
-          else   str +="----";
+          else   str +=F("----");
           str += ' ' + String(SensorId.No2, HEX);  
                     
      break;
@@ -283,14 +283,14 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
         //str = "5."; // temp sensor3
          if (!isnan(Values.TemperatureSi072_Ch3)) {
             str += String(Values.TemperatureSi072_Ch3,1);
-            str += " C";    Display.ExpSens3 = ON;
+            str += F(" C");    Display.ExpSens3 = ON;
         }
-        else  str += "------";  
+        else  str += F("------");  
         if (!isnan(Values.Humidity_Ch3)) {
-          str +=" %";
+          str +=F(" %");
           str += String((int)Values.Humidity_Ch3); // 
         }
-        else   str +="----";   // 10 lines
+        else   str +=F("----");   // 10 lines
         str += ' ' + String(SensorId.No3, HEX); 
                    
      break;
@@ -329,9 +329,9 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
                     str += CopyFlashToRam(ICERROR); 
               }             
               else if(EnergyMeterIC.Mode == POWERIC_NORMAL){       
-                str += " ";
+                str += F(" ");
                 str += String(Values.ActivePower); // 3/4/3
-                str += " W PF ";                   
+                str += F(" W PF ");                   
               //  str += String(powerVals.ActivePowerValue/1000);  // 3/4/1        
                 str += String(Values.PowerFactor);  // 3/4/1                       
               }
@@ -346,7 +346,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
      case 6:
       //str += Display_LineTry;
             #ifdef PM25_DUST_SENSOR_EXISTS         
-              str += " PM2.5: ";
+              str += F(" PM2.5: ");
               //  str += "7. PM2.5: ";
                   if(Values.PM25 < 100.00)str +=  String(Values.PM25,1);
                   else str += String(Values.PM25,0);
@@ -373,12 +373,13 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
             str += RlStr8[i];
           }        
       break;                
-      default: str = "default";
+      default: str = F("default");
       break; 
     }
     uint16_t Length = str.length();
     if(Length > MAX_DISPLAY_CHAR){
-      str =  String(Index) +  "..." + String(Line)+  ".error";
+      str =  String(Index) +  "..." + String(Line);
+      str +=  F(".error");
     }
     switch(Line){
       case 4:    
@@ -404,8 +405,8 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
 void UpdateSD_LogTime(){
     String str;
     if(SDCard.PauseTimer){
-      if(SDCard.Status == SD_NOT_Present)str = "SD Error!  Retry-> "; //18
-      if(SDCard.FatError == ON)          str = "FAT Error! Retry-> "; //18      
+      if(SDCard.Status == SD_NOT_Present)str = F("SD Error!  Retry-> "); //18
+      if(SDCard.FatError == ON)          str = F("FAT Error! Retry-> "); //18      
       str += String(SDCard.PauseTimer);//13
       Display_Line2 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR); 
       return;     
@@ -416,10 +417,12 @@ void UpdateSD_LogTime(){
             case 0:
             case 2:
             case 4:       
-                if(SDCard.Status == SD1_TYPE)      str = "SD1 ";         
-                else if(SDCard.Status == SD2_TYPE) str = "SD2 ";           
-                else if(SDCard.Status == SDHC_TYPE)str = "SDH ";
-                str += String(SDCard.Volume) + "Gb " ;   // 4+5+3
+                if(SDCard.Status == SD1_TYPE)      str = F("SD1 ");         
+                else if(SDCard.Status == SD2_TYPE) str = F("SD2 ");           
+                else if(SDCard.Status == SDHC_TYPE)str = F("SDH ");
+                str += String(SDCard.Volume);   // 4+5+3
+                str +=  F("Gb ") ;   // 4+5+3
+                
          break;
           case 1:
           case 3: 
@@ -432,23 +435,23 @@ void UpdateSD_LogTime(){
     }           
       str += "   "; // 3    
       switch(SampleTime){
-       case TASK_500MSEC:str += "0.5Sec"; //5 
+       case TASK_500MSEC:str += F("0.5Sec"); //5 
           break;        
-        case TASK_1SEC : str += "  1Sec";//5
+        case TASK_1SEC : str += F("  1Sec");//5
           break; 
-        case TASK_2SEC : str += "  2Sec";
+        case TASK_2SEC : str += F("  2Sec");
           break;        
-        case TASK_5SEC : str += "  5Sec";
+        case TASK_5SEC : str += F("  5Sec");
           break;  
-        case TASK_10SEC :str += " 10Sec";
+        case TASK_10SEC :str += F(" 10Sec");
           break; 
-        case TASK_20SEC :str += " 20Sec";
+        case TASK_20SEC :str += F(" 20Sec");
           break;            
-        case TASK_60SEC :str += " 60Sec";
+        case TASK_60SEC :str += F(" 60Sec");
           break;     
       }     
     }
-    else str = "SD Error             ";
+    else str = F("SD Error             ");
     Display_Line2 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR); 
 }
 #endif

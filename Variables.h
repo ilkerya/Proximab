@@ -107,7 +107,7 @@ String Display_Line8 ="Display..Line8.......";
 
 
 uint8_t MainMenu =0;
-uint8_t DispRollIndex[4] = {1,0,0,0};
+int8_t DispRollIndex[4] = {1,0,0,0};
 
 //2 1 0 0
 //3 2 1 0
@@ -194,16 +194,17 @@ FileSize_Variables FileSize;
 
 struct Key_Variables
 {
+  
   uint32_t Adc = 0;
   uint16_t Logger=0;
   uint8_t BoardTimeOut = 0;
   bool BoardTimeOutEnb = 0;  
   bool Left_Press = 0;
-  bool Mid_Press = 0;
+  bool Down_Press = 0;
   bool Right_Press = 0;
   bool Up_Press = 0; 
   bool Left_Rel = 0;
-  bool Mid_Rel = 0;
+  bool Down_Rel = 0;
   bool Right_Rel = 0;
   bool Up_Rel = 0;  
   bool Error = 0;  

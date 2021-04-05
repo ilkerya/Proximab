@@ -23,24 +23,37 @@ void DisplayWakeUp(void) {
 void  DispExtTimeout(void) {
   if (Display.OLED_Timer <= KEYDISP_TIMER) Display.OLED_Timer = KEYDISP_TIMER;
 }
-void UpdateInfoQue(void){
+void UpdateInfoQue(uint8_t UpDown){
+    #define MAXLINE 8
+    #define MINLINE 1
+   if (UpDown == DOWNROLL){    // down menu
      DispRollIndex[3] = DispRollIndex[2];
      DispRollIndex[2] = DispRollIndex[1];
      DispRollIndex[1] = DispRollIndex[0];
      DispRollIndex[0]++;
-     if (DispRollIndex[0]  > 8) DispRollIndex[0] = 1;
+     if (DispRollIndex[0]  > MAXLINE) DispRollIndex[0] = MINLINE;
+  } 
+  if (UpDown == UPROLL){   
+     DispRollIndex[0] = DispRollIndex[1];
+     DispRollIndex[1] = DispRollIndex[2];
+     DispRollIndex[2] = DispRollIndex[3];
+     DispRollIndex[3]--;  
+     if (DispRollIndex[3]  < MINLINE) DispRollIndex[3] = MAXLINE; 
+   } 
 }
-void UpdateDispRoll(void){
+void UpdateDispRoll(uint8_t UpDown){
+ 
     if(Display.SensorRollTimer){
       Display.SensorRollTimer--;
       return;
     }
-    UpdateInfoQue();
+
+    UpdateInfoQue(UpDown);
 
 }
-void KeySensonsorRoll(){
+void KeySensonsorRoll(uint8_t UpDown){
       Display.SensorRollTimer = 30; // 2sec x 30 = 60 sec
-      UpdateInfoQue();      
+      UpdateInfoQue(UpDown);      
 }
 void DispEnable(bool Enable, uint8_t Timer) {
   if (Enable == ON) {
@@ -289,21 +302,22 @@ void ResetCasePrint() {
 
     #endif
 }
+#ifdef KEY_ANALOG
 void Key_Functions_Analog(uint32_t Adc) {
     Key.Adc = Adc;
-    Key.Mid_Press = OFF;
+    Key.Down_Press = OFF;
     Key.Right_Press = OFF;
     Key.Up_Press = OFF;
     Key.Left_Press = OFF;
     if((Key.Adc < 404) &&(Key.Adc > 384)){
       Key.Released = ON;
       Key.Error = OFF;
-      return;
+      return;  
     }
-    else if((Key.Adc < 110) &&(Key.Adc > 84))Key.Left_Press = ON;
+    else if((Key.Adc < 110) &&(Key.Adc > 84))Key.Right_Press = ON;
     else if((Key.Adc < 358) &&(Key.Adc > 334))Key.Up_Press = ON;
-    else if((Key.Adc < 588) &&(Key.Adc > 564))Key.Mid_Press = ON;
-    else if((Key.Adc < 478) &&(Key.Adc > 440))Key.Right_Press = ON;   
+    else if((Key.Adc < 588) &&(Key.Adc > 564))Key.Down_Press = ON;
+    else if((Key.Adc < 478) &&(Key.Adc > 440))Key.Left_Press = ON;   
     else  {
       Key.Error = ON;
       return;
@@ -314,110 +328,70 @@ void Key_Functions_Analog(uint32_t Adc) {
   DisplayWakeUp();
 
   if (Key.Left_Press) EnterMenuKey();
-  if (Key.Mid_Press) DownMenuKey();
+  if (Key.Down_Press) DownMenuKey();
   if (Key.Right_Press) EscMenuKey();
   if (Key.Up_Press)   UpMenuKey();
     KeyTimeOutStart();
-  /*
-  if (Key.Released && Key.Left_Press) {
-    //Key.Released = OFF;
+}
+#endif
+#ifdef KEY_DIGITAL
+void Key_Functions_Digital(void) {
+
+  if (!Key.Left_Rel && !Key.Down_Rel && !Key.Right_Rel&& !Key.Up_Rel) {
+    Key.Released = ON;
+  }
+  if (Key.Released && !digitalRead(KEY_LEFT)) {
+    Key.Left_Rel = ON;
+    return;
+  }
+  if (Key.Left_Rel  &&  digitalRead(KEY_LEFT)) {
+    Key.Left_Rel = OFF;
     DisplayWakeUp();
     EnterMenuKey();
     KeyTimeOutStart();
     return;
   }
-  
-  
-  if (Key.Released && Key.Mid_Press) {
-   // Key.Released = OFF;
-    DisplayWakeUp();
-    UpMenuKey();   
-    KeyTimeOutStart(); 
+  if (Key.Released && !digitalRead(KEY_DOWN)) {
+    Key.Down_Rel = ON;
     return;
   }
-
-  if (Key.Released && Key.Right_Press) {
-   // Key.Released = OFF;
-    DisplayWakeUp();
-    EscMenuKey();
-    KeyTimeOutStart(); 
-    return;
-  }
- 
-  if (Key.Released && Key.Up_Press ){
-   // Key.Released = OFF;
+  if (Key.Down_Rel  &&  digitalRead(KEY_DOWN)) {
+    Key.Down_Rel = OFF;
     DisplayWakeUp();
     DownMenuKey(); 
     KeyTimeOutStart();
     return;
   }
-  */
-}
-
-void Key_Functions_Digital(void) {
-
-  if (!Key.Left_Rel && !Key.Mid_Rel && !Key.Right_Rel) {
-    Key.Released = ON;
-  }
-  if (Key.Released && !digitalRead(KEY_LEFT)) {
-    Key.Left_Rel = ON;
-#ifdef DEBUG_KEY
-    Key.Logger = 1;
-#endif
+  if (Key.Released && !digitalRead(KEY_UP)) {
+    Key.Up_Rel = ON;
     return;
   }
-  if (Key.Left_Rel  &&  digitalRead(KEY_LEFT)) {
-    Key.Left_Rel = OFF;
-#ifdef DEBUG_KEY
-    Key.Logger = 2;
-#endif
+  if (Key.Up_Rel  &&  digitalRead(KEY_UP)) {
+    Key.Up_Rel = OFF;
     DisplayWakeUp();
-    EnterMenuKey();
-    KeyTimeOutStart();
-    return;
-  }
-  if (Key.Released && !digitalRead(KEY_MID)) {
-    Key.Mid_Rel = ON;
-#ifdef DEBUG_KEY
-    Key.Logger = 3;
-#endif
-    return;
-  }
-  if (Key.Mid_Rel  &&  digitalRead(KEY_MID)) {
-    Key.Mid_Rel = OFF;
-#ifdef DEBUG_KEY
-    Key.Logger = 4;
-#endif
-    DisplayWakeUp();
-    //DownMenuKey();
     UpMenuKey();   
     KeyTimeOutStart();
     return;
   }
+  
   if (Key.Released && !digitalRead(KEY_RIGHT)) {
     Key.Right_Rel = ON;
-#ifdef DEBUG_KEY
-    Key.Logger = 5;
-#endif
     return;
   }
   if (Key.Right_Rel  &&  digitalRead(KEY_RIGHT)) {
-    Key.Right_Rel = OFF;
-#ifdef DEBUG_KEY
-    Key.Logger = 6;
-#endif
     DisplayWakeUp();
     EscMenuKey();
     KeyTimeOutStart();
     return;
   }
 }
+#endif
 void DownMenuKey(void) {
   if (Display.OLED_Timer == 0) return;
   DispExtTimeout();
   switch (MainMenu) {
     case MENU_NULL :// Menu = MENU_NULL;
-            KeySensonsorRoll();
+            KeySensonsorRoll(DOWNROLL);
       break;
     case MENU1 : MainMenu = MENU6; //
       break;
@@ -509,7 +483,7 @@ void UpMenuKey(void) {
   DispExtTimeout();
   switch (MainMenu) {
     case MENU_NULL : MainMenu = MENU_NULL;
-          KeySensonsorRoll();
+          KeySensonsorRoll(UPROLL);
       break;
     case MENU1 : MainMenu = MENU2; //
       break;

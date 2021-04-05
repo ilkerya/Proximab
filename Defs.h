@@ -16,6 +16,8 @@ typedef  unsigned long long uint64
 C:\Program Files (x86)\Arduino\libraries
 
 */
+#define DOWNROLL 0
+#define UPROLL 1
 #define TEMP_HUM_1_SENSOR_EXISTS
 #define TEMP_HUM_2_SENSOR_EXISTS
 #define TEMP_HUM_3_SENSOR_EXISTS  
@@ -105,11 +107,14 @@ C:\Program Files (x86)\Arduino\libraries
   #define ANALOG1         A1
   
   #define DEBUG_OUT     A0  
-  
+   
+    
+    #if  defined KEY_DIGITAL
   #define KEY_RIGHT       13
-  #define KEY_MID         12
+  #define KEY_DOWN        12
   #define KEY_LEFT        11
-  #define KEY_UP 12 
+  #define KEY_UP          12    
+    #endif
 
 #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
   // const int SD_CS_PINOUT = 10;
@@ -262,7 +267,7 @@ void SD_Info_Only(void);
 void DisplayFullSensors(void);
 void DisplayTestDevices(void);
 void SerialPortRx(void);
-void UpdateDispRoll(void);
+void UpdateDispRoll(uint8_t);
 void Log_Data_Write_SD(void);
 
 void Parse_FileString(void);

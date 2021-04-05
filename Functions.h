@@ -188,7 +188,7 @@ void Common_Loop(){
   if (Loop.Task_2Sec) {
     Loop.Task_2Sec = OFF;
     if (SampleTime == TASK_2SEC) Log_Data_Write_SD();
-      UpdateDispRoll();
+      UpdateDispRoll(DOWNROLL);
       PrintDisplayBuffer();
 
       if(SDCard.PauseTimer){
@@ -300,16 +300,19 @@ void IO_Settings() {
   digitalWrite(LED_GREEN, LOW);       // turn on pullup resistors
   pinMode(LED_RED, OUTPUT);           // set pin to input
   digitalWrite(LED_RED, LOW);       // turn on pullup resistors
-
+/*
   pinMode(KEY_LEFT, INPUT);           // set pin to input
   pinMode(KEY_LEFT, INPUT_PULLUP);
 
-  pinMode(KEY_MID, INPUT);           // set pin to input
-  pinMode(KEY_MID, INPUT_PULLUP);
+  pinMode(KEY_UP, INPUT);           // set pin to input
+  pinMode(KEY_UP, INPUT_PULLUP);
+
+  pinMode(KEY_DOWN, INPUT);           // set pin to input
+  pinMode(KEY_DOWN, INPUT_PULLUP);
 
   pinMode(KEY_RIGHT, INPUT);           // set pin to input
   pinMode(KEY_RIGHT, INPUT_PULLUP);
-
+*/
 
 //  pinMode(KEY_ANALOG, INPUT);  // 
 }
@@ -346,8 +349,9 @@ void MicroInit() {
 //  ADCSRA &= ~ (1 << ADEN);            // turn off ADC to save power ,, enable when needed and turn off again
     ADCSRA |= (1 << ADEN); // enable adc
 #endif
-
-  Serial.println( "Compiled: " __DATE__ ", " __TIME__ ", " __VERSION__);
+  Serial.print(F("Compiled: "));
+  Serial.println( __DATE__ ", " __TIME__ ", " __VERSION__); 
+ // Serial.println( F("Compiled: ") __DATE__ ", " __TIME__ ", " __VERSION__);
   //Compiled: Jul 21 2020 15:55:39 7.3.0
   //  ShowSerialCode();
 

@@ -291,14 +291,15 @@ void displayValues(void)
       UpdateDispSpChar(DispRollIndex[3], 7); // Line 7
  
     display.setCursor(0, 56); // 8th line
-   // display.print(Display_Line8);   //10 
-
+    display.print(Display_Line8);   //10 
+/*
      display.print(Key.Adc);
      display.print(" L");display.print(Key.Left_Press);
-     display.print(" M");display.print(Key.Mid_Press);
+     display.print(" D");display.print(Key.Down_Press);
      display.print(" R");display.print(Key.Right_Press);
      display.print(" U");display.print(Key.Up_Press);          
      display.print(" Rl");display.print(Key.Released);   
+     */
 /*
     if( DispExpLin8_1){
       DispExpLin8_1 = OFF;
