@@ -1,4 +1,4 @@
-# Pangolin
+# Proximab
 DataLogger Arduino Atmega/Arduino Due // Arduino IDE / Atmel Studio 7.0
 
 CPU Modules  : Both Can Used as Selectable Due Needs to be debugged for I2C issue!!
