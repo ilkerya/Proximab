@@ -101,12 +101,11 @@ C:\Program Files (x86)\Arduino\libraries
   #define TDO         A6
   #define TCK         A4
   #define TMS         A5
-  #define ANALOG4      A4  
-  #define KEY_ANALOG_IN   A3
+  #define DEBUG_OUT      A4  
+  #define ANALOG3        A3
   #define ANALOG2         A2
   #define ANALOG1         A1
-  
-  #define DEBUG_OUT     A0  
+  #define KEY_ANALOG_IN   A0  
    
     
     #if  defined KEY_DIGITAL
@@ -293,3 +292,4 @@ void UpdateLogFileId(void);
 char* CopyFlashToRam(const char* );
 
 void Due_Memory();
+void Print_ARM_SPI_Regs(void);

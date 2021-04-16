@@ -4,7 +4,7 @@
 */
  //for setting date&time open arduino serial monitor and send the data stream
  //   Year,Month,Date,Hour,Minute;Second
- //   2021,03,07,23,03,50
+ //   2021,04,11,00,13,50
  //  2020,12,24,22,48,55 TIME DATE COMMAND 
  // DEVIDf567   // DEV ID COMMAND
  // FILEQUE01 // FILE NO COMMAND
@@ -16,7 +16,7 @@
 // C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
 
   #define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
-// #define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
+ //#define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
 // #define CHIPKIT_MAX32 // PIC32MX795F512L
 // #define ARDUINO_MKRZERO // ARM Cortex M0
   
@@ -39,8 +39,8 @@
 #include <Adafruit_Si7021.h>
 #include <Adafruit_SSD1306.h>
 #include <SD.h>
-#include <gfxfont.h>
-#include <Adafruit_GFX.h>
+//#include <gfxfont.h>
+//#include <Adafruit_GFX.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <ADE9153AAPI.h>

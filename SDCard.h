@@ -68,7 +68,7 @@ void ReadConfigFile(){
       Parse_FileString();
    }
    else{
-      Serial.print(F("error opening")); Serial.println(ConfigFile);    
+      Serial.println(F("error opening ConfigFile ")); // Serial.println(ConfigFile);    
    }
 }
 void UpdateFileQue(){
@@ -131,8 +131,8 @@ void SD_CardLogTask(){
       UpdateFileQue(); 
     }      
   else {  
-      Serial.print(F("error opening : ")); 
-      Serial.println(LOG_FILE);    
+      Serial.println(F("error opening Log File: ")); 
+      //Serial.println(LOG_FILE);    
       FileSize.Total = 0;
     }   
 }
