@@ -30,11 +30,13 @@ https://cdn-learn.adafruit.com/downloads/pdf/adafruit-bmp388.pdf?timestamp=15561
  https://moderndevice.com/product/wind-sensor/
  
  Energy Metering IC from Analog Devices
+ 
   https://www.analog.com/media/en/technical-documentation/data-sheets/ade9153a.pdf
   https://www.analog.com/en/products/ade9153a.html#product-overview
   
   
-  Test & Measurement Devices 
+  Test & Measurement Devices That Has been used
+  
   https://reference.digilentinc.com/test-and-measurement/analog-discovery-2/start?redirect=1
  
  
