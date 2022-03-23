@@ -1,47 +1,46 @@
 /*
- Rev   Date         Description
- 1.0   12.02.2020   Initial release
+  Rev   Date         Description
+  1.0   12.02.2020   Initial release
 */
- //for setting date&time open arduino serial monitor and send the data stream
- //   Year,Month,Date,Hour,Minute;Second
- //   2021,04,11,00,13,50
- //  2020,12,24,22,48,55 TIME DATE COMMAND 
- // DEVIDf567   // DEV ID COMMAND
- // FILEQUE01 // FILE NO COMMAND
- // https://www.browserling.com/tools/random-hex
- // 115200 baud Both NL & CR
- // put leading zero for numbers less than 10
- //*********************************************************************
+//for setting date&time open arduino serial monitor and send the data stream
+//   Year,Month,Date,Hour,Minute;Second
+//   2022,03,22,23,23,50
+//  2020,12,24,22,48,55 TIME DATE COMMAND
+// DEVIDf567   // DEV ID COMMAND
+// FILEQUE01 // FILE NO COMMAND
+// https://www.browserling.com/tools/random-hex
+// 115200 baud Both NL & CR
+// put leading zero for numbers less than 10
+//*********************************************************************
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
 // C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
 
-  #define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
- //#define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude 
+//#define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
+#define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude
 // #define CHIPKIT_MAX32 // PIC32MX795F512L
 // #define ARDUINO_MKRZERO // ARM Cortex M0
-  
 
-//#pragma 
+
+//#pragma
 //#pragma
 
-  #ifdef ARDUINO_MEGA // 8 bit AVR
-    #include <EEPROM.h>
-    #include <avr/wdt.h>
-  #endif
-  #ifdef ARDUINO_DUE // ARM CortexM3 32 bit
-    #include <malloc.h>
-    #include <DueFlashStorage.h>
-    DueFlashStorage dueFlashStorage;
-  #endif
- 
-  
+#ifdef ARDUINO_MEGA // 8 bit AVR
+#include <EEPROM.h>
+#include <avr/wdt.h>
+#endif
+#ifdef ARDUINO_DUE // ARM CortexM3 32 bit
+#include <malloc.h>
+#include <DueFlashStorage.h>
+DueFlashStorage dueFlashStorage;
+#endif
+
+
 #include <RTClib.h>
 #include <Adafruit_Si7021.h>
 #include <Adafruit_SSD1306.h>
 #include <SD.h>
-//#include <gfxfont.h>
-//#include <Adafruit_GFX.h>
 #include <Wire.h>
+//#include <Wire1.h>
 #include <SPI.h>
 #include <ADE9153AAPI.h>
 #include <ADE9153A.h>
@@ -56,58 +55,58 @@ void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
   pmc_enable_periph_clk((uint32_t)irq);
   TC_Configure(tc, channel, TC_CMR_WAVE | TC_CMR_WAVSEL_UP_RC | TC_CMR_TCCLKS_TIMER_CLOCK4);
   //    uint32_t rc = VARIANT_MCK/128/frequency; //128 because we selected TIMER_CLOCK4 above
-  uint32_t rc = VARIANT_MCK/128/frequency; //128 because we selected TIMER_CLOCK4 above
-  TC_SetRA(tc, channel, rc/2); //50% high, 50% low
+  uint32_t rc = VARIANT_MCK / 128 / frequency; //128 because we selected TIMER_CLOCK4 above
+  TC_SetRA(tc, channel, rc / 2); //50% high, 50% low
   TC_SetRC(tc, channel, rc);
   TC_Start(tc, channel);
-  tc->TC_CHANNEL[channel].TC_IER=TC_IER_CPCS;
-  tc->TC_CHANNEL[channel].TC_IDR=~TC_IER_CPCS;
-//  tc->TC_CHANNEL[channel].TC_IER=  TC_IER_CPCS | TC_IER_CPAS;
- // tc->TC_CHANNEL[channel].TC_IDR=~(TC_IER_CPCS | TC_IER_CPAS);
+  tc->TC_CHANNEL[channel].TC_IER = TC_IER_CPCS;
+  tc->TC_CHANNEL[channel].TC_IDR = ~TC_IER_CPCS;
+  //  tc->TC_CHANNEL[channel].TC_IER=  TC_IER_CPCS | TC_IER_CPAS;
+  // tc->TC_CHANNEL[channel].TC_IDR=~(TC_IER_CPCS | TC_IER_CPAS);
   NVIC_EnableIRQ(irq);
 }
 #endif
- #ifdef ARDUINO_MKRZERO // ARM Cortex M0
+#ifdef ARDUINO_MKRZERO // ARM Cortex M0
 //Configures the TC to generate output events at the sample frequency.
 //Configures the TC in Frequency Generation mode, with an event output once
 //each time the audio sample frequency period expires.
 //https://gist.github.com/nonsintetic/ad13e70f164801325f5f552f84306d6f
- void tcConfigure(int sampleRate)
+void tcConfigure(int sampleRate)
 {
-      //1000 -> 1000 ms
-    //10000 -> 100 ms
-    //50000 -> 20ms
- // select the generic clock generator used as source to the generic clock multiplexer
- GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
- while (GCLK->STATUS.bit.SYNCBUSY);
+  //1000 -> 1000 ms
+  //10000 -> 100 ms
+  //50000 -> 20ms
+  // select the generic clock generator used as source to the generic clock multiplexer
+  GCLK->CLKCTRL.reg = (uint16_t) (GCLK_CLKCTRL_CLKEN | GCLK_CLKCTRL_GEN_GCLK0 | GCLK_CLKCTRL_ID(GCM_TC4_TC5)) ;
+  while (GCLK->STATUS.bit.SYNCBUSY);
 
- tcReset(); //reset TC5
+  tcReset(); //reset TC5
 
- // Set Timer counter 5 Mode to 16 bits, it will become a 16bit counter ('mode1' in the datasheet)
- TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;
- // Set TC5 waveform generation mode to 'match frequency'
- TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;
- //set prescaler
- //the clock normally counts at the GCLK_TC frequency, but we can set it to divide that frequency to slow it down
- //you can use different prescaler divisons here like TC_CTRLA_PRESCALER_DIV1 to get a different range
- TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024 | TC_CTRLA_ENABLE; //it will divide GCLK_TC frequency by 1024
- //set the compare-capture register. 
- //The counter will count up to this value (it's a 16bit counter so we use uint16_t)
- //this is how we fine-tune the frequency, make it count to a lower or higher value
- //system clock should be 1MHz (8MHz/8) at Reset by default
- TC5->COUNT16.CC[0].reg = (uint16_t) (SystemCoreClock / sampleRate);
- while (tcIsSyncing());
- 
- // Configure interrupt request
- NVIC_DisableIRQ(TC5_IRQn);
- NVIC_ClearPendingIRQ(TC5_IRQn);
- NVIC_SetPriority(TC5_IRQn, 0);
- NVIC_EnableIRQ(TC5_IRQn);
+  // Set Timer counter 5 Mode to 16 bits, it will become a 16bit counter ('mode1' in the datasheet)
+  TC5->COUNT16.CTRLA.reg |= TC_CTRLA_MODE_COUNT16;
+  // Set TC5 waveform generation mode to 'match frequency'
+  TC5->COUNT16.CTRLA.reg |= TC_CTRLA_WAVEGEN_MFRQ;
+  //set prescaler
+  //the clock normally counts at the GCLK_TC frequency, but we can set it to divide that frequency to slow it down
+  //you can use different prescaler divisons here like TC_CTRLA_PRESCALER_DIV1 to get a different range
+  TC5->COUNT16.CTRLA.reg |= TC_CTRLA_PRESCALER_DIV1024 | TC_CTRLA_ENABLE; //it will divide GCLK_TC frequency by 1024
+  //set the compare-capture register.
+  //The counter will count up to this value (it's a 16bit counter so we use uint16_t)
+  //this is how we fine-tune the frequency, make it count to a lower or higher value
+  //system clock should be 1MHz (8MHz/8) at Reset by default
+  TC5->COUNT16.CC[0].reg = (uint16_t) (SystemCoreClock / sampleRate);
+  while (tcIsSyncing());
 
- // Enable the TC5 interrupt request
- TC5->COUNT16.INTENSET.bit.MC0 = 1;
- while (tcIsSyncing()); //wait until TC5 is done syncing 
-} 
+  // Configure interrupt request
+  NVIC_DisableIRQ(TC5_IRQn);
+  NVIC_ClearPendingIRQ(TC5_IRQn);
+  NVIC_SetPriority(TC5_IRQn, 0);
+  NVIC_EnableIRQ(TC5_IRQn);
+
+  // Enable the TC5 interrupt request
+  TC5->COUNT16.INTENSET.bit.MC0 = 1;
+  while (tcIsSyncing()); //wait until TC5 is done syncing
+}
 
 //Function that is used to check if TC5 is done syncing
 //returns true when it is done syncing
@@ -123,7 +122,7 @@ void tcStartCounter()
   while (tcIsSyncing()); //wait until snyc'd
 }
 
-//Reset TC5 
+//Reset TC5
 void tcReset()
 {
   TC5->COUNT16.CTRLA.reg = TC_CTRLA_SWRST;
@@ -142,11 +141,11 @@ void tcDisable()
 #endif
 
 // C:\Projects\Pangolin\..   Atmel Studio Project Path
-// C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths   
+// C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
 
 //Path   "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
- 
+
 #include  "Defs.h"
 #include  "Variables.h"
 #include  "RTC.h"
@@ -160,42 +159,43 @@ void tcDisable()
 
 
 void setup() {
-    MicroInit();
-    #ifdef ARDUINO_DUE // 
-      Due_Memory(); 
-    #endif
+  MicroInit();
+#ifdef ARDUINO_DUE // 
+  Due_Memory();
+  analogReadResolution(12);
+#endif
 }
 // the loop function runs over and over again forever
 void loop() {
-    Common_Loop(); 
-       #ifdef ARDUINO_MEGA // 8 bit AVR 
-        wdt_reset();
-         wdt_enable(WDTO_8S);
-     #endif
-       #ifdef ARDUINO_DUE // 
-       // wdt_reset();
-       // wdt_enable(WDTO_8S);
-     #endif
-    #ifdef ARDUINO_MKRZERO 
+  Common_Loop();
+#ifdef ARDUINO_MEGA // 8 bit AVR 
+  wdt_reset();
+  wdt_enable(WDTO_8S);
+#endif
+#ifdef ARDUINO_DUE // 
+//   wdt_reset();
+ //  wdt_enable(WDTO_8S);
+#endif
+#ifdef ARDUINO_MKRZERO
 
-      #endif   
-     
-     
-}  
+#endif
+
+
+}
 #ifdef ARDUINO_DUE // 
 
 extern char _end;
 extern "C" char *sbrk(int i);
-char *ramstart=(char *)0x20070000;
-char *ramend=(char *)0x20088000;
+char *ramstart = (char *)0x20070000;
+char *ramend = (char *)0x20088000;
 char Txt[256];
-  
+
 void Due_Memory() {
-  
-  char *heapend=sbrk(0);
+
+  char *heapend = sbrk(0);
   register char * stack_ptr asm("sp");
   struct mallinfo mi = mallinfo();
-  
+
   sprintf(Txt, "    arena = %d\n", mi.arena);     Serial.print(Txt);
   sprintf(Txt, "  ordblks = %d\n", mi.ordblks);   Serial.print(Txt);
   sprintf(Txt, " uordblks = %d\n", mi.uordblks);  Serial.print(Txt);
@@ -207,12 +207,12 @@ void Due_Memory() {
   sprintf(Txt, "Heap End:     %lx\n", (unsigned long)heapend);   Serial.print(Txt);
   sprintf(Txt, "Stack Ptr:    %lx\n", (unsigned long)stack_ptr); Serial.print(Txt);
   sprintf(Txt, "RAM End:      %lx\n", (unsigned long)ramend);    Serial.println(Txt);
-  
+
   sprintf(Txt, "Heap RAM Used:      %d\n",   mi.uordblks);                       Serial.print(Txt);
   sprintf(Txt, "Program RAM Used:   %d\n",   &_end - ramstart);                  Serial.print(Txt);
   sprintf(Txt, "Stack RAM Used:     %d\n",   ramend - stack_ptr);                Serial.print(Txt);
   sprintf(Txt, "Estimated Free RAM: %d\n\n", stack_ptr - heapend + mi.fordblks); Serial.println(Txt);
-      //dueFlashStorage.write(0,b1);
-      
+  //dueFlashStorage.write(0,b1);
+
 }
 #endif

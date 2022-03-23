@@ -78,7 +78,7 @@ void ConvertFileSize(uint32_t Number){
 }
 
 void UpdateFileSize(){
-    String str;unsigned long Remain;unsigned long Remain2;
+    String str;unsigned long Remain;
     str = "    "; //4
     if( FileSize.Total == 0) str += " ";//10
     
@@ -99,7 +99,7 @@ void UpdateFileSize(){
         if(Remain < 1000)str += '0';  //  ___500
       
         if(Remain  >= 1000){
-          Remain2 = Remain % 1000;
+          unsigned long Remain2 = Remain % 1000;
           str += String(Remain / 1000);  // 9 digit 
           str +='.';   // 9 digit
           if(Remain2 < 100)str += '0';
@@ -139,7 +139,7 @@ void PrintDisplayBuffer(void){
 
     // Additionals
     Serial.print(F("DevId: "));Serial.print(Device_Id);
-    
+    Serial.print(F(" SensorOnBrd: "));Serial.print(SensorId.OnBoard,HEX);   
     Serial.print(F("    Sensor1: "));Serial.print(SensorId.No1,HEX);
     Serial.print(F("    Sensor2: "));Serial.print(SensorId.No2,HEX);
     Serial.print(F("    Sensor3: "));Serial.print(SensorId.No3,HEX);
@@ -161,19 +161,19 @@ void PrintDisplayBuffer(void){
     Serial.print(F("TIME: ")); 
     Serial.println(__TIME__);  // 11 1 8  
     Serial.print(F("Repository: "));  
-    char c;
+    
     for (byte k = 0; k < strlen_P(Repository); k++){
-      c = pgm_read_byte_near(Repository + k);
+     char c = pgm_read_byte_near(Repository + k);
       Serial.print(c);
     } 
-        Serial.println();    
+        Serial.println(); 
+   #ifdef ARDUINO_MEGA         
     char buffer[75];
     for (int i = 0; i < 5; i++) {
       strcpy_P(buffer, (char *)pgm_read_word(&(Terminal_table[i])));  // Necessary casts and dereferencing, just copy.
       Serial.println(buffer);
-    }
-
-    
+    } 
+    #endif
 /*
     int result = system(NULL);  
     Serial.print(F("int result = system(NULL): ")); 
@@ -209,49 +209,31 @@ void PrintDisplayBuffer(void){
     strcpy(char_array, s.c_str()); 
 */
 
- /*
-char* UpdateTempHumSensor(byte Que, float Temperature, float Humidity){
-
-  String str;
-      switch(Que){
-        case 1:str = "1.";
-        break;
-        case 2:str = "2.";
-        break;
-        case 3:str = "3.";
-        break; 
-        default:
-        break;                       
-      }      
-          if (!isnan(Temperature)) {
-            str += String(Temperature,1);
-            str += " C";   DispExpSens1 = ON;               //  str += '°'; 
-          }
-          else  str += "------";        
-          if (!isnan(Humidity)) {
-            str +=" %";
-            str += String((int)Humidity); // 
-          }
-          else   str +="----";         
-          str += ' ' + Sensor1_Id;   
-        // converting str to char array
-       int Length = str.length(); 
-        char char_array[Length+ 1]; 
-        strcpy(char_array, str.c_str());       
-        return &char_array[0];
-}
-*/
 #define MAXNOCHAR 4
 void UpdateProperLine(uint8_t Index, uint8_t Line){
     String str = String(Index)+ ".";    
     switch(Index){
-      case 0: 
+      case DISPROLL_LINE0: 
             str = "";//// show nothing                         
-      break;    
-      case 1:
-      
-          if (!isnan(Values.TemperatureSi072_Ch1)) {
-            str += String(Values.TemperatureSi072_Ch1,1);
+      break; 
+        case DISPROLL_LINE1:  
+          if (!isnan(Values.Temperature_OnBoard)) {
+            str += String(Values.Temperature_OnBoard,1);
+            str += F(" C");  Display.ExpSensOnb = ON;                           
+          }
+          else  str += F("------");       
+          if (!isnan(Values.Humidity_OnBoard)) {
+            str +=F(" %");
+            //str += String((int)Values.Humidity_OnBoard); // 10...
+            str += String(Values.Humidity_OnBoard,1); // 10...
+          }
+          else   str +=F("----"); 
+       //   str += ' ' + String(SensorId.OnBoard, HEX);
+            str += F(" Internal Internal Internal Internal ");
+      break;        
+      case DISPROLL_LINE2:   
+          if (!isnan(Values.Temperature_Ch1)) {
+            str += String(Values.Temperature_Ch1,1);
             str += F(" C");  Display.ExpSens1 = ON;                           
           }
           else  str += F("------");       
@@ -263,10 +245,10 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           str += ' ' + String(SensorId.No1, HEX);
           
      break;
-     case 2:
+     case DISPROLL_LINE3:
           //str = "4."; // temp sensor2
-          if (!isnan(Values.TemperatureSi072_Ch2)) {
-            str += String(Values.TemperatureSi072_Ch2,1);
+          if (!isnan(Values.Temperature_Ch2)) {
+            str += String(Values.Temperature_Ch2,1);
             str += F(" C");   Display.ExpSens2 = ON;               //  str += '°'; 
           }
           else  str += F("------");        
@@ -278,11 +260,10 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           str += ' ' + String(SensorId.No2, HEX);  
                     
      break;
-     case 3: 
-       
+     case DISPROLL_LINE4:   
         //str = "5."; // temp sensor3
-         if (!isnan(Values.TemperatureSi072_Ch3)) {
-            str += String(Values.TemperatureSi072_Ch3,1);
+         if (!isnan(Values.Temperature_Ch3)) {
+            str += String(Values.Temperature_Ch3,1);
             str += F(" C");    Display.ExpSens3 = ON;
         }
         else  str += F("------");  
@@ -294,7 +275,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
         str += ' ' + String(SensorId.No3, HEX); 
                    
      break;
-     case 4:   
+     case DISPROLL_LINE5:   
         //str += Display_LineTry;
               #ifdef VOLTAGE_MEASURE_EXISTS
                // str += " " + String(Mains_Volt) + "V ";  
@@ -322,7 +303,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
                       str += CopyFlashToRam(CALIBRATING);        
           #endif          
      break;      
-     case 5:       
+     case DISPROLL_LINE6:       
              #ifdef ENERGYMETER_EXISTS 
               if(EnergyMeterIC.Error){
                   //  str += ICERROR;
@@ -343,8 +324,7 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
                       str += CopyFlashToRam(CALIBRATING);               
             #endif                    
      break; 
-     case 6:
-      //str += Display_LineTry;
+     case DISPROLL_LINE7:
             #ifdef PM25_DUST_SENSOR_EXISTS         
               str += F(" PM2.5: ");
               //  str += "7. PM2.5: ";
@@ -352,35 +332,48 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
                   else str += String(Values.PM25,0);
             #endif               
      break;  
-     case 7:    
-          str += "R1:" +String(digitalRead(RELAY_OUT_1))+ " "; //7 + 1     
+     case DISPROLL_LINE8:    
+          str += "R1:";
+          str += String(digitalRead(RELAY_OUT_1)); //7 + 1   
+          str += " ";  
          // str +=  String((unsigned int)RL1Min) +   RLlVal  +  String((unsigned int)RL1Max);
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr2[i];  // Limit Str length to 4 20.4 // 124. // 1378
           }      
-          str += " " +  RLlVal + " ";   
+          str += " " ;   
+          str += RLlVal ; 
+          str += " ";           
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr4[i];
           }        
       break;  
-      case 8:       
+      case DISPROLL_LINE9:       
           str += "R2:" +String(digitalRead(RELAY_OUT_2))+ " "; //7 + 1
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr6[i];  // Limit Str length to 4 20.4 // 124. // 1378
           }      
+          /*
           str += " " +  RL2Val + " "; 
           for(int i = 0; i < MAXNOCHAR; i++){
             str += RlStr8[i];
-          }        
+          }   
+          */     
       break;                
       default: str = F("default");
       break; 
     }
     uint16_t Length = str.length();
-    if(Length > MAX_DISPLAY_CHAR){
-      str =  String(Index) +  "..." + String(Line);
-      str +=  F(".error");
+    if(Length > MAX_DISPLAY_CHAR){ // 34 > 21 //Limit the string to display size
+      str.remove(MAX_DISPLAY_CHAR, (Length - MAX_DISPLAY_CHAR));// 21, (34-21) 13
+      //str =  String(Index) +  "..." + String(Line);
+      //str +=  F(".error");
     }
+    if(Length < MAX_DISPLAY_CHAR){// Fill the string to reach full 
+      for(uint16_t i = 0; i < (MAX_DISPLAY_CHAR - Length);i++){
+        str.setCharAt(Length+i, 'x');
+      }    
+    }
+    
     switch(Line){
       case 4:    
           Display_Line4 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR);                  

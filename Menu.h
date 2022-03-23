@@ -24,7 +24,7 @@ void  DispExtTimeout(void) {
   if (Display.OLED_Timer <= KEYDISP_TIMER) Display.OLED_Timer = KEYDISP_TIMER;
 }
 void UpdateInfoQue(uint8_t UpDown){
-    #define MAXLINE 8
+    #define MAXLINE 9
     #define MINLINE 1
    if (UpDown == DOWNROLL){    // down menu
      DispRollIndex[3] = DispRollIndex[2];
@@ -305,6 +305,15 @@ void ResetCasePrint() {
 #ifdef KEY_ANALOG
 void Key_Functions_Analog(uint32_t Adc) {
     Key.Adc = Adc;
+    #ifdef ARDUINO_DUE // 
+      Key.Adc >>= 2; 
+      if(Key.Adc < 990) {
+        Key.Adc *= 66;
+        Key.Adc /= 100;        
+      }
+    #endif
+  
+
     Key.Down_Press = OFF;
     Key.Right_Press = OFF;
     Key.Up_Press = OFF;

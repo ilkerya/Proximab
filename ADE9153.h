@@ -1,7 +1,7 @@
 
 #ifdef ENERGYMETER_EXISTS
  //#define ADE9153A_ACCMODE 0x0000      /*Energy accumulation modes, Bit 4, 0 for 50Hz, 1 for 60Hz 0x0010 -> 0x0000 */
-  #define SPI_SPEED 1000000     //SPI Speed   ////* Basic initializations for energy meter IC ADE9153 */
+  #define SPI_SPEED 100000     //SPI Speed   ////* Basic initializations for energy meter IC ADE9153 */
   ADE9153AClass ade9153A;
 void EnergymeterCalbLed(void){
   switch(EnergyMeterIC.Mode){

@@ -107,7 +107,7 @@ String Display_Line8 ="Display..Line8.......";
 
 
 uint8_t MainMenu =0;
-int8_t DispRollIndex[4] = {1,0,0,0};
+uint8_t DispRollIndex[4] = {1,0,0,0};
 
 //2 1 0 0
 //3 2 1 0
@@ -116,10 +116,11 @@ int8_t DispRollIndex[4] = {1,0,0,0};
 //6 5 4 3
 //7 6 5 4
 //8 7 6 5
-//1 8 7 6
-//2 1 8 7
-//3 2 1 8 
-
+//9 8 7 6
+//1 9 8 7
+//2 1 9 8 
+//3 2 1 9  
+//4 3 2 1  
 float RL1Min, RL1Max, RL2Min,RL2Max,CompValue;
 String RLlVal, RL2Val;
 String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
@@ -217,6 +218,7 @@ Key_Variables Key;
 
 struct  Sensors
 {
+  uint32_t OnBoard;
   uint32_t No1;
   uint32_t No2;
   uint32_t No3;    
@@ -240,12 +242,14 @@ uint8_t PMBuffer[BUF_LENGTH];
 
 struct
 {
+  float Humidity_OnBoard;
+  float Temperature_OnBoard; // 27  
   float Humidity_Ch1;
-  float TemperatureSi072_Ch1; // 27
+  float Temperature_Ch1; // 27
   float Humidity_Ch2;
-  float TemperatureSi072_Ch2; // 27
+  float Temperature_Ch2; // 27
   float Humidity_Ch3;
-  float TemperatureSi072_Ch3; // 27  
+  float Temperature_Ch3; // 27  
   float Current;
   float Voltage;
   float PowerFactor; 
@@ -261,6 +265,7 @@ struct
   uint16_t WindTemp;   // 35
   uint16_t Luminosity;  
 }Values;
+
 #ifdef   ACCL_GYRO_SENSOR_EXISTS 
 struct
 {
@@ -318,6 +323,7 @@ struct
   bool InitDelay = 0;
   bool SleepEnable = 0;
   uint8_t ValueTimer = 0; 
+  bool ExpSensOnb =0;  
   bool ExpSens1 =0;
   bool ExpSens2 =0;
   bool ExpSens3 =0;

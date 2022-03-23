@@ -1,0 +1,3161 @@
+From: <Saved by Blink>
+Snapshot-Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/index.html?GUID-371E0465-1F33-4522-ACD7-E310F967B7A9
+Subject: AVR ONE!
+Date: Sat, 19 Mar 2022 22:57:57 -0000
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----"
+
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/html
+Content-ID: <frame-9681B1BC54EAF36C2EEEBEE5BED9CD49@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/index.html?GUID-371E0465-1F33-4522-ACD7-E310F967B7A9
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns:fo=3D"http://www.=
+w3.org/1999/XSL/Format" xmlns:axf=3D"http://www.antennahouse.com/names/XSL/=
+Extensions"><head><meta http-equiv=3D"Content-Type" content=3D"text/html; c=
+harset=3DUTF-8">
+     =20
+      <title>AVR ONE!</title>
+      <link rel=3D"shortcut icon" href=3D"https://onlinedocs.microchip.com/=
+pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/favicon.ico" type=3D"i=
+mage/x-icon">
+      <link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs=
+.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/webhelp=
+layout.css"></head>
+   <frameset rows=3D"80,*">
+      <frame name=3D"headerwin" src=3D"cid:frame-185B0DC612E2CFE47F56C60E6C=
+5F56C9@mhtml.blink" frameborder=3D"0" scrolling=3D"no" marginwidth=3D"0" ma=
+rginheight=3D"0" noresize=3D"">
+      <frameset cols=3D"325,*" bordercolor=3D"#e0e0e0" frameborder=3D"1">
+         <frame name=3D"navigationwin" src=3D"cid:frame-B3963E76D63F725B0B4=
+DDA27D690CFFF@mhtml.blink" scrolling=3D"auto" frameborder=3D"0" marginwidth=
+=3D"0" marginheight=3D"0" target=3D"contentwin" bordercolor=3D"#e0e0e0" sty=
+le=3D"overflow:auto">
+         <frame id=3D"contentframe" name=3D"contentwin" frameborder=3D"0" m=
+arginwidth=3D"6" marginheight=3D"0" bordercolor=3D"#e0e0e0" style=3D"overfl=
+ow:auto" src=3D"cid:frame-E35C6DCF59B09828470A376A8A3D4A8F@mhtml.blink">
+      </frameset>
+   </frameset>
+</html>
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/webhelplayout.css
+
+@charset "utf-8";
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, b=
+lockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, i=
+mg, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i=
+, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, cap=
+tion, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, emb=
+ed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, se=
+ction, summary, time, mark, audio, video { margin: 0px; padding: 0px; borde=
+r: 0px; font: inherit; vertical-align: baseline; }
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, =
+nav, section { display: block; }
+
+body { line-height: 1; }
+
+ol, ul { list-style: none; }
+
+blockquote, q { quotes: none; }
+
+blockquote::before, blockquote::after, q::before, q::after { content: none;=
+ }
+
+table { border-collapse: collapse; border-spacing: 0px; }
+
+frame, frameset { border-right: 1px solid rgb(183, 197, 217); margin: 0px; =
+overflow: hidden; padding: 0px; width: 100%; }
+
+body { margin: 0px; padding: 0px; font-family: Arial, sans-serif; font-size=
+: 12px; }
+
+a { color: rgb(0, 0, 0); text-decoration: none; line-height: 25px; }
+
+.tocItem { color: rgb(0, 0, 0); border: 1px solid transparent; border-radiu=
+s: 2px; margin: 2px 0px; text-shadow: rgb(255, 255, 255) 1px 1px 0px; }
+
+.tocItem.highlighted.lostFocus { background-color: rgb(221, 221, 221); bord=
+er-color: rgb(207, 207, 207); }
+
+.tocItem img { padding-top: 3px; }
+
+.tocItem.highlighted, .tocItem.highlighted:hover { background-color: rgb(19=
+0, 210, 240); border-color: rgb(148, 181, 229); }
+
+.tocItem:hover { background-color: rgb(233, 240, 250); border-color: rgb(19=
+0, 210, 240); }
+
+table a { line-height: 23px; margin-left: 10px; vertical-align: top; paddin=
+g: 3px; }
+
+table img { vertical-align: middle; }
+
+.sp { display: none; }
+
+#headersection { margin: 0px; height: 38px; background-color: rgb(0, 0, 0);=
+ color: rgb(255, 255, 255); }
+
+img#logo { position: absolute; top: 0px; left: 0px; }
+
+#tabnavigation { margin-left: 180px; }
+
+#breadcrumbsection h1 { font-size: 22px; font-weight: bold; padding-top: 5p=
+x; }
+
+#breadcrumbsection { padding: 10px; }
+
+#buttons { float: right; margin: 0px; padding-top: 12px; padding-right: 14p=
+x; }
+
+#buttons li { padding: 0px; margin: 0px 0px 0px 10px; list-style: none; cur=
+sor: pointer; float: left; }
+
+#buttons li img { border-top: 0px; list-style: none; cursor: pointer; float=
+: left; }
+
+#buttons li img:hover { list-style: none; cursor: pointer; float: left; }
+
+#tabnavigation li { color: rgb(255, 255, 255); font-weight: 500; font-size:=
+ 12px; text-align: center; text-decoration: none; vertical-align: middle; l=
+ine-height: 20px; float: left; margin-left: 0px; margin-right: 0px; list-st=
+yle: none; display: block; width: 95px; text-shadow: rgb(38, 44, 57) 0px 1p=
+x 0px; padding-top: 6px; }
+
+#tabnavigation li.end { margin-right: 3px; width: 0px; display: block; }
+
+#tabnavigation li a { color: rgb(255, 255, 255); cursor: pointer; text-deco=
+ration: none; padding-bottom: 0px; padding-top: 3px; display: block; }
+
+#tabnavigation li.current { border-bottom: 4px solid rgb(238, 34, 35); }
+
+#tabnavigation li.endcurrent { margin-right: 3px; width: 0px; display: bloc=
+k; }
+
+#tabnavigation li.current a { display: block; }
+
+.framelayout { margin: 0px; padding: 10px; background-color: rgb(255, 255, =
+255); }
+
+#indexlist { font-style: normal; font-variant: normal; font-size: 10pt; wid=
+th: 200px; display: inline-block; float: left; margin-left: 5px; }
+
+.IndexSection { margin-left: 0mm; font-weight: bold; font-size: 12pt; }
+
+.PrimaryIndexTerm { margin-left: 5mm; font-weight: normal; font-size: 10pt;=
+ }
+
+.PrimaryIndexTerm a, .PrimaryIndexTerm a:visited { color: rgb(41, 105, 203)=
+; text-decoration: underline !important; }
+
+.SecondaryIndexTerm { margin-left: 5mm; font-weight: normal; font-size: 10p=
+t; }
+
+#indexNavigationList { }
+
+.indexNavigationItemAvailable { float: left; border: 1px solid rgb(206, 206=
+, 206); background-color: rgb(217, 166, 0); text-align: center; width: 20px=
+; font-weight: bold; margin-left: 5px; margin-bottom: 5px; }
+
+.indexNavigationItemAvailable a, .indexNavigationItemAvailable a:visited { =
+color: rgb(41, 105, 203); text-decoration: underline !important; }
+
+.indexNavigationItemNotAvailable { float: left; border: 1px solid rgb(206, =
+206, 206); background-color: rgb(206, 206, 206); text-align: center; width:=
+ 20px; font-weight: normal; margin-left: 5px; margin-bottom: 5px; }
+
+.popupDiv { background-color: rgb(206, 206, 206); border: 1pt solid black; =
+font-size: 9pt; font-weight: normal; padding: 2px; margin-left: 5px; }
+
+.popupDivInner { background-color: rgb(255, 255, 255); color: rgb(178, 0, 0=
+); margin-left: 5px; margin-right: 5px; }
+
+#SearchFrm { margin-left: 0px; }
+
+#resultlist { font-style: normal; font-size: 11px; margin-left: 0px; margin=
+-top: 10px; }
+
+#resultlist a, #resultlist a:visited { text-decoration: underline !importan=
+t; }
+
+.resultitem { padding-bottom: 5px; border-bottom: 1px solid rgb(206, 206, 2=
+06); }
+
+.resultitem a { color: rgb(41, 105, 203); }
+
+input[type=3D"button"], input[type=3D"submit"] { border-radius: 3px; cursor=
+: pointer; font-weight: bold; height: 27px; width: auto; box-shadow: rgb(24=
+4, 244, 244) 0px 1px 0px 0px inset; min-width: 50px; font-family: Arial, sa=
+ns-serif; font-size: 11px; margin-bottom: 0px; margin-left: 5px; text-decor=
+ation: none; text-shadow: rgb(255, 255, 255) 1px 1px 0px; vertical-align: b=
+ottom; background-color: rgb(226, 226, 226); border: 1px solid rgb(170, 170=
+, 170); color: rgb(38, 41, 51); display: inline-block; line-height: 27px; t=
+ext-align: center; }
+
+input[type=3D"button"]:hover, input[type=3D"submit"]:hover { background-col=
+or: rgb(244, 244, 244); border: 1px solid rgb(69, 69, 69); }
+
+input[type=3D"text"] { border: 1px solid rgb(159, 159, 159); border-radius:=
+ 3px; box-shadow: rgb(221, 216, 220) 1px 1px 2px inset; height: 25px; paddi=
+ng: 0px 5px; font-family: Arial, sans-serif; font-size: 11px; color: rgb(33=
+, 35, 38) !important; }
+
+#disclaimer { display: table; float: left; height: 40px; width: 60%; }
+
+#disclaimer-text { display: table-cell; vertical-align: middle; text-align:=
+ center; font-size: 0.9em; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/html
+Content-ID: <frame-185B0DC612E2CFE47F56C60E6C5F56C9@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/header.html
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns:fo=3D"http://www.=
+w3.org/1999/XSL/Format" xmlns:axf=3D"http://www.antennahouse.com/names/XSL/=
+Extensions"><head><meta http-equiv=3D"Content-Type" content=3D"text/html; c=
+harset=3DUTF-8">
+     =20
+      <title>Keywords</title>
+      <link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs=
+.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/webhelp=
+layout.css"><!--[if gte IE 6]>
+      		<style>
+      				#tabnavigation li
+      				{
+      					width: 79px;
+      				}
+      		</style>
+            <![endif]-->
+     =20
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+     =20
+     =20
+   </head>
+   <body marginwidth=3D"0" marginheight=3D"0">
+      <div id=3D"headersection"><img id=3D"logo" src=3D"https://onlinedocs.=
+microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/Microchi=
+p%20logo%20tiny%20red-white.png" alt=3D"Microchip"><ul id=3D"tabnavigation"=
+>
+            <li id=3D"content" class=3D"current"><a>Contents</a></li>
+            <li id=3D"content-end" class=3D"endcurrent"></li>
+            <li id=3D"index" class=3D""><a>Index</a></li>
+            <li id=3D"index-end" class=3D"end"></li>
+            <li id=3D"search" class=3D""><a>Search</a></li>
+            <li id=3D"search-end" class=3D"end"></li>
+         </ul>
+         <div id=3D"disclaimer">
+            <p id=3D"disclaimer-text">The online versions of the documents =
+are provided as a courtesy. Verify all content and data in the device=E2=80=
+=99s PDF documentation found on the device product page.</p>
+         </div>
+         <ul id=3D"buttons">
+            <li><img src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/previous.png" border=3D"0" alt=3D"Pr=
+evious topic" title=3D"Previous topic"></li>
+            <li><img src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/next.png" border=3D"0" alt=3D"Next t=
+opic" title=3D"Next topic"></li>
+            <li><img src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/print.png" border=3D"0" alt=3D"Print=
+ topic" title=3D"Print topic"></li>
+         </ul>
+      </div>
+      <div id=3D"breadcrumbsection">
+         <h1>Keywords</h1>
+      </div>
+     =20
+        =20
+     =20
+</body></html>
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/Microchip%20logo%20tiny%20red-white.png
+
+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
+RK5CYII=
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/previous.png
+
+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
+MAAAAABJRU5ErkJggg==
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/next.png
+
+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
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/print.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAu
+MTczbp9jAAAAjUlEQVQ4T6XTzQnAIAwFYM9O0R06h0u4WAf04AamPiGS4l+0h4+KSZ4g1lhrf+lu
+7jBEVKSUrow0eAbqAlDMqVNNQAghZnQoIoCcc2VDfjXQWwNOfAK8981ljXQDAMXexUnqAD6NbQeM
+qAOwlmYB9R3IxhH0cD9m8ZputgpAHeRMfZLADQuPnOn+YXrWvJN2Oxmp60IjAAAAAElFTkSuQmCC
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/html
+Content-ID: <frame-B3963E76D63F725B0B4DDA27D690CFFF@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/toc.html
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns:fo=3D"http://www.=
+w3.org/1999/XSL/Format"><head><meta http-equiv=3D"Content-Type" content=3D"=
+text/html; charset=3DUTF-8">
+     =20
+      <title>AVR ONE!</title>
+      <base target=3D"contentwin">
+      <link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs=
+.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/webhelp=
+layout.css">
+      <link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs=
+.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesh=
+eet.css"></head>
+   <body class=3D"framelayout" marginwidth=3D"0" marginheight=3D"0">
+      <h1 class=3D"heading1">Contents</h1>
+      <table cellpadding=3D"0" cellspacing=3D"0" border=3D"0" width=3D"100%=
+">
+         <tbody><tr>
+            <td align=3D"left" valign=3D"top" nowrap=3D""><span id=3D"sd5" =
+class=3D"x">
+                  <div class=3D"tocItem highlighted lostFocus"><img id=3D"d=
+5e9" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA0=
+7-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:0px"><img id=3D"d5e9=
+" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5=
+C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e9" target=3D"contentwin" href=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/GUID-55973EFA-3D1D-4F16-8DF6-577D552148E0.html">The Atmel AV=
+R ONE! Debugger</a></div><span id=3D"sd5e9" class=3D"sp"></span><div class=
+=3D"tocItem"><img id=3D"pd5e16" src=3D"https://onlinedocs.microchip.com/pr/=
+GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"margin=
+-left:0px"><img id=3D"bd5e16" src=3D"https://onlinedocs.microchip.com/pr/GU=
+ID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5e16" =
+target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5=
+DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-BC41C492-F964-4FCE-AB75-1BD8B=
+95D7F7D.html">1. Introduction</a></div><span id=3D"sd5e16" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e23" src=3D"https:=
+//onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-=
+US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e23" src=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/topic.png"><a id=3D"ad5e23" target=3D"contentwin" href=3D"https://onlin=
+edocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GU=
+ID-18EA868B-6A37-4358-B6ED-C683315A55E7.html">1.1. Introduction to the Atme=
+l AVR ONE!</a></div><span id=3D"sd5e23" class=3D"sp"></span><div class=3D"t=
+ocItem"><img id=3D"d5e30" src=3D"https://onlinedocs.microchip.com/pr/GUID-0=
+5B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left=
+:16px"><img id=3D"d5e30" src=3D"https://onlinedocs.microchip.com/pr/GUID-05=
+B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e30" targ=
+et=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30=
+-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-AC1748A6-485D-4E9A-9652-EA9EA0339=
+A3C.html">1.2. Atmel AVR ONE! Features</a></div><span id=3D"sd5e30" class=
+=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e37" src=3D"https://onli=
+nedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/s=
+pace.png" style=3D"margin-left:16px"><img id=3D"d5e37" src=3D"https://onlin=
+edocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/to=
+pic.png"><a id=3D"ad5e37" target=3D"contentwin" href=3D"https://onlinedocs.=
+microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-E7F=
+8931F-12C1-4D3C-9B27-748EF79E804C.html">1.3. System Requirements</a></div><=
+span id=3D"sd5e37" class=3D"sp"></span></span><div class=3D"tocItem"><img i=
+d=3D"pd5e44" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"margin-left:0px"><img id=
+=3D"bd5e44" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4=
+741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5e44" target=3D"contentw=
+in" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA0=
+7-5C6EFB62B22D-en-US-2/GUID-37A2EF9C-636E-4E74-BB90-B6752AD20DD3.html">2. R=
+elease History, New Features</a></div><span id=3D"sd5e44" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e51" src=3D"https:=
+//onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-=
+US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e51" src=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/topic.png"><a id=3D"ad5e51" target=3D"contentwin" href=3D"https://onlin=
+edocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GU=
+ID-18ACDB21-054A-4562-9F6C-9C52E1AE7F22.html">2.1. What's New</a></div><spa=
+n id=3D"sd5e51" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e58=
+" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5=
+C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e58"=
+ src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C=
+6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e58" target=3D"contentwin" href=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/GUID-EE48EE1A-700F-4EEC-B15B-A4739366C573.html">2.2. Firmwar=
+e Release History</a></div><span id=3D"sd5e58" class=3D"sp"></span></span><=
+div class=3D"tocItem"><img id=3D"pd5e65" src=3D"https://onlinedocs.microchi=
+p.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=
+=3D"margin-left:0px"><img id=3D"bd5e65" src=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=
+=3D"ad5e65" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/=
+pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-442A6B51-DEBC-419=
+0-8AAC-258FD423E350.html">3. Known Issues</a></div><span id=3D"sd5e65" clas=
+s=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e72" src=3D"https:=
+//onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-=
+US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e72" src=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/topic.png"><a id=3D"ad5e72" target=3D"contentwin" href=3D"https://onlin=
+edocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GU=
+ID-C3433560-029D-4CF8-8A97-296EC42A6FF8.html">3.1. General</a></div><span i=
+d=3D"sd5e72" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e79" s=
+rc=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6E=
+FB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e79" sr=
+c=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EF=
+B62B22D-en-US-2/topic.png"><a id=3D"ad5e79" target=3D"contentwin" href=3D"h=
+ttps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22=
+D-en-US-2/GUID-13C49083-73BF-457A-A984-5786DC931B6F.html">3.2. Atmel AVR XM=
+EGA OCD Specific Issues</a></div><span id=3D"sd5e79" class=3D"sp"></span><d=
+iv class=3D"tocItem"><img id=3D"d5e86" src=3D"https://onlinedocs.microchip.=
+com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=
+=3D"margin-left:16px"><img id=3D"d5e86" src=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=
+=3D"ad5e86" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/=
+pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-22971A60-4299-49C=
+1-B99F-C3E0FD877616.html">3.3. Atmel megaAVR OCD and Atmel tinyAVR OCD Spec=
+ific Issues</a></div><span id=3D"sd5e86" class=3D"sp"></span><div class=3D"=
+tocItem"><img id=3D"d5e93" src=3D"https://onlinedocs.microchip.com/pr/GUID-=
+05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-lef=
+t:16px"><img id=3D"d5e93" src=3D"https://onlinedocs.microchip.com/pr/GUID-0=
+5B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e93" tar=
+get=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA3=
+0-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-8BA838F0-DE47-4676-8A40-31791029=
+8E1C.html">3.4. Atmel AVR 32-bit Microcontroller Specific Issues</a></div><=
+span id=3D"sd5e93" class=3D"sp"></span></span><div class=3D"tocItem"><img i=
+d=3D"pd5e100" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97=
+-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"margin-left:0px"><img id=
+=3D"bd5e100" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5e100" target=3D"conten=
+twin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/GUID-3B2EE1B1-D755-4FFB-95EA-492FE64FB4F1.html">4.=
+ Getting Started</a></div><span id=3D"sd5e100" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e107" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e107" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e107" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-D5F64A1F-0871-4348-90A8-4402F4D05C8B.html">4.1. Kit Contents</a></div=
+><span id=3D"sd5e107" class=3D"sp"></span><div class=3D"tocItem"><img id=3D=
+"d5e114" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741=
+-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D=
+"d5e114" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741=
+-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e114" target=3D"contentwi=
+n" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07=
+-5C6EFB62B22D-en-US-2/GUID-543D4212-7400-46D8-8C47-B849072C53AF.html">4.2. =
+Powering the Atmel AVR ONE!</a></div><span id=3D"sd5e114" class=3D"sp"></sp=
+an><div class=3D"tocItem"><img id=3D"d5e121" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" s=
+tyle=3D"margin-left:16px"><img id=3D"d5e121" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><=
+a id=3D"ad5e121" target=3D"contentwin" href=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-BEA11FDB-FFB=
+9-4F5B-A4F8-5ABA3793F657.html">4.3. Connecting to the Host Computer</a></di=
+v><span id=3D"sd5e121" class=3D"sp"></span><div class=3D"tocItem"><img id=
+=3D"pd5e128" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"margin-left:16px"><img id=
+=3D"bd5e128" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5e128" target=3D"conten=
+twin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/GUID-A8F6F1D7-229C-4685-A361-6DE8847576EF.html">4.=
+4. USB Driver Installation</a></div><span id=3D"sd5e128" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e135" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e135" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e135" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-0D12438F-0A60-4259-8EC3-96D8C56C4B15.html">4.4.1. Windows</a></div=
+><span id=3D"sd5e135" class=3D"sp"></span></span><div class=3D"tocItem"><im=
+g id=3D"d5e142" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A=
+97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><im=
+g id=3D"d5e142" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A=
+97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e142" target=3D"co=
+ntentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-47=
+41-AA07-5C6EFB62B22D-en-US-2/GUID-29106B98-51D1-4E14-AF10-54621A0EDAAC.html=
+">4.5. Programming and Debugging</a></div><span id=3D"sd5e142" class=3D"sp"=
+></span></span><div class=3D"tocItem"><img id=3D"pd5e149" src=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/plus.png" style=3D"margin-left:0px"><img id=3D"bd5e149" src=3D"https://onl=
+inedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/=
+book.png"><a id=3D"ad5e149" target=3D"contentwin" href=3D"https://onlinedoc=
+s.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-5=
+CB34019-17BE-49AB-9B66-396E0BA99D9D.html">5. Connecting the Atmel AVR ONE!<=
+/a></div><span id=3D"sd5e149" class=3D"x" style=3D"display: none;">
+                     <div class=3D"tocItem"><img id=3D"pd5e156" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/minus.png" style=3D"margin-left:16px"><img id=3D"bd5e156" src=3D"htt=
+ps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-=
+en-US-2/book.png"><a id=3D"ad5e156" target=3D"contentwin" href=3D"https://o=
+nlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-=
+2/GUID-F3ED77CD-7B85-46E3-8F69-FEC2FF09CC74.html">5.1. Connecting to a JTAG=
+ Target</a></div><span id=3D"sd5e156" class=3D"x">
+                        <div class=3D"tocItem"><img id=3D"d5e163" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e163" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e163" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-BE9E8951-E6E6-475A-AB01-2FDBA78EFF9F.html">5.1.1. Using the JTAG M=
+ictor Connector</a></div><span id=3D"sd5e163" class=3D"sp"></span><div clas=
+s=3D"tocItem"><img id=3D"d5e170" src=3D"https://onlinedocs.microchip.com/pr=
+/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"marg=
+in-left:32px"><img id=3D"d5e170" src=3D"https://onlinedocs.microchip.com/pr=
+/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e=
+170" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID=
+-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-7AABAED0-4111-4CDA-99A2-=
+AC322942CF9B.html">5.1.2. Using the JTAG 10-pin Connector</a></div><span id=
+=3D"sd5e170" class=3D"sp"></span></span><div class=3D"tocItem"><img id=3D"d=
+5e177" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d=
+5e177" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e177" target=3D"contentwin"=
+ href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5=
+C6EFB62B22D-en-US-2/GUID-5868532C-DC2C-4649-9187-BF1F7641C8DD.html">5.2. Co=
+nnecting to an aWire Target</a></div><span id=3D"sd5e177" class=3D"sp"></sp=
+an><div class=3D"tocItem"><img id=3D"d5e184" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" s=
+tyle=3D"margin-left:16px"><img id=3D"d5e184" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><=
+a id=3D"ad5e184" target=3D"contentwin" href=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-E13D9227-BF2=
+9-4F10-83DF-015AA7ED3607.html">5.3. Connecting to a PDI Target</a></div><sp=
+an id=3D"sd5e184" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e=
+191" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA0=
+7-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e=
+191" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA0=
+7-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e191" target=3D"contentwin" h=
+ref=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6=
+EFB62B22D-en-US-2/GUID-62456D0A-3B5E-4C88-BD55-D8FAC0A86E97.html">5.4. Conn=
+ecting to a debugWIRE Target</a></div><span id=3D"sd5e191" class=3D"sp"></s=
+pan><div class=3D"tocItem"><img id=3D"d5e198" src=3D"https://onlinedocs.mic=
+rochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" =
+style=3D"margin-left:16px"><img id=3D"d5e198" src=3D"https://onlinedocs.mic=
+rochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png">=
+<a id=3D"ad5e198" target=3D"contentwin" href=3D"https://onlinedocs.microchi=
+p.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-81C5EF3F-60=
+82-4F0D-B60E-E6AC306A57A1.html">5.5. Connecting to an SPI Target</a></div><=
+span id=3D"sd5e198" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d=
+5e205" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d=
+5e205" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e205" target=3D"contentwin"=
+ href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5=
+C6EFB62B22D-en-US-2/GUID-3297F401-767E-4722-A562-9232FD06D686.html">5.6. Us=
+ing the Atmel AVR ONE! with Atmel STK500</a></div><span id=3D"sd5e205" clas=
+s=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e212" src=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/space.png" style=3D"margin-left:16px"><img id=3D"d5e212" src=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/topic.png"><a id=3D"ad5e212" target=3D"contentwin" href=3D"https://onlined=
+ocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID=
+-E2BBBB69-ACD0-4CF4-BB3C-B28F901B7118.html">5.7. Using the Atmel AVR ONE! w=
+ith Atmel STK600</a></div><span id=3D"sd5e212" class=3D"sp"></span></span><=
+div class=3D"tocItem"><img id=3D"pd5e219" src=3D"https://onlinedocs.microch=
+ip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=
+=3D"margin-left:0px"><img id=3D"bd5e219" src=3D"https://onlinedocs.microchi=
+p.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=
+=3D"ad5e219" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com=
+/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-23BB54A1-F886-48=
+4A-869A-2E26E8C66291.html">6. On-chip Debugging</a></div><span id=3D"sd5e21=
+9" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e226" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e226" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e226" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-6847BD4A-FFD9-4C0E-B752-B7AACB1AC7F6.html">6.1. Introduction to On-ch=
+ip Debugging (OCD)</a></div><span id=3D"sd5e226" class=3D"sp"></span><div c=
+lass=3D"tocItem"><img id=3D"pd5e233" src=3D"https://onlinedocs.microchip.co=
+m/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"m=
+argin-left:16px"><img id=3D"bd5e233" src=3D"https://onlinedocs.microchip.co=
+m/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"a=
+d5e233" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/G=
+UID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-F483B1A9-EEA3-422E-BC=
+4E-D0CCD829620C.html">6.2. Physical Interfaces</a></div><span id=3D"sd5e233=
+" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e240" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e240" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e240" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-AE87FB4E-3560-43E3-8FF4-6073B9AD6CBE.html">6.2.1. JTAG</a></div><s=
+pan id=3D"sd5e240" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5=
+e247" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA=
+07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5=
+e247" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA=
+07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e247" target=3D"contentwin" =
+href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C=
+6EFB62B22D-en-US-2/GUID-B3EF40B7-9E88-4933-BB67-10D1CBE1E6F2.html">6.2.2. A=
+uxiliary (AUX) Physical (including JTAG)</a></div><span id=3D"sd5e247" clas=
+s=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e254" src=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/space.png" style=3D"margin-left:32px"><img id=3D"d5e254" src=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/topic.png"><a id=3D"ad5e254" target=3D"contentwin" href=3D"https://onlined=
+ocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID=
+-F0288B4D-BF0B-486E-B821-FEAC47A071B2.html">6.2.3. aWire</a></div><span id=
+=3D"sd5e254" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e261" =
+src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6=
+EFB62B22D-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e261" =
+src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6=
+EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e261" target=3D"contentwin" href=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/GUID-B2A88B85-834A-4E8E-931C-D6187D472DD9.html">6.2.4. PDI P=
+hysical</a></div><span id=3D"sd5e261" class=3D"sp"></span><div class=3D"toc=
+Item"><img id=3D"d5e268" src=3D"https://onlinedocs.microchip.com/pr/GUID-05=
+B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:=
+32px"><img id=3D"d5e268" src=3D"https://onlinedocs.microchip.com/pr/GUID-05=
+B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e268" tar=
+get=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA3=
+0-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-A063C13B-764D-49FD-9F57-A98D59C1=
+E985.html">6.2.5. debugWIRE</a></div><span id=3D"sd5e268" class=3D"sp"></sp=
+an><div class=3D"tocItem"><img id=3D"d5e275" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" s=
+tyle=3D"margin-left:32px"><img id=3D"d5e275" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><=
+a id=3D"ad5e275" target=3D"contentwin" href=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-E8D710FD-E29=
+5-41F0-BF01-AED70359BE38.html">6.2.6. SPI</a></div><span id=3D"sd5e275" cla=
+ss=3D"sp"></span></span><div class=3D"tocItem"><img id=3D"pd5e282" src=3D"h=
+ttps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22=
+D-en-US-2/plus.png" style=3D"margin-left:16px"><img id=3D"bd5e282" src=3D"h=
+ttps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22=
+D-en-US-2/book.png"><a id=3D"ad5e282" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-E5603771-90B3-4020-88EE-0474D089F07B.html">6.3. Atmel AVR OCD Impl=
+ementations</a></div><span id=3D"sd5e282" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e289" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e289" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e289" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-C09FC21B-B99D-465A-A698-CE2D1266AA8D.html">6.3.1. Atmel AVR UC3 OC=
+D (JTAG and aWire Physical)</a></div><span id=3D"sd5e289" class=3D"sp"></sp=
+an><div class=3D"tocItem"><img id=3D"d5e296" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" s=
+tyle=3D"margin-left:32px"><img id=3D"d5e296" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><=
+a id=3D"ad5e296" target=3D"contentwin" href=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-286086B1-490=
+A-418B-9C02-1C1B6380C527.html">6.3.2. Atmel AVR XMEGA OCD (JTAG and PDI Phy=
+sical)</a></div><span id=3D"sd5e296" class=3D"sp"></span><div class=3D"tocI=
+tem"><img id=3D"d5e303" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B=
+5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:3=
+2px"><img id=3D"d5e303" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B=
+5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e303" targ=
+et=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30=
+-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-ED8FF941-FD91-4D6F-88E2-53027D3E5=
+915.html">6.3.3. Atmel megaAVR OCD (JTAG)</a></div><span id=3D"sd5e303" cla=
+ss=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e310" src=3D"https://o=
+nlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-=
+2/space.png" style=3D"margin-left:32px"><img id=3D"d5e310" src=3D"https://o=
+nlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-=
+2/topic.png"><a id=3D"ad5e310" target=3D"contentwin" href=3D"https://online=
+docs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUI=
+D-E6810FA6-4F60-41DA-9CDB-E2FEF33C123F.html">6.3.4. Atmel megaAVR / tinyAVR=
+ OCD (debugWIRE)</a></div><span id=3D"sd5e310" class=3D"sp"></span></span><=
+/span><div class=3D"tocItem"><img id=3D"pd5e317" src=3D"https://onlinedocs.=
+microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png=
+" style=3D"margin-left:0px"><img id=3D"bd5e317" src=3D"https://onlinedocs.m=
+icrochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"=
+><a id=3D"ad5e317" target=3D"contentwin" href=3D"https://onlinedocs.microch=
+ip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-63DB5FEA-F=
+44E-4F24-B585-253B14B40DB0.html">7. Atmel AVR ONE! Hardware Description</a>=
+</div><span id=3D"sd5e317" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e324" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e324" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e324" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-8AF5EA14-6206-40E7-9717-1BB7B11E55B5.html">7.1. LEDs</a></div><span i=
+d=3D"sd5e324" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e331"=
+ src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C=
+6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e331"=
+ src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C=
+6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e331" target=3D"contentwin" href=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/GUID-4E3CA989-8FB7-41F4-9F86-A20FC56A4B58.html">7.2. Rear Pa=
+nel</a></div><span id=3D"sd5e331" class=3D"sp"></span><div class=3D"tocItem=
+"><img id=3D"d5e338" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px=
+"><img id=3D"d5e338" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e338" target=
+=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9=
+A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-1C6C1B12-8830-402A-B997-0EFF3407E3D=
+6.html">7.3. Probe</a></div><span id=3D"sd5e338" class=3D"sp"></span><div c=
+lass=3D"tocItem"><img id=3D"pd5e345" src=3D"https://onlinedocs.microchip.co=
+m/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"m=
+argin-left:16px"><img id=3D"bd5e345" src=3D"https://onlinedocs.microchip.co=
+m/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"a=
+d5e345" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/G=
+UID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-9E4E1B1E-D8C2-4B92-99=
+6F-82A6D220E19A.html">7.4. Architecture Description</a></div><span id=3D"sd=
+5e345" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e352" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e352" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e352" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-3DCA911D-63D3-405F-AB83-073DBFABC006.html">7.4.1. Atmel AVR ONE! M=
+ain-board</a></div><span id=3D"sd5e352" class=3D"sp"></span><div class=3D"t=
+ocItem"><img id=3D"d5e359" src=3D"https://onlinedocs.microchip.com/pr/GUID-=
+05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-lef=
+t:32px"><img id=3D"d5e359" src=3D"https://onlinedocs.microchip.com/pr/GUID-=
+05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e359" t=
+arget=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5D=
+A30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-19444603-13FA-4F52-A9A0-ACF246=
+A9F0AD.html">7.4.2. Atmel AVR ONE! Probe</a></div><span id=3D"sd5e359" clas=
+s=3D"sp"></span></span></span><div class=3D"tocItem"><img id=3D"pd5e366" sr=
+c=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EF=
+B62B22D-en-US-2/plus.png" style=3D"margin-left:0px"><img id=3D"bd5e366" src=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/book.png"><a id=3D"ad5e366" target=3D"contentwin" href=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/GUID-A5F6A261-2650-477F-8EB4-5C0139C9CC8D.html">8. Software Integr=
+ation</a></div><span id=3D"sd5e366" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e373" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e373" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e373" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-05C447F5-4C2B-45BD-B492-D6FFD9C5D0BB.html">8.1. Atmel Studio</a></div=
+><span id=3D"sd5e373" class=3D"sp"></span></span><div class=3D"tocItem"><im=
+g id=3D"d5e380" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A=
+97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:0px"><img=
+ id=3D"d5e380" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A9=
+7-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e380" target=3D"con=
+tentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-474=
+1-AA07-5C6EFB62B22D-en-US-2/GUID-F1A8A643-CB24-4038-BFE8-F1D7A9219E36.html"=
+>9. Command Line Utility</a></div><span id=3D"sd5e380" class=3D"sp"></span>=
+<div class=3D"tocItem"><img id=3D"pd5e388" src=3D"https://onlinedocs.microc=
+hip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/minus.png" sty=
+le=3D"margin-left:0px"><img id=3D"bd5e388" src=3D"https://onlinedocs.microc=
+hip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a i=
+d=3D"ad5e388" target=3D"contentwin" href=3D"https://onlinedocs.microchip.co=
+m/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-6CA5F9BF-1381-4=
+1DD-B640-4F4E492B4333.html">10. Advanced Debugging Techniques</a></div><spa=
+n id=3D"sd5e388" class=3D"x">
+                     <div class=3D"tocItem"><img id=3D"pd5e395" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/plus.png" style=3D"margin-left:16px"><img id=3D"bd5e395" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/book.png"><a id=3D"ad5e395" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-DCF4A017-FE22-42F0-B7D5-FA55F83709B7.html">10.1. Atmel AVR 32-bit Mic=
+rocontrollers</a></div><span id=3D"sd5e395" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e402" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e402" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e402" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-007DFCA5-D857-4661-B4D9-3C7C3D696949.html">10.1.1. EVTI/EVTO Usage=
+</a></div><span id=3D"sd5e402" class=3D"sp"></span></span><div class=3D"toc=
+Item"><img id=3D"pd5e409" src=3D"https://onlinedocs.microchip.com/pr/GUID-0=
+5B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/minus.png" style=3D"margin-left=
+:16px"><img id=3D"bd5e409" src=3D"https://onlinedocs.microchip.com/pr/GUID-=
+05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5e409" ta=
+rget=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-BD715497-CF46-4104-BD05-1756F27=
+EA598.html">10.2. Atmel megaAVR Targets</a></div><span id=3D"sd5e409" class=
+=3D"x">
+                        <div class=3D"tocItem"><img id=3D"d5e416" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e416" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e416" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-A48F043B-3FCD-4C67-8A1C-5D954ACF32DB.html">10.2.1. I/O Debug Regis=
+ter (IDR)</a></div><span id=3D"sd5e416" class=3D"sp"></span></span><div cla=
+ss=3D"tocItem"><img id=3D"pd5e423" src=3D"https://onlinedocs.microchip.com/=
+pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png" style=3D"mar=
+gin-left:16px"><img id=3D"bd5e423" src=3D"https://onlinedocs.microchip.com/=
+pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"ad5=
+e423" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUI=
+D-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-891D8D9B-CE43-4BE0-99E1=
+-F703C71E9EE5.html">10.3. debugWIRE Targets</a></div><span id=3D"sd5e423" c=
+lass=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e430" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e430" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e430" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-0387FFE0-FA08-4B96-AFD8-DF995F4EB9D3.html">10.3.1. Software Breakp=
+oints</a></div><span id=3D"sd5e430" class=3D"sp"></span></span></span><div =
+class=3D"tocItem"><img id=3D"pd5e437" src=3D"https://onlinedocs.microchip.c=
+om/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/minus.png" style=3D=
+"margin-left:0px"><img id=3D"bd5e437" src=3D"https://onlinedocs.microchip.c=
+om/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=3D"=
+ad5e437" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/=
+GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-FF58658D-D792-4570-A=
+286-784CC0DF8888.html">11. Special Considerations</a></div><span id=3D"sd5e=
+437" class=3D"x">
+                     <div class=3D"tocItem"><img id=3D"d5e444" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e444" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e444" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-3FD41D54-604D-4FB1-A538-D666CF8A3AB4.html">11.1. Atmel AVR XMEGA OCD<=
+/a></div><span id=3D"sd5e444" class=3D"sp"></span><div class=3D"tocItem"><i=
+mg id=3D"d5e451" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9=
+A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><i=
+mg id=3D"d5e451" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9=
+A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e451" target=3D"c=
+ontentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4=
+741-AA07-5C6EFB62B22D-en-US-2/GUID-4E89A01D-99FA-43F1-90AF-5431549017B5.htm=
+l">11.2. Atmel megaAVR OCD and debugWIRE OCD</a></div><span id=3D"sd5e451" =
+class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e458" src=3D"https:=
+//onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-=
+US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e458" src=3D"https:=
+//onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-=
+US-2/topic.png"><a id=3D"ad5e458" target=3D"contentwin" href=3D"https://onl=
+inedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/=
+GUID-371E0465-1F33-4522-ACD7-E310F967B7A9.html">11.3. Atmel megaAVR OCD (JT=
+AG)</a></div><span id=3D"sd5e458" class=3D"sp"></span><div class=3D"tocItem=
+"><img id=3D"d5e465" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px=
+"><img id=3D"d5e465" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA=
+30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e465" target=
+=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9=
+A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-D44CF10C-7A73-4FB3-A243-D41114B9582=
+E.html">11.4. debugWIRE OCD</a></div><span id=3D"sd5e465" class=3D"sp"></sp=
+an><div class=3D"tocItem"><img id=3D"d5e472" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" s=
+tyle=3D"margin-left:16px"><img id=3D"d5e472" src=3D"https://onlinedocs.micr=
+ochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><=
+a id=3D"ad5e472" target=3D"contentwin" href=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-53BE81C8-2ED=
+F-46BD-976B-6FE1F39D9974.html">11.5. Atmel AVR UC3 OCD</a></div><span id=3D=
+"sd5e472" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e479" src=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e479" src=
+=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB=
+62B22D-en-US-2/topic.png"><a id=3D"ad5e479" target=3D"contentwin" href=3D"h=
+ttps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22=
+D-en-US-2/GUID-3483CB5F-897F-4707-93BF-7195B06506D2.html">11.6. Atmel AVR U=
+C3 Shutdown Mode</a></div><span id=3D"sd5e479" class=3D"sp"></span></span><=
+div class=3D"tocItem"><img id=3D"pd5e486" src=3D"https://onlinedocs.microch=
+ip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/minus.png" styl=
+e=3D"margin-left:0px"><img id=3D"bd5e486" src=3D"https://onlinedocs.microch=
+ip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png"><a id=
+=3D"ad5e486" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com=
+/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-46F08D51-7232-46=
+A8-83E1-BF70D25233F2.html">12. Troubleshooting</a></div><span id=3D"sd5e486=
+" class=3D"x">
+                     <div class=3D"tocItem"><img id=3D"pd5e493" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/plus.png" style=3D"margin-left:16px"><img id=3D"bd5e493" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/book.png"><a id=3D"ad5e493" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-584326E0-BAB0-423C-BEF5-1D4554185DB4.html">12.1. Self-test</a></div><=
+span id=3D"sd5e493" class=3D"sp">
+                        <div class=3D"tocItem"><img id=3D"d5e500" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/space.png" style=3D"margin-left:32px"><img id=3D"d5e500" src=3D"ht=
+tps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D=
+-en-US-2/topic.png"><a id=3D"ad5e500" target=3D"contentwin" href=3D"https:/=
+/onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-U=
+S-2/GUID-DBE4D210-3FE2-4F84-AC4C-D7CDCA59D583.html">12.1.1. Connecting</a><=
+/div><span id=3D"sd5e500" class=3D"sp"></span><div class=3D"tocItem"><img i=
+d=3D"d5e507" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:32px"><img i=
+d=3D"d5e507" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-=
+4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e507" target=3D"conte=
+ntwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-=
+AA07-5C6EFB62B22D-en-US-2/GUID-BCF2BBC3-5804-4A38-99D0-7ED2E2134F4C.html">1=
+2.1.2. Launching</a></div><span id=3D"sd5e507" class=3D"sp"></span><div cla=
+ss=3D"tocItem"><img id=3D"d5e514" src=3D"https://onlinedocs.microchip.com/p=
+r/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"mar=
+gin-left:32px"><img id=3D"d5e514" src=3D"https://onlinedocs.microchip.com/p=
+r/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5=
+e514" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com/pr/GUI=
+D-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-97891930-3A91-4ADE-A7D9=
+-96241C1A90B5.html">12.1.3. How to use the Results for Diagnosis</a></div><=
+span id=3D"sd5e514" class=3D"sp"></span></span><div class=3D"tocItem"><img =
+id=3D"d5e521" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97=
+-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img =
+id=3D"d5e521" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97=
+-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e521" target=3D"cont=
+entwin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741=
+-AA07-5C6EFB62B22D-en-US-2/GUID-2812224F-1009-446E-9A9B-B6F1C700EC6B.html">=
+12.2. Troubleshooting Guide</a></div><span id=3D"sd5e521" class=3D"sp"></sp=
+an></span><div class=3D"tocItem"><img id=3D"pd5e528" src=3D"https://onlined=
+ocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus=
+.png" style=3D"margin-left:0px"><img id=3D"bd5e528" src=3D"https://onlinedo=
+cs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.=
+png"><a id=3D"ad5e528" target=3D"contentwin" href=3D"https://onlinedocs.mic=
+rochip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-9B8CFB=
+9D-EA14-406A-BF78-B9AFD11720E6.html">13. Product Compliance</a></div><span =
+id=3D"sd5e528" class=3D"sp">
+                     <div class=3D"tocItem"><img id=3D"d5e535" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/space.png" style=3D"margin-left:16px"><img id=3D"d5e535" src=3D"https=
+://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en=
+-US-2/topic.png"><a id=3D"ad5e535" target=3D"contentwin" href=3D"https://on=
+linedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2=
+/GUID-57442FA0-89D1-4C10-BAFE-DC32321618E0.html">13.1. RoHS and WEEE</a></d=
+iv><span id=3D"sd5e535" class=3D"sp"></span><div class=3D"tocItem"><img id=
+=3D"d5e542" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4=
+741-AA07-5C6EFB62B22D-en-US-2/space.png" style=3D"margin-left:16px"><img id=
+=3D"d5e542" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4=
+741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=3D"ad5e542" target=3D"conten=
+twin" href=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/GUID-7CDBD36A-709F-4215-8801-391B921F2E3A.html">13=
+.2. CE and FCC</a></div><span id=3D"sd5e542" class=3D"sp"></span></span><di=
+v class=3D"tocItem"><img id=3D"d5e549" src=3D"https://onlinedocs.microchip.=
+com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png" style=
+=3D"margin-left:0px"><img id=3D"d5e549" src=3D"https://onlinedocs.microchip=
+.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png"><a id=
+=3D"ad5e549" target=3D"contentwin" href=3D"https://onlinedocs.microchip.com=
+/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-4B60B901-9510-47=
+C4-8DF4-0B4727D5FE7E.html">14. Revision History</a></div><span id=3D"sd5e54=
+9" class=3D"sp"></span><div class=3D"tocItem"><img id=3D"d5e556" src=3D"htt=
+ps://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-=
+en-US-2/space.png" style=3D"margin-left:0px"><img id=3D"d5e556" src=3D"http=
+s://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-e=
+n-US-2/topic.png"><a id=3D"ad5e556" target=3D"contentwin" href=3D"https://o=
+nlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-=
+2/GUID-2E21E586-5721-4CC7-A434-9DAB2D3DE3C5.html">15. Legal Disclaimer</a><=
+/div><span id=3D"sd5e556" class=3D"sp"></span></span></td>
+         </tr>
+      </tbody></table>
+  =20
+</body></html>
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheet.css
+
+@charset "utf-8";
+
+.relatedheading { font-style: normal; font-variant: normal; font-weight: bo=
+ld; font-size: 10pt; color: rgb(127, 127, 127); background-color: inherit; =
+word-spacing: normal; letter-spacing: normal; vertical-align: baseline; tex=
+t-decoration: none; text-transform: none; line-height: normal; margin: 6px =
+0pt 1px; padding: 6px 4px; float: none; clear: none; text-align: left; text=
+-indent: 0cm; width: auto; height: auto; white-space: normal; }
+
+.relateditem { font-style: normal; font-variant: normal; font-weight: norma=
+l; font-size: 10pt; color: rgb(0, 0, 0); background-color: rgb(223, 223, 22=
+3); word-spacing: normal; letter-spacing: normal; vertical-align: baseline;=
+ text-decoration: none; text-transform: none; line-height: normal; margin: =
+0pt; padding: 4px; border-color: rgb(255, 255, 255); border-right-style: so=
+lid; border-right-width: 1px; float: none; clear: none; text-align: left; t=
+ext-indent: 0cm; width: auto; height: auto; white-space: normal; }
+
+.heading1 { font-style: normal; font-variant: normal; color: rgb(0, 0, 0); =
+background-color: inherit; word-spacing: normal; letter-spacing: normal; ve=
+rtical-align: baseline; text-decoration: none; text-transform: none; line-h=
+eight: normal; margin: 6pt 0cm 3pt; padding: 0pt; float: none; clear: none;=
+ text-align: left; text-indent: 0cm; width: auto; height: auto; white-space=
+: normal; }
+
+.bodytext { font-style: normal; font-variant: normal; font-weight: normal; =
+font-size: 9pt; color: rgb(0, 0, 0); background-color: inherit; word-spacin=
+g: normal; letter-spacing: normal; vertical-align: baseline; text-decoratio=
+n: none; text-transform: none; line-height: normal; margin: 6pt 0pt; paddin=
+g: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; width=
+: auto; height: auto; white-space: normal; }
+
+.superscript { display: inline; font-size: 6pt; color: inherit; background-=
+color: inherit; vertical-align: super; padding: 0pt; }
+
+.emphasis { display: inline; font-style: italic; color: rgb(0, 0, 0); backg=
+round-color: inherit; vertical-align: baseline; padding: 0pt; }
+
+.subheading { font-style: normal; font-variant: normal; font-weight: bold; =
+font-size: 11pt; color: rgb(111, 111, 111); background-color: inherit; word=
+-spacing: normal; letter-spacing: normal; vertical-align: baseline; text-de=
+coration: none; text-transform: none; line-height: normal; margin: 15pt 0cm=
+ 3pt; padding: 0pt; float: none; clear: none; text-align: left; text-indent=
+: 0cm; width: auto; height: auto; white-space: normal; }
+
+.graphicwide { display: block; font-style: normal; font-variant: normal; fo=
+nt-weight: normal; font-size: 10pt; color: rgb(0, 0, 0); background-color: =
+inherit; word-spacing: normal; letter-spacing: normal; vertical-align: base=
+line; text-decoration: none; text-transform: none; line-height: normal; mar=
+gin: 6pt 0cm; padding: 0pt; float: none; clear: none; text-align: left; tex=
+t-indent: 0cm; width: auto; height: auto; white-space: normal; }
+
+.note { font-style: normal; font-variant: normal; font-weight: normal; font=
+-size: 9pt; color: rgb(64, 0, 0); background-color: inherit; word-spacing: =
+normal; letter-spacing: normal; vertical-align: baseline; text-decoration: =
+none; text-transform: none; line-height: normal; margin: 6pt 6pt 6pt 0cm; p=
+adding: 4pt; border-color: rgb(219, 0, 41); border-top-style: solid; border=
+-top-width: 0.3mm; border-bottom-style: solid; border-bottom-width: 0.3mm; =
+float: none; clear: none; text-align: left; text-indent: 0cm; width: 90%; h=
+eight: auto; white-space: normal; }
+
+.notebold { display: inline; font-weight: bold; font-size: 10pt; color: rgb=
+(219, 0, 41); background-color: inherit; vertical-align: baseline; padding:=
+ 0pt; }
+
+.procedureheading { font-style: normal; font-variant: normal; font-weight: =
+bold; font-size: 11pt; color: rgb(34, 61, 104); background-color: inherit; =
+word-spacing: normal; letter-spacing: normal; vertical-align: baseline; tex=
+t-decoration: none; text-transform: none; line-height: normal; margin: 12pt=
+ 0cm 3pt; padding: 0pt; border-style: solid; border-width: thin; border-col=
+or: rgb(223, 223, 223) rgb(127, 127, 127) rgb(127, 127, 127) rgb(223, 223, =
+223); float: none; clear: none; text-align: left; text-indent: 0cm; width: =
+auto; height: auto; white-space: normal; }
+
+ul.listbullet { list-style: outside none disc; margin-top: 3pt; margin-bott=
+om: 0pt; }
+
+li.listbullet { font-style: normal; font-variant: normal; font-weight: norm=
+al; font-size: 9pt; color: rgb(0, 0, 0); background-color: inherit; word-sp=
+acing: normal; letter-spacing: normal; vertical-align: baseline; text-decor=
+ation: none; text-transform: none; line-height: normal; margin: 3pt 0pt 0pt=
+; padding: 0pt; float: none; clear: none; text-align: left; text-indent: 0c=
+m; width: auto; height: auto; white-space: normal; }
+
+.uiobject { display: inline; font-weight: bold; color: rgb(111, 111, 111); =
+background-color: inherit; vertical-align: baseline; padding: 0pt; }
+
+ul.whereami { list-style: outside url("GetHere.jpg") square; margin-top: 1p=
+t; margin-bottom: 6pt; }
+
+li.whereami { font-style: normal; font-variant: normal; font-weight: normal=
+; font-size: 8pt; color: rgb(34, 61, 104); background-color: inherit; word-=
+spacing: normal; letter-spacing: normal; vertical-align: baseline; text-dec=
+oration: none; text-transform: none; line-height: normal; margin: 1pt 0pt 6=
+pt; padding: 0pt; float: none; clear: none; text-align: left; text-indent: =
+0cm; width: auto; height: auto; white-space: normal; }
+
+.tableheading { font-style: normal; font-variant: normal; font-weight: bold=
+; font-size: 10pt; color: rgb(0, 0, 0); background-color: inherit; word-spa=
+cing: normal; letter-spacing: normal; vertical-align: baseline; text-decora=
+tion: none; text-transform: none; line-height: normal; margin: 0pt -2pt 2pt=
+; padding: 6pt; float: none; clear: none; text-align: center; text-indent: =
+0cm; width: auto; height: auto; white-space: normal; }
+
+.tablebodytext { font-style: normal; font-variant: normal; font-weight: nor=
+mal; font-size: 9pt; color: rgb(0, 0, 0); background-color: inherit; word-s=
+pacing: normal; letter-spacing: normal; vertical-align: text-top; text-deco=
+ration: none; text-transform: none; line-height: normal; margin: 3pt 0cm; p=
+adding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; =
+width: auto; height: auto; white-space: normal; }
+
+ul.tablelistbullet { list-style: outside none disc; margin-top: 4pt; margin=
+-bottom: 0pt; }
+
+li.tablelistbullet { font-style: normal; font-variant: normal; font-weight:=
+ normal; font-size: 9pt; color: rgb(0, 0, 0); background-color: inherit; wo=
+rd-spacing: normal; letter-spacing: normal; vertical-align: baseline; text-=
+decoration: none; text-transform: none; line-height: normal; margin: 4pt 0c=
+m 0pt; padding: 0pt; float: none; clear: none; text-align: left; text-inden=
+t: 0cm; width: auto; height: auto; white-space: normal; }
+
+.preformatted { display: block; font-style: normal; font-variant: normal; f=
+ont-weight: normal; font-size: 10pt; color: rgb(0, 0, 0); background-color:=
+ inherit; word-spacing: normal; letter-spacing: normal; vertical-align: bas=
+eline; text-decoration: none; text-transform: none; line-height: normal; ma=
+rgin: 6pt; padding: 0pt; float: none; clear: none; text-align: left; text-i=
+ndent: 0cm; width: auto; height: auto; white-space: normal; }
+
+.monospace { display: inline; color: inherit; background-color: inherit; ve=
+rtical-align: baseline; padding: 0pt; }
+
+.tablenote { display: block; font-style: normal; font-variant: normal; font=
+-weight: normal; font-size: 9pt; color: rgb(0, 0, 0); background-color: inh=
+erit; word-spacing: normal; letter-spacing: normal; vertical-align: baselin=
+e; text-decoration: none; text-transform: none; line-height: normal; margin=
+: 3pt 0pt; padding: 0pt; border-color: rgb(34, 61, 104); border-top-style: =
+solid; border-top-width: thin; float: none; clear: none; text-align: left; =
+text-indent: 0cm; width: auto; height: auto; white-space: normal; }
+
+.heading2 { font-style: normal; font-variant: normal; font-weight: bold; fo=
+nt-size: 14pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing=
+: normal; letter-spacing: normal; vertical-align: baseline; text-decoration=
+: none; text-transform: none; line-height: normal; margin: 6pt 0cm 3pt; pad=
+ding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; wi=
+dth: auto; height: auto; white-space: normal; }
+
+.heading3 { font-style: normal; font-variant: normal; font-weight: bold; fo=
+nt-size: 12pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing=
+: normal; letter-spacing: normal; vertical-align: baseline; text-decoration=
+: none; text-transform: none; line-height: normal; margin: 6pt 0cm 3pt; pad=
+ding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; wi=
+dth: auto; height: auto; white-space: normal; }
+
+.heading4 { font-style: normal; font-variant: normal; font-weight: bold; fo=
+nt-size: 10pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing=
+: normal; letter-spacing: normal; vertical-align: baseline; text-decoration=
+: none; text-transform: none; line-height: normal; margin: 6pt 0cm 3pt; pad=
+ding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; wi=
+dth: auto; height: auto; white-space: normal; }
+
+.heading5 { font-style: normal; font-variant: normal; font-weight: bold; fo=
+nt-size: 10pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing=
+: normal; letter-spacing: normal; vertical-align: baseline; text-decoration=
+: none; text-transform: none; line-height: normal; margin: 6pt 0cm 3pt; pad=
+ding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; wi=
+dth: auto; height: auto; white-space: normal; }
+
+.heading6 { font-style: italic; font-variant: normal; font-weight: bold; fo=
+nt-size: 10pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing=
+: normal; letter-spacing: normal; vertical-align: baseline; text-decoration=
+: none; text-transform: none; line-height: normal; margin: 6pt 0cm 3pt; pad=
+ding: 0pt; float: none; clear: none; text-align: left; text-indent: 0cm; wi=
+dth: auto; height: auto; white-space: normal; }
+
+.indexatoz { font-style: normal; font-variant: normal; font-weight: bold; f=
+ont-size: 10pt; color: rgb(34, 61, 104); background-color: inherit; word-sp=
+acing: normal; letter-spacing: normal; vertical-align: baseline; text-decor=
+ation: none; text-transform: none; line-height: normal; margin: 12pt 0pt 0p=
+t; padding: 6pt 3pt; float: none; clear: none; text-align: left; text-inden=
+t: 0cm; width: auto; height: auto; white-space: normal; }
+
+.indexheading { font-style: normal; font-variant: normal; font-weight: bold=
+; font-size: 14pt; color: rgb(0, 64, 128); background-color: inherit; word-=
+spacing: normal; letter-spacing: normal; vertical-align: baseline; text-dec=
+oration: none; text-transform: none; line-height: normal; margin: 0pt; padd=
+ing: 12pt 0pt 6pt; float: none; clear: none; text-align: left; text-indent:=
+ 0cm; width: auto; height: auto; white-space: normal; }
+
+.index1 { font-style: normal; font-variant: normal; font-weight: bold; font=
+-size: 8pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing: n=
+ormal; letter-spacing: normal; vertical-align: baseline; text-decoration: n=
+one; text-transform: none; line-height: normal; margin: 0cm; padding: 3pt 0=
+pt 0pt; float: none; clear: none; text-align: left; text-indent: 0pt; width=
+: auto; height: auto; white-space: normal; }
+
+.index2 { font-style: normal; font-variant: normal; font-weight: normal; fo=
+nt-size: 8pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing:=
+ normal; letter-spacing: normal; vertical-align: baseline; text-decoration:=
+ none; text-transform: none; line-height: normal; margin: 0cm; padding: 0pt=
+; float: none; clear: none; text-align: left; text-indent: 0pt; width: auto=
+; height: auto; white-space: normal; }
+
+.index3 { font-style: normal; font-variant: normal; font-weight: normal; fo=
+nt-size: 8pt; color: rgb(0, 0, 0); background-color: inherit; word-spacing:=
+ normal; letter-spacing: normal; vertical-align: baseline; text-decoration:=
+ none; text-transform: none; line-height: normal; margin: 0cm; padding: 0pt=
+; float: none; clear: none; text-align: left; text-indent: 0pt; width: auto=
+; height: auto; white-space: normal; }
+
+.indexlink { font-style: italic; font-variant: normal; font-weight: normal;=
+ font-size: 8pt; color: rgb(0, 0, 0); background-color: inherit; word-spaci=
+ng: normal; letter-spacing: normal; vertical-align: baseline; text-decorati=
+on: none; text-transform: none; line-height: normal; margin: 0cm; padding: =
+0pt; float: none; clear: none; text-align: left; text-indent: 0pt; width: a=
+uto; height: auto; white-space: normal; }
+
+.toc { font-style: normal; font-variant: normal; font-weight: normal; color=
+: rgb(0, 0, 0); background-color: inherit; word-spacing: normal; letter-spa=
+cing: normal; vertical-align: baseline; text-decoration: none; text-transfo=
+rm: none; line-height: normal; margin: 0cm; padding: 0pt; float: none; clea=
+r: none; text-align: left; text-indent: 6pt; width: auto; height: auto; whi=
+te-space: normal; }
+
+h1.heading1 { margin-top: 0px; margin-bottom: 0.1em; font-size: 18px; line-=
+height: 33px; }
+
+#SearchFrm span { font-size: 11px; }
+
+td span a { }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/space.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A
+/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB90JEQ0aKAqBNqgAAAAcSURBVDjL
+Y/z//z8DJYCJgUIwasCoAaMGDBYDAGOaAx3sPfNBAAAAAElFTkSuQmCC
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/topic.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAHpJREFUeNpi/P//PwMlgAVEWHuGKwCp+0SoX3Bsx6pEEANuMYxh5RH2
+Hx8AyUPxfJg+EGYiw9UJMENAgIlMryeghAEx4Oj2lXA2MMwY8BqArACXIXgNwKYQbzQOfhfgM5Bi
+FzAxUAgoNoCFmNAnyoCX10+ZkOMCgAADAJiIT0V05LahAAAAAElFTkSuQmCC
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/plus.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8xOS8xMyroxbIAAAAcdEVYdFNv
+ZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAVklEQVQ4jWP8//8/AyWAiSLdNDUgICJ1
+AaUuiCfGEEJeIGgIMWGA1xBiAxGnIXSLxoUbVsxOINcAnJqJMQCvZgYGBgaG////Y8X+4SkLcMkh
+Y8ahn5kAOqpHTWEUILYAAAAASUVORK5CYII=
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/book.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJ
+bWFnZVJlYWR5ccllPAAAAHJJREFUeNpi/P//P0NqTm0DAwNDPQNpoHH2lOYGFiinPjohgWHpggUM
+IJoYAFQLsrCBiYFCQLEBLLgkHEyUsYofOHOXTi5At4lmYTBqwGAwAJYOGqGZA5yhiM2NIIIRlJ1B
+QElFzZgUm+/duXUWRAMEGAB0iiFTQ4yWgwAAAABJRU5ErkJggg==
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/png
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/minus.png
+
+iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAAABZ0RVh0Q3JlYXRpb24gVGltZQAwNC8xOS8xMyroxbIAAAAcdEVYdFNv
+ZnR3YXJlAEFkb2JlIEZpcmV3b3JrcyBDUzbovLKMAAAAcUlEQVQ4jWP8//8/AyWAiSLdw8MAFmRO
+QESqAQMDQwAR+jZsWDH7AgMDAwMjeiwERKQuYGBgiMejeeGGFbMTYBwML0AlFxKjGasBeAzB0IzT
+ACyGYNXMwMDAwPD//3+82D88JQGfPEYgkgoGPiENvAEABLJTCtfSe5wAAAAASUVORK5CYII=
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/html
+Content-ID: <frame-E35C6DCF59B09828470A376A8A3D4A8F@mhtml.blink>
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-55973EFA-3D1D-4F16-8DF6-577D552148E0.html
+
+<!--?xml version=3D"1.0" encoding=3D"UTF-8"?--><!DOCTYPE html PUBLIC "-//W3=
+C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-=
+transitional.dtd"><html xmlns=3D"http://www.w3.org/1999/xhtml" xml:lang=3D"=
+en-us" lang=3D"en-us" xmlns:m=3D"http://www.w3.org/1998/Math/MathML"><head>=
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8"><l=
+ink rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-b9fcd3f0-b91e-4980=
+-a96a-47df98f27f69@mhtml.blink" /><link rel=3D"stylesheet" type=3D"text/css=
+" href=3D"cid:css-811c858d-7a06-420f-bbf8-aba0baa04899@mhtml.blink" /><link=
+ rel=3D"stylesheet" type=3D"text/css" href=3D"cid:css-d20a2060-518e-4b01-85=
+e5-fcbfcab29603@mhtml.blink" /><link rel=3D"stylesheet" type=3D"text/css" h=
+ref=3D"cid:css-800f3e01-fa06-4e73-b8ff-d4c2299b2ee5@mhtml.blink" /><link re=
+l=3D"stylesheet" type=3D"text/css" href=3D"cid:css-5cd9e3a6-28ff-4528-bc40-=
+68a9b29c7eb0@mhtml.blink" /><link rel=3D"stylesheet" type=3D"text/css" href=
+=3D"cid:css-8dc777b7-cbc4-44bf-87ad-e99e26d0c239@mhtml.blink" /><link rel=
+=3D"stylesheet" type=3D"text/css" href=3D"cid:css-0aaa19e3-8482-4766-b727-2=
+8079dac0856@mhtml.blink" />
+
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3DEmulateIE11"><meta nam=
+e=3D"copyright" content=3D"(C) Copyright 2020">
+<meta name=3D"DC.rights.owner" content=3D"(C) Copyright 2020">
+<meta name=3D"DC.type" content=3D"topic">
+<meta name=3D"DC.title" content=3D"The Atmel AVR ONE! Debugger">
+<meta name=3D"DC.format" content=3D"XHTML">
+<meta name=3D"DC.identifier" content=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D55=
+2148E0">
+<meta name=3D"DC.language" content=3D"en-US">
+<link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs.micro=
+chip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/c=
+ommonltr.css">
+<link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs.micro=
+chip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/a=
+tmel.css">
+<title>The Atmel AVR ONE! Debugger</title>
+<meta name=3D"Microsoft.Help.Id" content=3D"GUID-05B5DA30-9A97-4741-AA07-5C=
+6EFB62B22D-GUID-55973EFA-3D1D-4F16-8DF6-577D552148E0">
+<meta name=3D"Microsoft.Help.TocParent" content=3D"GUID-05B5DA30-9A97-4741-=
+AA07-5C6EFB62B22D">
+<meta name=3D"Microsoft.Help.TocOrder" content=3D"0">
+<meta name=3D"Microsoft.Help.Locale" content=3D"en-US">
+<meta name=3D"Microsoft.Help.TopicLocale" content=3D"en-US">
+<meta name=3D"Microsoft.Help.DisplayVersion" content=3D"AVR ONE! User Guide=
+ 32222A 06/2016">
+<link rel=3D"stylesheet" type=3D"text/css" href=3D"https://onlinedocs.micro=
+chip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/h=
+ighlight.css"></head>
+<body id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D552148E0" marginwidth=3D"6" ma=
+rginheight=3D"0"><div id=3D"MathJax_Message" style=3D"display: none;"></div=
+>
+
+   <h1 class=3D"title topictitle1" id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D5=
+52148E0__GUID-3677CAC6-0DFA-424E-89AC-2F4E7BA87538">The Atmel AVR ONE! Debu=
+gger</h1>
+
+   <div class=3D"body">
+            <div class=3D"p">
+        =20
+               <div class=3D"fig fignone" id=3D"GUID-55973EFA-3D1D-4F16-8DF=
+6-577D552148E0__GUID-5CB63D46-CD7A-4AAA-889C-F653F5E30489">
+                  <br><div class=3D"imagecenter"><img class=3D"image imagec=
+enter" src=3D"https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-A=
+A07-5C6EFB62B22D-en-US-2/GUID-D6444BA7-2822-4749-A6FE-A808ACE7E09D-low.jpg"=
+></div><br>
+               </div>
+
+     =20
+            </div>
+
+            <p class=3D"p">The Atmel<sup>=C2=AE</sup> AVR ONE! is a powerfu=
+l development tool
+         for on-chip debugging and programming of all Atmel AVR<sup>=C2=AE<=
+/sup>
+         8- and 32-bit MCU devices. It supports:</p>
+
+            <div class=3D"p">
+        =20
+               <ul class=3D"ul">
+                  <li class=3D"li" id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D5=
+52148E0__GUID-99CB4F60-EC02-47E3-9F35-5458C5E21F61">
+              =20
+                     <p class=3D"p">Programming and on-chip debugging of al=
+l AVR UC3
+                  microcontrollers and processors on both JTAG and aWire in=
+terfaces</p>
+
+           =20
+                  </li>
+
+                  <li class=3D"li" id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D5=
+52148E0__GUID-2883A386-43F1-41A9-B0CC-34E22770E1E8">
+              =20
+                     <p class=3D"p">On-chip debugging with Nexus AUX trace =
+of all AVR UC3
+                  microcontrollers and processors with AUX port</p>
+
+           =20
+                  </li>
+
+                  <li class=3D"li" id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D5=
+52148E0__GUID-9D67AFDE-4BA7-4E82-9E71-3BA58527FB38">
+              =20
+                     <p class=3D"p">Programming and on-chip debugging of al=
+l AVR XMEGA<sup>=C2=AE</sup> family devices on both JTAG and PDI 2-wire int=
+erfaces</p>
+
+           =20
+                  </li>
+
+                  <li class=3D"li" id=3D"GUID-55973EFA-3D1D-4F16-8DF6-577D5=
+52148E0__GUID-4064083A-6418-451F-AFA3-591F9AA57BE8">
+              =20
+                     <p class=3D"p">Programming (JTAG and SPI) and debuggin=
+g of all Atmel megaAVR<sup>=C2=AE</sup> and Atmel tinyAVR<sup>=C2=AE</sup>
+                  microcontrollers with OCD support on both JTAG or debugWI=
+RE interfaces</p>
+
+           =20
+                  </li>
+
+               </ul>
+
+     =20
+            </div>
+
+         </div>
+
+
+</body></html>
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-b9fcd3f0-b91e-4980-a96a-47df98f27f69@mhtml.blink
+
+@charset "utf-8";
+
+.MathJax_Hover_Frame { border-radius: 0.25em; box-shadow: rgb(136, 51, 170)=
+ 0px 0px 15px; display: inline-block; position: absolute; border: 1px solid=
+ rgb(170, 102, 221) !important; }
+
+.MathJax_Menu_Button .MathJax_Hover_Arrow { position: absolute; cursor: poi=
+nter; display: inline-block; border: 2px solid rgb(170, 170, 170); border-r=
+adius: 4px; font-family: "Courier New", Courier; font-size: 9px; color: rgb=
+(240, 240, 240); }
+
+.MathJax_Menu_Button .MathJax_Hover_Arrow span { display: block; background=
+-color: rgb(170, 170, 170); border: 1px solid; border-radius: 3px; line-hei=
+ght: 0; padding: 4px; }
+
+.MathJax_Hover_Arrow:hover { color: white !important; border: 2px solid rgb=
+(204, 204, 204) !important; }
+
+.MathJax_Hover_Arrow:hover span { background-color: rgb(204, 204, 204) !imp=
+ortant; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-811c858d-7a06-420f-bbf8-aba0baa04899@mhtml.blink
+
+@charset "utf-8";
+
+#MathJax_About { position: fixed; left: 50%; width: auto; text-align: cente=
+r; border: 3px outset; padding: 1em 2em; background-color: rgb(221, 221, 22=
+1); color: black; cursor: default; font-family: message-box; font-size: 120=
+%; font-style: normal; text-indent: 0px; text-transform: none; line-height:=
+ normal; letter-spacing: normal; word-spacing: normal; overflow-wrap: norma=
+l; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; box=
+-shadow: rgb(128, 128, 128) 0px 10px 20px; }
+
+#MathJax_About.MathJax_MousePost { outline: none; }
+
+.MathJax_Menu { position: absolute; background-color: white; color: black; =
+width: auto; padding: 2px; border: 1px solid rgb(204, 204, 204); margin: 0p=
+x; cursor: default; font-style: ; font-variant: normal; font-weight: ; font=
+-stretch: ; font-size: ; font-family: ; text-align: left; text-indent: 0px;=
+ text-transform: none; line-height: normal; letter-spacing: normal; word-sp=
+acing: normal; overflow-wrap: normal; white-space: nowrap; float: none; z-i=
+ndex: 201; box-shadow: rgb(128, 128, 128) 0px 10px 20px; }
+
+.MathJax_MenuItem { padding: 2px 2em; background: transparent; }
+
+.MathJax_MenuArrow { position: absolute; right: 0.5em; padding-top: 0.25em;=
+ color: rgb(102, 102, 102); font-size: 0.75em; }
+
+.MathJax_MenuActive .MathJax_MenuArrow { color: white; }
+
+.MathJax_MenuArrow.RTL { left: 0.5em; right: auto; }
+
+.MathJax_MenuCheck { position: absolute; left: 0.7em; }
+
+.MathJax_MenuCheck.RTL { right: 0.7em; left: auto; }
+
+.MathJax_MenuRadioCheck { position: absolute; left: 1em; }
+
+.MathJax_MenuRadioCheck.RTL { right: 1em; left: auto; }
+
+.MathJax_MenuLabel { padding: 2px 2em 4px 1.33em; font-style: italic; }
+
+.MathJax_MenuRule { border-top: 1px solid rgb(204, 204, 204); margin: 4px 1=
+px 0px; }
+
+.MathJax_MenuDisabled { color: graytext; }
+
+.MathJax_MenuActive { background-color: highlight; color: highlighttext; }
+
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus { background-color: r=
+gb(232, 232, 232); }
+
+.MathJax_ContextMenu:focus { outline: none; }
+
+.MathJax_ContextMenu .MathJax_MenuItem:focus { outline: none; }
+
+#MathJax_AboutClose { top: 0.2em; right: 0.2em; }
+
+.MathJax_Menu .MathJax_MenuClose { top: -10px; left: -10px; }
+
+.MathJax_MenuClose { position: absolute; cursor: pointer; display: inline-b=
+lock; border: 2px solid rgb(170, 170, 170); border-radius: 18px; font-famil=
+y: "Courier New", Courier; font-size: 24px; color: rgb(240, 240, 240); }
+
+.MathJax_MenuClose span { display: block; background-color: rgb(170, 170, 1=
+70); border: 1.5px solid; border-radius: 18px; line-height: 0; padding: 8px=
+ 0px 6px; }
+
+.MathJax_MenuClose:hover { color: white !important; border: 2px solid rgb(2=
+04, 204, 204) !important; }
+
+.MathJax_MenuClose:hover span { background-color: rgb(204, 204, 204) !impor=
+tant; }
+
+.MathJax_MenuClose:hover:focus { outline: none; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-d20a2060-518e-4b01-85e5-fcbfcab29603@mhtml.blink
+
+@charset "utf-8";
+
+.MathJax_Preview .MJXf-math { color: inherit !important; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-800f3e01-fa06-4e73-b8ff-d4c2299b2ee5@mhtml.blink
+
+@charset "utf-8";
+
+.MJX_Assistive_MathML { top: 0px; left: 0px; clip: rect(1px, 1px, 1px, 1px)=
+; user-select: none; position: absolute !important; padding: 1px 0px 0px !i=
+mportant; border: 0px !important; height: 1px !important; width: 1px !impor=
+tant; overflow: hidden !important; display: block !important; }
+
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block { width: 100% !important; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-5cd9e3a6-28ff-4528-bc40-68a9b29c7eb0@mhtml.blink
+
+@charset "utf-8";
+
+#MathJax_Zoom { position: absolute; background-color: rgb(240, 240, 240); o=
+verflow: auto; display: block; z-index: 301; padding: 0.5em; border: 1px so=
+lid black; margin: 0px; font-weight: normal; font-style: normal; text-align=
+: left; text-indent: 0px; text-transform: none; line-height: normal; letter=
+-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space:=
+ nowrap; float: none; box-sizing: content-box; box-shadow: rgb(170, 170, 17=
+0) 5px 5px 15px; }
+
+#MathJax_ZoomOverlay { position: absolute; left: 0px; top: 0px; z-index: 30=
+0; display: inline-block; width: 100%; height: 100%; border: 0px; padding: =
+0px; margin: 0px; background-color: white; opacity: 0; }
+
+#MathJax_ZoomFrame { position: relative; display: inline-block; height: 0px=
+; width: 0px; }
+
+#MathJax_ZoomEventTrap { position: absolute; left: 0px; top: 0px; z-index: =
+302; display: inline-block; border: 0px; padding: 0px; margin: 0px; backgro=
+und-color: white; opacity: 0; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-8dc777b7-cbc4-44bf-87ad-e99e26d0c239@mhtml.blink
+
+@charset "utf-8";
+
+.MathJax_Preview { color: rgb(136, 136, 136); }
+
+#MathJax_Message { position: fixed; left: 1em; bottom: 1.5em; background-co=
+lor: rgb(230, 230, 230); border: 1px solid rgb(149, 149, 149); margin: 0px;=
+ padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto;=
+ white-space: nowrap; }
+
+#MathJax_MSIE_Frame { position: absolute; top: 0px; left: 0px; width: 0px; =
+z-index: 101; border: 0px; margin: 0px; padding: 0px; }
+
+.MathJax_Error { color: rgb(204, 0, 0); font-style: italic; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: cid:css-0aaa19e3-8482-4766-b727-28079dac0856@mhtml.blink
+
+@charset "utf-8";
+
+.MJXp-script { font-size: 0.8em; }
+
+.MJXp-right { transform-origin: right center; }
+
+.MJXp-bold { font-weight: bold; }
+
+.MJXp-italic { font-style: italic; }
+
+.MJXp-scr { font-family: MathJax_Script, "Times New Roman", Times, STIXGene=
+ral, serif; }
+
+.MJXp-frak { font-family: MathJax_Fraktur, "Times New Roman", Times, STIXGe=
+neral, serif; }
+
+.MJXp-sf { font-family: MathJax_SansSerif, "Times New Roman", Times, STIXGe=
+neral, serif; }
+
+.MJXp-cal { font-family: MathJax_Caligraphic, "Times New Roman", Times, STI=
+XGeneral, serif; }
+
+.MJXp-mono { font-family: MathJax_Typewriter, "Times New Roman", Times, STI=
+XGeneral, serif; }
+
+.MJXp-largeop { font-size: 150%; }
+
+.MJXp-largeop.MJXp-int { vertical-align: -0.2em; }
+
+.MJXp-math { display: inline-block; line-height: 1.2; text-indent: 0px; fon=
+t-family: "Times New Roman", Times, STIXGeneral, serif; white-space: nowrap=
+; border-collapse: collapse; }
+
+.MJXp-display { display: block; text-align: center; margin: 1em 0px; }
+
+.MJXp-math span { display: inline-block; }
+
+.MJXp-box { text-align: center; display: block !important; }
+
+.MJXp-box::after { content: " "; }
+
+.MJXp-rule { margin-top: 0.1em; display: block !important; }
+
+.MJXp-char { display: block !important; }
+
+.MJXp-mo { margin: 0px 0.15em; }
+
+.MJXp-mfrac { margin: 0px 0.125em; vertical-align: 0.25em; }
+
+.MJXp-denom { width: 100%; display: inline-table !important; }
+
+.MJXp-denom > * { display: table-row !important; }
+
+.MJXp-surd { vertical-align: top; }
+
+.MJXp-surd > * { display: block !important; }
+
+.MJXp-script-box > * { height: 50%; display: table !important; }
+
+.MJXp-script-box > * > * { vertical-align: top; display: table-cell !import=
+ant; }
+
+.MJXp-script-box > :last-child > * { vertical-align: bottom; }
+
+.MJXp-script-box > * > * > * { display: block !important; }
+
+.MJXp-mphantom { visibility: hidden; }
+
+.MJXp-munderover, .MJXp-munder { display: inline-table !important; }
+
+.MJXp-over { text-align: center; display: inline-block !important; }
+
+.MJXp-over > * { display: block !important; }
+
+.MJXp-munderover > *, .MJXp-munder > * { display: table-row !important; }
+
+.MJXp-mtable { vertical-align: 0.25em; margin: 0px 0.125em; }
+
+.MJXp-mtable > * { vertical-align: middle; display: inline-table !important=
+; }
+
+.MJXp-mtr { display: table-row !important; }
+
+.MJXp-mtd { text-align: center; padding: 0.5em 0px 0px 0.5em; display: tabl=
+e-cell !important; }
+
+.MJXp-mtr > .MJXp-mtd:first-child { padding-left: 0px; }
+
+.MJXp-mtr:first-child > .MJXp-mtd { padding-top: 0px; }
+
+.MJXp-mlabeledtr { display: table-row !important; }
+
+.MJXp-mlabeledtr > .MJXp-mtd:first-child { padding-left: 0px; }
+
+.MJXp-mlabeledtr:first-child > .MJXp-mtd { padding-top: 0px; }
+
+.MJXp-merror { background-color: rgb(255, 255, 136); color: rgb(204, 0, 0);=
+ border: 1px solid rgb(204, 0, 0); padding: 1px 3px; font-style: normal; fo=
+nt-size: 90%; }
+
+.MJXp-scale0 { transform: scaleX(0); }
+
+.MJXp-scale1 { transform: scaleX(0.1); }
+
+.MJXp-scale2 { transform: scaleX(0.2); }
+
+.MJXp-scale3 { transform: scaleX(0.3); }
+
+.MJXp-scale4 { transform: scaleX(0.4); }
+
+.MJXp-scale5 { transform: scaleX(0.5); }
+
+.MJXp-scale6 { transform: scaleX(0.6); }
+
+.MJXp-scale7 { transform: scaleX(0.7); }
+
+.MJXp-scale8 { transform: scaleX(0.8); }
+
+.MJXp-scale9 { transform: scaleX(0.9); }
+
+.MathJax_PHTML .noError { font-size: 90%; text-align: left; color: black; p=
+adding: 1px 3px; border: 1px solid; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/commonltr.css
+
+@charset "utf-8";
+
+.unresolved { background-color: skyblue; }
+
+.noTemplate { background-color: yellow; }
+
+.base { background-color: rgb(255, 255, 255); }
+
+.nested0 { margin-top: 1em; }
+
+.p { margin-top: 1em; }
+
+.figcap { font-style: italic; }
+
+.figdesc { font-style: normal; }
+
+.figborder { border-style: solid; padding-left: 3px; border-width: 2px; pad=
+ding-right: 3px; margin-top: 1em; border-color: silver; }
+
+.figsides { border-left: 2px solid silver; padding-left: 3px; border-right:=
+ 2px solid silver; padding-right: 3px; margin-top: 1em; border-top-color: s=
+ilver; border-bottom-color: silver; }
+
+.figtop { border-top: 2px solid silver; margin-top: 1em; border-right-color=
+: silver; border-bottom-color: silver; border-left-color: silver; }
+
+.figbottom { border-bottom: 2px solid silver; border-top-color: silver; bor=
+der-right-color: silver; border-left-color: silver; }
+
+.figtopbot { border-top: 2px solid silver; border-bottom: 2px solid silver;=
+ margin-top: 1em; border-right-color: silver; border-left-color: silver; }
+
+.ullinks { list-style-type: none; }
+
+.ulchildlink { margin-top: 1em; margin-bottom: 1em; }
+
+.olchildlink { margin-top: 1em; margin-bottom: 1em; }
+
+.linklist { margin-bottom: 1em; }
+
+ul.linklist { margin-top: 0px; list-style-type: none; padding-left: 0px; }
+
+li.linklist { margin-top: 0px; margin-bottom: 0px; }
+
+.linklistwithchild { margin-left: 1.5em; margin-bottom: 1em; }
+
+.sublinklist { margin-left: 1.5em; margin-bottom: 1em; }
+
+.relconcepts { margin-top: 1em; margin-bottom: 1em; }
+
+.reltasks { margin-top: 1em; margin-bottom: 1em; }
+
+.relref { margin-top: 1em; margin-bottom: 1em; }
+
+.relinfo { margin-top: 1em; margin-bottom: 1em; }
+
+.breadcrumb { font-size: smaller; margin-bottom: 1em; }
+
+dt.prereq { margin-left: 20px; }
+
+.topictitle1 { margin-top: 0px; margin-bottom: 0.1em; font-size: 1.34em; }
+
+.topictitle2 { margin-top: 1pc; margin-bottom: 0.45em; font-size: 1.17em; }
+
+.topictitle3 { margin-top: 1pc; margin-bottom: 0.17em; font-size: 1.17em; f=
+ont-weight: bold; }
+
+.topictitle4 { margin-top: 0.83em; font-size: 1.17em; font-weight: bold; }
+
+.topictitle5 { font-size: 1.17em; font-weight: bold; }
+
+.topictitle6 { font-size: 1.17em; font-style: italic; }
+
+.sectiontitle { margin-top: 1em; margin-bottom: 0px; color: black; font-siz=
+e: 1.17em; font-weight: bold; }
+
+.section { margin-top: 1em; margin-bottom: 1em; }
+
+.example { margin-top: 1em; margin-bottom: 1em; }
+
+div.tasklabel { margin-top: 1em; margin-bottom: 1em; }
+
+h2.tasklabel, h3.tasklabel, h4.tasklabel, h5.tasklabel, h6.tasklabel { font=
+-size: 100%; }
+
+.note { margin-top: 1em; margin-bottom: 1em; }
+
+.notetitle { font-weight: bold; }
+
+.notelisttitle { font-weight: bold; }
+
+.tip { margin-top: 1em; margin-bottom: 1em; }
+
+.tiptitle { font-weight: bold; }
+
+.fastpath { margin-top: 1em; margin-bottom: 1em; }
+
+.fastpathtitle { font-weight: bold; }
+
+.important { margin-top: 1em; margin-bottom: 1em; }
+
+.importanttitle { font-weight: bold; }
+
+.remember { margin-top: 1em; margin-bottom: 1em; }
+
+.remembertitle { font-weight: bold; }
+
+.restriction { margin-top: 1em; margin-bottom: 1em; }
+
+.restrictiontitle { font-weight: bold; }
+
+.attention { margin-top: 1em; margin-bottom: 1em; }
+
+.attentiontitle { font-weight: bold; }
+
+.dangertitle { font-weight: bold; }
+
+.danger { margin-top: 1em; margin-bottom: 1em; }
+
+.cautiontitle { font-weight: bold; }
+
+.caution { font-weight: bold; margin-bottom: 1em; }
+
+.warning { margin-top: 1em; margin-bottom: 1em; }
+
+.warningtitle { font-weight: bold; }
+
+ul.simple { list-style-type: none; }
+
+.firstcol { font-weight: bold; }
+
+.bold { font-weight: bold; }
+
+.boldItalic { font-weight: bold; font-style: italic; }
+
+.italic { font-style: italic; }
+
+.underlined { text-decoration: underline; }
+
+.uicontrol { font-weight: bold; }
+
+.wintitle { font-weight: bold; }
+
+.parmname { font-weight: bold; }
+
+.kwd { font-weight: bold; }
+
+.defkwd { font-weight: bold; text-decoration: underline; }
+
+.var { font-style: italic; }
+
+.shortcut { text-decoration: underline; }
+
+.menucascade > abbr { text-decoration: none; }
+
+.dlterm { font-weight: bold; }
+
+.dltermexpand { font-weight: bold; margin-top: 1em; }
+
+[compact=3D"yes"] > li { margin-top: 0px; }
+
+[compact=3D"no"] > li { margin-top: 0.53em; }
+
+.liexpand { margin-top: 1em; margin-bottom: 1em; }
+
+.sliexpand { margin-top: 1em; margin-bottom: 1em; }
+
+.dlexpand { margin-top: 1em; margin-bottom: 1em; }
+
+.ddexpand { margin-top: 1em; margin-bottom: 1em; }
+
+.stepexpand { margin-top: 1em; margin-bottom: 1em; }
+
+.substepexpand { margin-top: 1em; margin-bottom: 1em; }
+
+div.imageleft { text-align: left; }
+
+div.imagecenter { text-align: center; }
+
+div.imageright { text-align: right; }
+
+div.imagejustify { text-align: justify; }
+
+.cellrowborder { border-left: none; border-top: none; border-right: 1px sol=
+id; border-bottom: 1px solid; }
+
+.row-nocellborder { border-left: none; border-top: none; border-right: hidd=
+en; border-bottom: 1px solid; }
+
+.cell-norowborder { border-top: none; border-left: none; border-bottom: hid=
+den; border-right: 1px solid; }
+
+.nocellnorowborder { border-width: initial; border-style: none hidden hidde=
+n none; border-color: initial; border-image: initial; }
+
+pre.screen { padding: 5px; border: outset; background-color: rgb(204, 204, =
+204); margin-top: 2px; margin-bottom: 2px; white-space: pre; }
+
+span.filepath, samp.codeph, pre.codeblock { font-family: monospace; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/atmel.css
+
+@charset "utf-8";
+
+body { font-family: Verdana, Geneva, sans-serif; font-size: 10pt; font-weig=
+ht: normal; }
+
+.atmel-header { visibility: hidden; height: 0px; }
+
+.atmel-header-shadow { height: 0px; }
+
+.atmel-footer { visibility: hidden; height: 0px; }
+
+.atmel-footer-shadow { height: 0px; }
+
+body > div.OH_outerDiv > div.OH_outerContent div.body, body > div.OH_outerD=
+iv > div.OH_outerContent div.related-links { margin-left: 10px; margin-righ=
+t: 10px; }
+
+body > div.OH_outerDiv > div.OH_outerContent > div.OH_topic { margin-bottom=
+: 0px; }
+
+body > div.OH_outerDiv > div.OH_outerContent > table { display: none; }
+
+body > div.OH_outerDiv > div > h1.title { visibility: collapse; height: 0px=
+; }
+
+body > div.OH_footer { margin-top: 2em; }
+
+dl dt, dl dd { display: inline; }
+
+.fig { margin-top: 1em; margin-bottom: 1em; }
+
+.figcap { font-weight: bold; font-style: normal; display: block; margin-bot=
+tom: 0.3em; }
+
+.figdesc { font-style: normal; }
+
+div.tablenoborder { margin-top: 1em; margin-bottom: 2em; }
+
+caption { text-align: left; }
+
+div.tablecap, span.tablecap { margin-top: 1em; font-weight: bold; margin-bo=
+ttom: 0.3em; text-align: left; }
+
+table { font-size: 10pt; }
+
+table.table, table.simpletable.dataTable.bitFieldValues { border-color: rgb=
+(167, 169, 171); border-spacing: 0px; border-collapse: collapse; }
+
+table.table td > p, table.table th > p, table.simpletable.dataTable.bitFiel=
+dValues td > p, table.simpletable.dataTable.bitFieldValues th > p { margin:=
+ 0px; }
+
+table.table th, table.simpletable.dataTable.bitFieldValues th { background-=
+color: rgb(88, 88, 88); color: rgb(255, 255, 255); }
+
+table.table tbody tr:nth-child(2n+1), table.simpletable.dataTable.bitFieldV=
+alues tbody tr:nth-child(2n+1) { background-color: rgb(242, 242, 242); }
+
+table.table tbody tr:nth-child(2n), table.simpletable.dataTable.bitFieldVal=
+ues tbody tr:nth-child(2n) { background-color: rgb(217, 217, 217); }
+
+.cellrowborder { border-left: none; border-top: none; border-right: 1px sol=
+id rgb(167, 169, 171); border-bottom: 1px solid rgb(167, 169, 171); }
+
+.nocellnorowborder { border-width: initial; border-style: none hidden hidde=
+n none; border-color: initial; border-image: initial; }
+
+.row-nocellborder { border-left: none; border-top: none; border-right: hidd=
+en; border-bottom: 1px solid rgb(167, 169, 171); }
+
+.cell-norowborder { border-top: none; border-left: none; border-bottom: hid=
+den; border-right: 1px solid rgb(167, 169, 171); }
+
+table.nozebra tbody tr:nth-child(2n+1), table.nozebra tbody tr:nth-child(2n=
+) { background-color: rgb(242, 242, 242); }
+
+table.nocolor tbody tr:nth-child(2n+1), table.nocolor tbody tr:nth-child(2n=
+) { background-color: white; }
+
+table.table.registersummary tbody tr:nth-child(2n), table.table.registersum=
+mary tbody tr:nth-child(2n+1) { background-color: transparent; }
+
+.table.register { margin-left: 60px; position: relative; }
+
+.table.register tr { height: 20px; }
+
+.table.register tbody tr:nth-child(2n), .table.register tbody tr:nth-child(=
+2n+1) { background-color: transparent; }
+
+.table.register td { min-width: 5em; text-align: center; width: calc(12.5%)=
+; padding-left: 3px; padding-right: 3px; }
+
+.table.register .rowname { left: -60px; position: absolute; text-align: rig=
+ht; width: 50px; }
+
+.table.register tr:nth-child(2) td { border: 1px solid rgb(0, 0, 0); }
+
+.table.register tbody ~ tbody tr:first-child td { padding-top: 2em; }
+
+.registersummary p { margin: 0px; }
+
+table.register td.reserved, table.registersummary td.reserved { background-=
+color: rgb(220, 220, 220); }
+
+table.bitFieldValues { background-color: lightblue; }
+
+ul.ul { list-style: none; padding: 0em; margin-left: 1em; margin-top: 0.5em=
+; }
+
+ul.ul li { padding-left: 1.5em; margin-bottom: 0.5em; position: relative; }
+
+ul.ul li::before { content: "=E2=80=A2"; position: absolute; left: 0px; col=
+or: rgb(0, 0, 0) !important; }
+
+ol.ol > li > ul.ul > li::before, ul.ul > li > ul.ul > li::before, ul.ul > l=
+i > ul.ul > li > ul.ul > li > ul.ul > li::before { color: rgb(0, 0, 0); con=
+tent: "=E2=80=93"; }
+
+ol.ol > li > ul.ul > li { padding-left: 3.5em; }
+
+ul.ul > li > ul.ul > li > ul.ul > li::before { content: "=E2=80=A2"; color:=
+ rgb(0, 0, 0); }
+
+ol.ol > li > ol.ol > li, ol.ol > li > ul > li { padding-left: 3em; }
+
+ol.steps > .stepsection { margin-left: 1.5em; }
+
+ol.horizontal { padding-left: 0px; margin-left: 0px; }
+
+ol.horizontal > li { display: inline; }
+
+ol.horizontal > li:nth-child(n+2) { margin-left: 1em; }
+
+ol.erratalist > li { font-weight: bold; }
+
+ol.erratalist > li * { font-weight: normal; }
+
+ol.erratalist dl dt { font-weight: bold; }
+
+ol.ol.start-with-zero { counter-reset: item -1; }
+
+li.with-image::before { bottom: 0px; }
+
+ol.ol { margin-left: 1em; padding: 0px; margin-top: 0.5em; }
+
+ol.ol li { display: block; padding-left: 1.5em; position: relative; margin-=
+bottom: 0.5em; }
+
+ol.ol li::before { content: ""; }
+
+.indent-level-default { padding-right: 1.5em !important; }
+
+.indent-level-1 { padding-right: 2.5em !important; }
+
+.indent-level-2 { padding-right: 3.5em !important; }
+
+.indent-level-3 { padding-right: 4.5em !important; }
+
+.indent-level-4 { padding-right: 5.5em !important; }
+
+.indent-level-5 { padding-right: 6.5em !important; }
+
+dl.registerProperties dt { font-weight: bold; display: inline-block; min-wi=
+dth: 5em; }
+
+dl.registerProperties dd { display: inline; margin: 0px; }
+
+dl.registerProperties dd::after { display: block; content: ""; }
+
+div.registerDescription > div.refbody { clear: left; }
+
+.registerNameFull { margin-top: 0pc; margin-bottom: 0.1em; font-size: 1.34e=
+m; font-weight: bold; }
+
+h2.bitField\/bitFieldTitle { font-size: 10pt; font-weight: bold; margin-top=
+: 2em; }
+
+div.body.refbody.bitFieldBody > p.bitFieldBriefDescription { display: none;=
+ }
+
+div.body.refbody.bitFieldBody h3.title.topictitle3 { display: none; }
+
+div.note { border-top: 1px solid rgb(88, 88, 88); border-bottom: 1px solid =
+rgb(88, 88, 88); padding-top: 0.5em; padding-bottom: 0.5em; margin-top: 2em=
+; margin-bottom: 2em; min-height: 32px; position: relative; padding-left: 4=
+0px; }
+
+div.note::before { float: left; margin-right: 5px; margin-left: -40px; }
+
+div.note.tip::before { content: url("../Tip.png"); }
+
+div.note.attention::before { content: url("../Attention.png"); }
+
+div.note.important::before { content: url("../Important.png"); }
+
+div.note.caution::before { content: url("../Caution.png"); }
+
+div.note.warning::before { content: url("../Warning.png"); }
+
+div.note.danger::before { content: url("../Danger.png"); }
+
+div.note.info::before { content: url("../Info.png"); }
+
+div.note.todo::before { content: url("../Todo.png"); }
+
+div.note.result::before { content: url("../Result.png"); }
+
+div.note.execute::before { content: url("../Execute.png"); }
+
+div.note span.tiptitle, div.note span.attentiontitle, div.note span.importa=
+nttitle, div.note span.cautiontitle, div.note span.warningtitle, div.note s=
+pan.dangertitle, div.note span.infotitle, div.note span.todotitle, div.note=
+ span.resulttitle, div.note span.executetitle { font-weight: bold; }
+
+div.note.caution { font-weight: normal; }
+
+.active-low { text-decoration: overline; }
+
+p.compact, p.lines { margin-top: 0px; margin-bottom: 0px; }
+
+pre.codeblock { background-color: rgb(242, 242, 242); padding: 0.7em; }
+
+.ph.var_not_resolved { color: rgb(204, 51, 51); background: rgb(255, 153, 2=
+55); font-weight: 700; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: text/css
+Content-Transfer-Encoding: quoted-printable
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/stylesheets/highlight.css
+
+@charset "utf-8";
+
+pre { white-space: pre-wrap; overflow-wrap: break-word; }
+
+.xslthl-keyword { color: rgb(0, 0, 255); }
+
+.xslthl-string { color: rgb(128, 0, 0); }
+
+.xslthl-multiline-comment { color: rgb(0, 128, 0); }
+
+.xslthl-comment { color: rgb(0, 128, 0); }
+
+.xslthl-doccomment { color: rgb(0, 128, 0); }
+
+.xslthl-doctype { color: rgb(0, 128, 0); }
+
+.xslthl-directive { color: maroon; }
+
+.xslthl-annotation { color: gray; }
+
+.xslthl-tag { color: teal; }
+
+.xslthl-attribute { color: rgb(127, 0, 85); }
+
+.xslthl-value { color: blue; }
+
+.xslthl-xslt { color: red; }
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4----
+Content-Type: image/jpeg
+Content-Transfer-Encoding: base64
+Content-Location: https://onlinedocs.microchip.com/pr/GUID-05B5DA30-9A97-4741-AA07-5C6EFB62B22D-en-US-2/GUID-D6444BA7-2822-4749-A6FE-A808ACE7E09D-low.jpg
+
+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
+
+------MultipartBoundary--8vgDM3NIwpho8QCfL0ymLBj24tj85yNT53zF3p3gu4------

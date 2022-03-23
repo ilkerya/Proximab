@@ -18,6 +18,7 @@ C:\Program Files (x86)\Arduino\libraries
 */
 #define DOWNROLL 0
 #define UPROLL 1
+#define TEMP_HUM_ONBOARD_SENSOR_EXISTS
 #define TEMP_HUM_1_SENSOR_EXISTS
 #define TEMP_HUM_2_SENSOR_EXISTS
 #define TEMP_HUM_3_SENSOR_EXISTS  
@@ -77,15 +78,17 @@ C:\Program Files (x86)\Arduino\libraries
 #define POWERIC_CALB9  12
 #define POWERIC_CALB10 13
 
- #define SI072_FIRST_SENSOR 7  // multiplexer Channel 7 first blu box prot
- #define SI072_SECOND_SENSOR 3 // first prot  0      0
- #define SI072_THIRD_SENSOR 2 // sec1                2 
+ #define SI072_ONBOARD_SENSOR_ADDR 1  // multiplexer Channel 7 first blu box prot
+ #define SI072_FIRST_SENSOR_ADDR 7  // multiplexer Channel 7 first blu box prot
+ #define SI072_SECOND_SENSOR_ADDR 3 // first prot  0      0
+ #define SI072_THIRD_SENSOR_ADDR 2 // sec1                2 
 
 #define NO_IC2_MULTIPLEXER 16
 #define DEBUG_KEY
 
 #define ON 1 //
 #define OFF 0 //
+
 
 #ifdef FIRST_PROTOTYPE
   //  const int chipSelect = 10; // mega SS for SD Card  
@@ -97,17 +100,17 @@ C:\Program Files (x86)\Arduino\libraries
   #define KEY_LEFT 6//13//6 // ok
 #endif
 
-  #define TDI         A7
-  #define TDO         A6
-  #define TCK         A4
-  #define TMS         A5
+  #define TDI         A7 //9 Atmel ice JTAG  // 0 2 GND
+  #define TDO         A6 //3 Atmel ice JTAG  // 4 Vdd -> 5V mega 3V3 Due
+  #define TMS         A5 //5 Atmel ice JTAG  // 6 Reset
+  #define TCK         A4 //1 Atmel ice JTAG
+  
   #define DEBUG_OUT      A4  
   #define ANALOG3        A3
   #define ANALOG2         A2
   #define ANALOG1         A1
   #define KEY_ANALOG_IN   A0  
-   
-    
+     
     #if  defined KEY_DIGITAL
   #define KEY_RIGHT       13
   #define KEY_DOWN        12
@@ -116,7 +119,8 @@ C:\Program Files (x86)\Arduino\libraries
     #endif
 
 #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
-  // const int SD_CS_PINOUT = 10;
+   //   const int chipSelect = 10;
+   //   const int SD_CS_PINOUT = 10;
       #define SD_CS_PINOUT    10  
 #endif
 
@@ -141,6 +145,22 @@ C:\Program Files (x86)\Arduino\libraries
 
 #define MAX_DISPLAY_CHAR 21
 #define  MAXSHOWLINE 6  // define how many lines for sensorts to show including fw info line 
+
+#define DISPSHOWLINE4
+#define DISPSHOWLINE3
+#define DISPSHOWLINE2
+#define DISPSHOWLINE1
+
+#define DISPROLL_LINE0 0
+#define DISPROLL_LINE1 1
+#define DISPROLL_LINE2 2
+#define DISPROLL_LINE3 3
+#define DISPROLL_LINE4 4
+#define DISPROLL_LINE5 5
+#define DISPROLL_LINE6 6
+#define DISPROLL_LINE7 7
+#define DISPROLL_LINE8 8
+#define DISPROLL_LINE9 9
 
 #define MENU_NULL 0
 #define MENU1   16
@@ -194,7 +214,6 @@ C:\Program Files (x86)\Arduino\libraries
 #define SDHC_TYPE 3
 #define UNKNOWN_TYPE 4
 
-
 #if defined (ARDUINO_MEGA)  & defined (ARDUINO_DUE) 
     #error Select Only One Platform-> ARDUINO_MEGA or ARDUINO_DUE
 #endif
@@ -224,23 +243,22 @@ void SD_Card_Init(void);
 void SD_Card_Data_Preparation(void);
 void SD_Card_Header_Preparation(void);
 
-void  RTC_Init();
-void  SensorInit_Si072(uint8_t);
-void  SensorAlt_Init();
-void  SensorLight_Init();
-void  SensorACccel_GyroInit();
-void  Sensors_PeripInit();
+void RTC_Init();
+void SensorInit_Si072(uint8_t);
+void SensorAlt_Init();
+void SensorLight_Init();
+void SensorACccel_GyroInit();
+void Sensors_PeripInit();
 
 void CurrentVolt_Read();
-void  AdcRead();
+void AdcRead();
 void WindSensorRead();
-void  SensorRead_Si072(unsigned char);
-void  SensorAlt_Read();
-void  SensorLight_Read();
-void  SensorAcccel_GyroRead();
+void SensorRead_Si072(unsigned char);
+void SensorAlt_Read();
+void SensorLight_Read();
+void SensorAcccel_GyroRead();
 void SDS_DustSensor(void);
 void UpdateSensorInfo(void);
-
 
 void UpdateInfoLine();
 void UpdateDisplayMenu();
@@ -276,7 +294,6 @@ String LimitCopyDisplayStr(String str, uint8_t MaxNumber);
 void EnergyMeterIC_Operation(void);
 void I2_ACK_Reset(void);
 
-
 void SetResetLog(bool Enable);
 void NVRam_Write_LogStatus(bool Mode);
 void NVRam_Read_SampleTime(void);
@@ -293,3 +310,36 @@ char* CopyFlashToRam(const char* );
 
 void Due_Memory();
 void Print_ARM_SPI_Regs(void);
+
+/*
+C:\Users\ilker\Documents\Atmel Studio\7.0\ArduinoSketch6\ArduinoSketch6\ArduinoCore\src\libraries\SD\utility\Sd2Card.cpp 
+ // send command and return error code.  Return zero for OK
+uint8_t Sd2Card::cardCommand(uint8_t cmd, uint32_t arg) {
+  chipSelectLow();
+
+
+  static uint8_t chip_select_asserted = 0;
+
+void Sd2Card::chipSelectHigh(void) {
+  digitalWrite(chipSelectPin_, HIGH);
+  #ifdef USE_SPI_LIB
+  if (chip_select_asserted) {
+    chip_select_asserted = 0;
+    SDCARD_SPI.endTransaction();
+  }
+  #endif
+}
+//------------------------------------------------------------------------------
+void Sd2Card::chipSelectLow(void) {
+  #ifdef USE_SPI_LIB
+  if (!chip_select_asserted) {
+    chip_select_asserted = 1;
+    SDCARD_SPI.beginTransaction(settings);
+  }
+  #endif
+  digitalWrite(chipSelectPin_, LOW);
+}
+
+
+ * /
+ */

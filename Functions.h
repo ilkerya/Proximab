@@ -21,18 +21,21 @@ void TC5_Handler (void) {
 void JustAFunction(){
     //  ISR(TIMER1_OVF_vect){
     #endif  
+
+ /*   
     #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE)//  | defined (ARDUINO_MKRZERO)
           digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);   
     #endif
     #if defined (ARDUINO_MKRZERO) | defined (CHIPKIT_MAX32)
           digitalWrite(DEBUG_OUT, digitalRead(DEBUG_OUT) ^ 1);   
     #endif     
-
+*/
 
     #if  defined KEY_DIGITAL
       Key_Functions_Digital();
     #endif
     #if  defined KEY_ANALOG  
+      
       Key_Functions_Analog(analogRead(KEY_ANALOG_IN));
     #endif
     
@@ -139,14 +142,20 @@ void Common_Loop(){
 #ifdef WIND_SENSOR_EXISTS
     WindSensorRead();
 #endif
+#ifdef TEMP_HUM_ONBOARD_SENSOR_EXISTS
+    SensorRead_Si072(SI072_ONBOARD_SENSOR_ADDR); // MULTIPLEXER NO  
+  //  Serial.print(F("Temperature_OnBoard "));Serial.println(Values.Temperature_OnBoard);
+   // Serial.print(F("Humidity_OnBoard "));Serial.println(Values.Humidity_OnBoard);
+    
+#endif
 #ifdef TEMP_HUM_1_SENSOR_EXISTS
-    SensorRead_Si072(SI072_FIRST_SENSOR); // MULTIPLEXER NO  
+    SensorRead_Si072(SI072_FIRST_SENSOR_ADDR); // MULTIPLEXER NO  
 #endif
 #ifdef TEMP_HUM_2_SENSOR_EXISTS  
-    SensorRead_Si072(SI072_SECOND_SENSOR); // MULTIPLEXER NO  
+    SensorRead_Si072(SI072_SECOND_SENSOR_ADDR); // MULTIPLEXER NO  
 #endif
 #ifdef TEMP_HUM_3_SENSOR_EXISTS 
-    SensorRead_Si072(SI072_THIRD_SENSOR); // MULTIPLEXER NO
+    SensorRead_Si072(SI072_THIRD_SENSOR_ADDR); // MULTIPLEXER NO
 #endif
 
 #ifdef ENERGYMETER_EXISTS
@@ -230,6 +239,14 @@ void IO_Settings() {
 
 #endif
 
+
+#ifdef ARDUINO_DUE
+ // default i2c pin is for Mega not Due so set pins to input
+  pinMode(70, INPUT);  // 
+  pinMode(71, INPUT);  // 
+
+#endif
+
 #ifdef ARDUINO_MKRZERO
   digitalWrite(OLED_GND, LOW);
   pinMode(OLED_GND, OUTPUT);  // 
@@ -272,7 +289,7 @@ void IO_Settings() {
   */
   
 //  pinMode(I2C_TIMEOUT, INPUT);  // 
-  pinMode(DEBUG_OUT, OUTPUT);  // 
+ // pinMode(DEBUG_OUT, OUTPUT);  // 
 
   pinMode(ADE9153A_RESET_PIN, OUTPUT);  // ADE9153A_RESET_PIN
   digitalWrite(ADE9153A_RESET_PIN, HIGH);
@@ -293,8 +310,8 @@ void IO_Settings() {
   digitalWrite(RELAY_OUT_2, LOW);
   pinMode(RELAY_OUT_2, OUTPUT);  // SS Pin high to avoid miscommunication
 
-//  pinMode(SD_CS_PINOUT, OUTPUT);
- // digitalWrite(SD_CS_PINOUT, HIGH);
+  pinMode(10, OUTPUT);
+  digitalWrite(10, HIGH);
   
   pinMode(LED_GREEN, OUTPUT);           // set pin to input
   digitalWrite(LED_GREEN, LOW);       // turn on pullup resistors
@@ -496,9 +513,9 @@ float GetValue(uint8_t Relay){
   String Val = "";
   if(Relay == Relay1_Val) Val =  RLlVal;
   else if(Relay == Relay2_Val) Val =  RL2Val;
-  if(Val == KeyWords[0])return Values.TemperatureSi072_Ch1;
-  if(Val == KeyWords[1])return Values.TemperatureSi072_Ch2;
-  if(Val == KeyWords[2])return  Values.TemperatureSi072_Ch3;
+  if(Val == KeyWords[0])return Values.Temperature_Ch1;
+  if(Val == KeyWords[1])return Values.Temperature_Ch2;
+  if(Val == KeyWords[2])return  Values.Temperature_Ch3;
   if(Val == KeyWords[3])return Values.Humidity_Ch1;
   if(Val == KeyWords[4])return  Values.Humidity_Ch2;
   if(Val == KeyWords[5])return  Values.Humidity_Ch3;
@@ -521,7 +538,6 @@ void Relay_loop() {
   else{
       digitalWrite(RELAY_OUT_1,LOW);
   }
-   // put your main code here, to run repeatedly:
   Serial.print(F("RL1Min: "));Serial.println(RL1Min);
   Serial.print(RLlVal+":  ");Serial.print(CompValue); 
   Serial.print(F("     RELAY1: "));Serial.println(RELAY_OUT_1); 

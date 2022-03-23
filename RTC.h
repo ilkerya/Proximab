@@ -67,38 +67,41 @@ void RTC_TimeClock(){
 }
 
 void  RTC_Init(){
+  delay(10);
   if (! rtc.begin()) {
     Serial.println(F("Couldn't find RTC"));
     //while (1);
   }
-  if (! rtc.initialized()) {
-    Serial.println(F("RTC is NOT running!"));
-    // following line sets the RTC to the date & time this sketch was compiled
+  else {
+    if (! rtc.initialized()) {
+      Serial.println(F("RTC is NOT running!"));
+      // following line sets the RTC to the date & time this sketch was compiled
      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-  //   RTC_Test = 18;
-    // This line sets the RTC with an explicit date & time, for example to set
-    // January 21, 2014 at 3am you would call:
-    // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
-  }
-  else{
-    Serial.println(F("RTC is Running!"));
-  } 
+      //   RTC_Test = 18;
+      // This line sets the RTC with an explicit date & time, for example to set
+      // January 21, 2014 at 3am you would call:
+      // rtc.adjust(DateTime(2014, 1, 21, 3, 0, 0));
+    }
+    else{
+      Serial.println(F("RTC is Running!"));
+    } 
 
-  if(Serial) { // if serial port connected adjust it from computer
-  //  rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); 
-  //  Serial.println("RTC Time Adjusted!");
-  //  RTC_Test = 18;
+    if(Serial) { // if serial port connected adjust it from computer
+    //  rtc.adjust(DateTime(F(__DATE__), F(__TIME__))); 
+    //  Serial.println("RTC Time Adjusted!");
+    //  RTC_Test = 18;
+    }
   }
- }
+}
 
  void SerialPortRx() {
     static uint8_t ndx = 0;
     char endMarker = '\n';
     uint8_t Counter = 0;
-    char rc;
+
         // if (Serial.available() > 0) {
      while (Serial.available() > 0 && newData == false) {
-        rc = Serial.read();
+        char rc = Serial.read();
         Counter++; // 2020,05,27,21,14,23 19 characters + \0' // in total 21
 
         if (rc != endMarker) {
@@ -121,18 +124,20 @@ void  RTC_Init(){
           newData = false;            
           Serial.print(F("Counter:"));  
           Serial.println(Counter);
-          unsigned int Year=0; 
-          unsigned int Month=0; 
-          unsigned int Day=0;                       
-          unsigned int Hour=0; 
-          unsigned int Minute=0; 
-          unsigned int Second=0; 
+
                
         if((Counter == 21) && (rxarr[4] == ',' )&&(rxarr[7] == ',') && 
            (rxarr[10] == ',')&&  (rxarr[13] == ',' )&& (rxarr[16] == ',' )){
             for(int i = 0; i<32; i ++ ){ // ascii 2 byte
                 rxarr[i] -= 48;          
             }
+          unsigned int Year=0; 
+          unsigned int Month=0; 
+          unsigned int Day=0;                       
+          unsigned int Hour=0; 
+          unsigned int Minute=0; 
+          unsigned int Second=0; 
+            
             Year  = 1000 * rxarr[0];
             Year  += 100 * rxarr[1]; 
             Year  += 10 * rxarr[2];  

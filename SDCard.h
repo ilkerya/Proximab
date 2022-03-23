@@ -41,10 +41,9 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
-
-
-    
 void GetFileSize(){
+  return;
+
     File dataFile = SD.open(LOG_FILE, FILE_WRITE);
     if (dataFile) {
       FileSize.Total = dataFile.size();  
@@ -53,6 +52,8 @@ void GetFileSize(){
     else  FileSize.Total = 0;
 }
 void ReadConfigFile(){
+  
+ return;
   // File Config =  SD.open(ConfigFile);
    File Config =  SD.open(CopyFlashToRam(ConfigFile));
    
@@ -91,6 +92,8 @@ void UpdateFileQue(){
   //  Serial.print(F("LOG_FILE6.7 ")); Serial.print(LOG_FILE[6]);Serial.print(LOG_FILE[7]);
 }
 void SD_CardLogTask(){ 
+  
+
  //   Serial.print(F("SDCard.Status ")); Serial.println(SDCard.Status); 
 //    Serial.print(F("SDCard.FatError ")); Serial.println(SDCard.FatError);  
  //   Serial.print(F("Display.SleepEnable ")); Serial.println(Display.SleepEnable); 
@@ -102,6 +105,7 @@ void SD_CardLogTask(){
    if(SDCard.PauseTimer){  
       return;   // sd card reread trial timer 
    }   
+   
     if(SDCard.LogBootInit == OFF){
       SDCard.LogBootInit = ON;
       // put header + data           
@@ -117,6 +121,7 @@ void SD_CardLogTask(){
         SD_Card_Data_Preparation(); 
         SDCard.PauseCount = OFF;                                 
     } 
+    
     File dataFile = SD.open(LOG_FILE, FILE_WRITE);
     // if the file is available, write to it:
     if (dataFile) {
@@ -137,6 +142,8 @@ void SD_CardLogTask(){
     }   
 }
 void SD_FAT_Check(void){
+
+
   Serial.println(F("FatCheck Start")); 
   #ifdef ARDUINO_DUE 
   Print_ARM_SPI_Regs();
@@ -161,19 +168,19 @@ void SD_FAT_Check(void){
       volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
       volumesize *= volume.clusterCount();       // we'll have a lot of clusters
       volumesize /= 2;                           // SD card blocks are always 512 bytes (2 blocks are 1KB)
-    Serial.print(F("Volume size (Kb):  "));
-    Serial.println(volumesize);
-    Serial.print(F("Volume size (Mb):  "));
-    volumesize /= 1024;
-    Serial.println(volumesize);
-    Serial.print(F("Volume size (Gb):  "));
-    SDCard.Volume = (float)volumesize / 1024.0;
-    Serial.println(SDCard.Volume);    
-    //Serial.println((float)volumesize / 1024.0);
-    Serial.println(F("\nFiles found on the card (name, date and size in bytes): "));
-    root.openRoot(volume);
-    // list all files in the card with date and size
-    root.ls(LS_R | LS_DATE | LS_SIZE);
+      Serial.print(F("Volume size (Kb):  "));
+      Serial.println(volumesize);
+      Serial.print(F("Volume size (Mb):  "));
+      volumesize /= 1024;
+      Serial.println(volumesize);
+      Serial.print(F("Volume size (Gb):  "));
+      SDCard.Volume = (float)volumesize / 1024.0;
+      Serial.println(SDCard.Volume);    
+      //Serial.println((float)volumesize / 1024.0);
+      Serial.println(F("\nFiles found on the card (name, date and size in bytes): "));
+      root.openRoot(volume);
+      // list all files in the card with date and size
+      root.ls(LS_R | LS_DATE | LS_SIZE);
     } 
   Serial.println(F("FatCheck End"));
   #ifdef ARDUINO_DUE 
@@ -185,18 +192,18 @@ void SD_Card_Info(void){
   SDCard.Status = SD_NOT_Present;
   SDCard.FatError = OFF;
   #ifdef ARDUINO_DUE 
-  Print_ARM_SPI_Regs();
+   Print_ARM_SPI_Regs();
   #endif
   
   Serial.print(F("\nInitializing SD card..."));
   // we'll use the initialization code from the utility libraries
   // since we're just testing if the card is working!
-#ifdef ARDUINO_MKRZERO 
+  #ifdef ARDUINO_MKRZERO 
   if (!card.init(SPI_HALF_SPEED, SDCARD_SS_PIN)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
-#endif
-#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
+  #endif
+  #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
   if (!card.init(SPI_HALF_SPEED, SD_CS_PINOUT)) {  // SPI_QUARTER_SPEED  // Sd2Card.h
-#endif      
+  #endif      
  // if (!card.init(SPI_QUARTER_SPEED, SD_CS_PINOUT)) {  //   // Sd2Card.h
     Serial.println(F("initialization failed:"));
    // Serial.println(F("* is a card inserted?"));
@@ -228,27 +235,22 @@ void SD_Card_Info(void){
     SD_FAT_Check();
   }
     Serial.println(F("Card Info End"));
-    
     #ifdef ARDUINO_DUE 
     Print_ARM_SPI_Regs();
     #endif
 }
-
 void SD_Card_Init(){
-      Serial.println(F("SD_Card_Init Start"));
-
-#ifdef ARDUINO_DUE 
-   Print_ARM_SPI_Regs();
-#endif
-      
-#ifdef ARDUINO_MKRZERO 
-      if (!SD.begin(SDCARD_SS_PIN)) {
-#endif
-#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
-  if (!SD.begin(SD_CS_PINOUT)) {
-#endif   
-  
-    Serial.println(F("Card failed, or not present"));
+    Serial.println(F("SD_Card_Init Start"));
+    #ifdef ARDUINO_DUE 
+    Print_ARM_SPI_Regs();
+    #endif
+    #ifdef ARDUINO_MKRZERO 
+    if (!SD.begin(SDCARD_SS_PIN)) {
+    #endif
+    #if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
+    if (!SD.begin(SD_CS_PINOUT)) {
+    #endif    
+      Serial.println(F("Card failed, or not present"));
       SDCard.Status = SD_NOT_Present;
       switch(SDCard.PauseCount){
           case 0: SDCard.PauseTimer = 10;SDCard.PauseCount++;
@@ -292,44 +294,40 @@ void SD_Card_Init(){
       //SDCard.PauseTimer = 15;
       SDCard.LogBootInit = OFF;     
   }
-  //SDCard.Status = SD_NOT_Present;
-        Serial.println(F("SD_Card_Init Start"));
-#ifdef   ARDUINO_DUE     
+  Serial.println(F("SD_Card_Init Success"));
+  #ifdef   ARDUINO_DUE     
       Print_ARM_SPI_Regs();
-#endif
+  #endif
 }
 void SD_Card_Header_Preparation(){
       //char* p =(char*)&SD_CARD_ERR[0]; 
-      char* p =NULL;   
-      switch(SDCard.Status){
-        case SD1_TYPE :  p= (char*)SD1_CARD; 
+   char* p =NULL;   
+   switch(SDCard.Status){
+       case SD1_TYPE :  p= (char*)SD1_CARD; 
         break;
         case SD2_TYPE : p=(char*) SD2_CARD;
         break;
         case SDHC_TYPE :p=(char*) SDHC_CARD;
         break;
-      //  case SD_NO_FAT :p= NO_FAT;
-     //   break;
         case SD_NOT_Present :
-        default:
-              p=(char*) SD_CARD_ERR;
+        default: 
+            p=(char*) SD_CARD_ERR;
         break;     
-    }  
-          //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
-        //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";  
-   
-       dataString += F("FirmVers ");   
-       dataString += String(__DATE__) + ' ' + String(__TIME__);
-       dataString += F(",Dev_Id:") ;
-       dataString += String(Device_Id) ; 
-       dataString +=  F(",SD Type: ") ; 
-       dataString +=  String(p);
-       dataString +=  F(",Volume: ");
-       dataString +=  String(SDCard.Volume);
-       dataString += F(" GB,Found Sensors Id's:,") ;        
-       dataString += String(SensorId.No1, HEX) +  ',' +  String(SensorId.No2, HEX) + ','  + String(SensorId.No3, HEX) + ',' ;
-       
-       #ifdef PM25_DUST_SENSOR_EXISTS 
+  }  
+         //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
+        //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";   
+    dataString += F("FirmVers ");   
+    dataString += String(__DATE__) + ' ' + String(__TIME__);
+    dataString += F(",Dev_Id:") ;
+    dataString += String(Device_Id) ; 
+    dataString +=  F(",SD Type: ") ; 
+    dataString +=  String(p);
+    dataString +=  F(",Volume: ");
+    dataString +=  String(SDCard.Volume);
+    dataString += F(" GB,Found Sensors Id's:,") ;        
+    dataString += String(SensorId.OnBoard, HEX) +  ',' + String(SensorId.No1, HEX) +  ',' +  
+                     String(SensorId.No2, HEX)     + ','  + String(SensorId.No3, HEX) + ',' ;
+      #ifdef PM25_DUST_SENSOR_EXISTS 
          // dataString += "PMsensor Rev"  + ',' +  Sensor_Info_SDS  +  ',';
       #endif 
         dataString += "\n" ;
@@ -337,24 +335,25 @@ void SD_Card_Header_Preparation(){
       #ifdef WIND_SENSOR_EXISTS  
         dataString += F("WindRaw,velReading,WindMPH,WindTemp,");
       #endif  
+      #ifdef TEMP_HUM_ONBOARD_SENSOR_EXISTS 
+        dataString += F("TempOnBoard,HumOnBoard(");
+        dataString += String(SensorId.OnBoard, HEX);
+        dataString += F("),");
+      #endif
       #ifdef TEMP_HUM_1_SENSOR_EXISTS 
-       // dataString += "TemperatureSi072_1,Humidity_1,";
         dataString += F("Temp1,Hum1(");
         dataString += String(SensorId.No1, HEX);
         dataString += F("),");
       #endif
       #ifdef TEMP_HUM_2_SENSOR_EXISTS 
-       // dataString += "TemperatureSi072_2,Humidity_2,";
         dataString += F("Temp2,Hum2(");
         dataString += String(SensorId.No2, HEX);
-        dataString += F("),");
-        
+        dataString += F("),"); 
       #endif
-       #ifdef TEMP_HUM_3_SENSOR_EXISTS 
-      //  dataString += "TemperatureSi072_3,Humidity_3,";
-        dataString += F("Temp3,Hum3(");
-        dataString += String(SensorId.No3, HEX);
-        dataString += F("),");     
+      #ifdef TEMP_HUM_3_SENSOR_EXISTS 
+         dataString += F("Temp3,Hum3(");
+         dataString += String(SensorId.No3, HEX);
+         dataString += F("),");     
       #endif     
       #ifdef LEM_CURRENT_EXISTS 
         dataString += F("Current(A)rms,");
@@ -369,38 +368,34 @@ void SD_Card_Header_Preparation(){
          dataString += F("Luminosity,");
       #endif
       #ifdef   ACCL_GYRO_SENSOR_EXISTS       
-          dataString += F("Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z),"); 
+         dataString += F("Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z),"); 
       #endif 
        #ifdef PM25_DUST_SENSOR_EXISTS 
-          dataString += F("PM2.5,PM10,"); 
+         dataString += F("PM2.5,PM10,"); 
       #endif  
        #ifdef ENERGYMETER_EXISTS 
-          dataString += F("(A)rms,(V)rms,Power(W),PF,Freq.,"); 
+         dataString += F("(A)rms,(V)rms,Power(W),PF,Freq.,"); 
       #endif  
-        #ifdef PROGRELAY_EXISTS 
-      dataString += F("RL1,RL2");
+      #ifdef PROGRELAY_EXISTS 
+        dataString += F("RL1,RL2");
        #endif             
 }
 void SD_Card_Data_Preparation(){
       dataString += Str_DispTime;     
-          /*        
-          dataString += String(Values.WindRaw) + ',' + String(velReading)+ ',' + String(Values.WindTemp) + ',' +String(Values.WindMPH)+ ','       
-          + String(Values.TemperatureSi072)+ ',' + String(Values.Humidity)+ ','
-          + String(Values.Pressure)+ ',' + String(Values.TemperatureBMP) + ',' + String(Values.Altitude)+ ','
-          + String(Values.Luminosity) +','
-          + String(Accelometer.x) + ',' + String(Accelometer.y)+ ','+ String(Accelometer.z) + ',' + String(Gyro.x) + ',' + String(Gyro.y)+ ','+ String(Gyro.z);
-          */
       #ifdef WIND_SENSOR_EXISTS  
         dataString += String(Values.WindRaw) + ',' + String(velReading)+ ',' + String(Values.WindTemp) + ',' +String(Values.WindMPH)+ ',';
       #endif
+      #ifdef TEMP_HUM_ONBOARD_SENSOR_EXISTS 
+        dataString += String(Values.Temperature_OnBoard)+ ',' + String(Values.Humidity_OnBoard)+ ',';
+      #endif
       #ifdef TEMP_HUM_1_SENSOR_EXISTS 
-        dataString += String(Values.TemperatureSi072_Ch1)+ ',' + String(Values.Humidity_Ch1)+ ',';
+        dataString += String(Values.Temperature_Ch1)+ ',' + String(Values.Humidity_Ch1)+ ',';
       #endif
       #ifdef TEMP_HUM_2_SENSOR_EXISTS 
-        dataString += String(Values.TemperatureSi072_Ch2)+ ',' + String(Values.Humidity_Ch2)+ ',';
+        dataString += String(Values.Temperature_Ch2)+ ',' + String(Values.Humidity_Ch2)+ ',';
       #endif
       #ifdef TEMP_HUM_3_SENSOR_EXISTS 
-        dataString += String(Values.TemperatureSi072_Ch3)+ ',' + String(Values.Humidity_Ch3)+ ',';
+        dataString += String(Values.Temperature_Ch3)+ ',' + String(Values.Humidity_Ch3)+ ',';
       #endif   
       #ifdef LEM_CURRENT_EXISTS 
         dataString += String(Current_Mains_Rms) + ',';
@@ -417,51 +412,42 @@ void SD_Card_Data_Preparation(){
       #ifdef   ACCL_GYRO_SENSOR_EXISTS       
          dataString += String(Accelometer.x) + ',' + String(Accelometer.y)+ ','+ String(Accelometer.z) + ',' + String(Gyro.x) + ',' + String(Gyro.y)+ ','+ String(Gyro.z)+',';     
       #endif
-
-         #ifdef PM25_DUST_SENSOR_EXISTS 
+      #ifdef PM25_DUST_SENSOR_EXISTS 
           dataString += String(Values.PM25)+ ',' + String(Values.PM10)+ ','  ; 
       #endif  
-
-        #ifdef ENERGYMETER_EXISTS 
-        /*
-          if(EnergyMeterIC.Mode == POWERIC_NORMAL){ 
-            dataString += String(Values.Current)+ ',' + String(Values.Voltage)+ ',';
-            dataString += String(Values.ActivePower)+ ',' + String(Values.PowerFactor)+ ',';
-           dataString += String(Values.Frequency)+ ',';
-          }
-          */
-  switch(EnergyMeterIC.Mode){
-    case POWERIC_SETUP1:
-    case POWERIC_SETUP2:
-    case POWERIC_SETUP3:dataString += F("Setup,Setup,Setup,Setup,Setup,");  
-    
-    break;
-    case POWERIC_NORMAL:         
+      #ifdef ENERGYMETER_EXISTS 
+        switch(EnergyMeterIC.Mode){
+          case POWERIC_SETUP1:
+          case POWERIC_SETUP2:
+          case POWERIC_SETUP3:dataString += F("Setup,Setup,Setup,Setup,Setup,");     
+          break;
+          case POWERIC_NORMAL:         
                 dataString += String(Values.Current)+ ',' + String(Values.Voltage)+ ',';dataString += String(Values.ActivePower)+ ',' + String(Values.PowerFactor)+ ',';
                 dataString += String(Values.Frequency)+ ',';
-    break;
-    case POWERIC_CALB1: // Calibrating The Current Channel Started            
-    case POWERIC_CALB2: // Calibrating The Current Channel Continues        
-    case POWERIC_CALB3: // Calibrating The Current Channel Ends
-    case POWERIC_CALB4: // Calibrating The Voltage Channel Starts              
-    case POWERIC_CALB5:    
-    case POWERIC_CALB6: // Calibrating The Current Channel Ends
-    case POWERIC_CALB7: // Calibrating The Voltage Channel Starts              
-    case POWERIC_CALB8:  
-    case POWERIC_CALB9: // Calibrating The Voltage Channel Starts              
-    case POWERIC_CALB10: 
+          break;
+          case POWERIC_CALB1: // Calibrating The Current Channel Started            
+          case POWERIC_CALB2: // Calibrating The Current Channel Continues        
+          case POWERIC_CALB3: // Calibrating The Current Channel Ends
+          case POWERIC_CALB4: // Calibrating The Voltage Channel Starts              
+          case POWERIC_CALB5:    
+          case POWERIC_CALB6: // Calibrating The Current Channel Ends
+          case POWERIC_CALB7: // Calibrating The Voltage Channel Starts              
+          case POWERIC_CALB8:  
+          case POWERIC_CALB9: // Calibrating The Voltage Channel Starts              
+          case POWERIC_CALB10: 
                 dataString += F("Calib.,Calib.,Calib.,Calib.,Calib.,");     
-    break;
-     default:   
-    break;
-  }   
-      #endif // endof  #ifdef ENERGYMETER_EXISTS 
-      #ifdef PROGRELAY_EXISTS    
-      dataString +=  String(digitalRead(RELAY_OUT_1))+ ','+ String(digitalRead(RELAY_OUT_2));  
-      #endif 
+           break;
+          default:   
+          break;
+      }   
+    #endif // endof  #ifdef ENERGYMETER_EXISTS 
+    #ifdef PROGRELAY_EXISTS    
+        dataString +=  String(digitalRead(RELAY_OUT_1))+ ','+ String(digitalRead(RELAY_OUT_2));  
+    #endif 
 }
 #ifdef ARDUINO_DUE 
 void Print_ARM_RegsFormat(uint32_t Reg){
+      return;
       uint32_t  temp = Reg & 0xFF000000;
       Serial.print(temp >> 24,HEX);Serial.print('.'); 
       temp = Reg & 0x00FF0000;
@@ -473,6 +459,7 @@ void Print_ARM_RegsFormat(uint32_t Reg){
       Serial.println(Reg,BIN);  
 }
 void Print_ARM_SPI_Regs(void){
+        return;
       //Serial.print(F("Total Blocks:      "));
      // uint32_t temp; uint16_t i;uint32_t Reg;
       //Serial.println(SPI0->SPI_CSR[0],BIN);      
@@ -484,7 +471,7 @@ void Print_ARM_SPI_Regs(void){
       Serial.println(SPI0->SPI_CSR[2],HEX);     
       Serial.print(F("SPI_CSR3  "));
       Serial.println(SPI0->SPI_CSR[3],HEX);    
-      //Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
+      Print_ARM_RegsFormat(SPI0->SPI_CSR[3]); 
     // https://developer.arm.com/documentation/dui0417/d/programmer-s-reference/status-and-system-control-registers/pll-initialization-register--sys-pll-init
 /*
       Serial.print(F("PLLADIV[24]  "));

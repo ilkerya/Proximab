@@ -202,48 +202,42 @@ void testdrawchar(void) {
 
 
 void UpdateDispSpChar(uint8_t Index, uint8_t Line) {
-  switch (Line) {
-    case 4: display.setCursor(36, 24); //x,y
+    switch (Line) {
+      case 4: display.setCursor(36, 24); //x,y
+        break;
+      case 5: display.setCursor(36, 32);
+        break;
+      case 6: display.setCursor(36, 40);
+        break;
+      case 7: display.setCursor(36, 48);
+        break;
+      default:              //
+        break;
+    }
+    switch (Index) {
+      case DISPROLL_LINE1:
+        if (Display.ExpSensOnb ) {
+          Display.ExpSensOnb = OFF;
+          display.write(247); // 5th character  '°';
+        }
+      break;  
+    case DISPROLL_LINE2:
+        if (Display.ExpSens1 ) {
+          Display.ExpSens1 = OFF;
+          display.write(247); // 5th character  '°';
+        }
       break;
-    case 5: display.setCursor(36, 32);
+    case DISPROLL_LINE3:
+        if (Display.ExpSens2 ) {
+          Display.ExpSens2 = OFF;
+          display.write(247); // 5th character  '°';
+        }
       break;
-    case 6: display.setCursor(36, 40);
-      break;
-    case 7: display.setCursor(36, 48);
-      break;
-    default:              //
-      break;
-  }
-  switch (Index) {
-    case 0: //// show nothing
-      break;
-    /*
-      case 1:    //"FW " + FW_Version;  // fw version compile time
-      break;
-      case 2:        // "Dev Id:  " + EE_Id_EString;  // device id
-      break;
-    */
-    case 1:
-      if (Display.ExpSens1 ) {
-        Display.ExpSens1 = OFF;
-        display.write(247); // 5th character  '°';
-      }
-      break;
-    case 2:
-      if (Display.ExpSens2 ) {
-        Display.ExpSens2 = OFF;
-        display.write(247); // 5th character  '°';
-      }
-      break;
-    case 3:
-      if (Display.ExpSens3 ) {
-        Display.ExpSens3 = OFF;
-        display.write(247); // 5th character  '°';
-      }
-      break;
-    case 6:
-      break;
-    case 7:
+    case DISPROLL_LINE4:
+        if (Display.ExpSens3 ) {
+          Display.ExpSens3 = OFF;
+          display.write(247); // 5th character  '°';
+        }
       break;
     default:              //
       break;
@@ -252,8 +246,7 @@ void UpdateDispSpChar(uint8_t Index, uint8_t Line) {
 
 
 
-void displayValues(void)
-{
+void displayValues(void){
   UpdateDisplayBuffer();
   if (Display.InitDelay == OFF)return;
   //testdrawchar();
@@ -311,7 +304,6 @@ void displayValues(void)
       }
   */
   switch (MainMenu) {
-
     case MENU_NULL :
       //   if(!Key.Error) {
       display.setCursor(60, 56); //x,y  6*10 = 60
@@ -321,17 +313,12 @@ void displayValues(void)
       // }
       break;
     case MENU5_SUB1 :
-
       break;
     default:
       break;
   }
-
-
   display.display();
 }
-
-
 
 bool DisplayFlash(void) {
   Display.Flash++;
@@ -341,7 +328,6 @@ bool DisplayFlash(void) {
   }
   return ON;
 }
-
 
 String UpddateDateTimeBuffer(void) {
   String str =  String(DateTimeBuf.Year) + '.';
@@ -365,7 +351,6 @@ void UpdateDisplayMenu(void) {
     Display_Line8 = str;
     return;
   }
-
   switch (MainMenu) {
     case MENU_NULL :
       str = CopyFlashToRam(Disp_MENU_NULL);
@@ -483,7 +468,6 @@ void UpdateDisplayMenu(void) {
       //  str.setCharAt(10 , '.');
       str.remove(11, 2); // Remove 2 characters starting at index=11
       str.remove(7, 1); // Remove 1 characters starting at index=7
-
       break;
     case MENU4_SUB2 :
       str = "Dev Id: " + String(Device_Id);  // fw version compile time
@@ -513,7 +497,6 @@ void UpdateDisplayMenu(void) {
         str[9] = ' ';
       }
       break;
-
     case MENU5_SUB4 : str = UpddateDateTimeBuffer();
       if (DisplayFlash() == 0) {
         str[13] = ' ';
@@ -526,7 +509,6 @@ void UpdateDisplayMenu(void) {
         str[17] = ' ';
       }
       break;
-
     case MENU5_SUB6 : str = UpddateDateTimeBuffer();
       if (DisplayFlash() == 0) {
         str[19] = ' ';
@@ -535,8 +517,6 @@ void UpdateDisplayMenu(void) {
       break;
     case MENU5_SUB7 : str = CopyFlashToRam(Disp_MENU5_SUB7);
       break;
-
-
     case MENU6 : str = CopyFlashToRam(Disp_MENU6);
       break;
     case MENU6_SUB1 : str = CopyFlashToRam(Disp_MENU6_SUB1);
@@ -550,33 +530,4 @@ void UpdateDisplayMenu(void) {
   }
   Display_Line8 = str;//LimitCopyDisplayStr(str,MAX_DISPLAY_CHAR);
 }
-/*
-  void DisplayFullSensors(void){
-
-    display.print("x");
-    display.print(Accelometer.x); //6
-
-    display.print(" y");
-    display.print(Accelometer.y); //7
-
-     display.print(" z");
-     display.println(Accelometer.z); //7
-
-
-    display.print(Values.TemperatureSi072_Ch1,1);
-   //  display.print("°");
-    display.print("C %");
-    display.print(Values.Humidity_Ch1,1); //
-    display.print(" Lm:");
-    display.println(Values.Luminosity); //
-
-    display.print(Values.Pressure,0);
-    display.print("hPA ");
-    display.print(Values.TemperatureBMP,1);
-   //  display.print("\0x7F");
-    display.print("C ");
-    display.print(Values.Altitude,1);
-    display.println("m");
-  }
-*/
 #endif

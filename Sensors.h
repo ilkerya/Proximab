@@ -32,8 +32,7 @@ SdsDustSensor sds(rxPin, txPin);
 */
 //SdsDustSensor sds(Serial1); // passing HardwareSerial& as parameter
 //SdsDustSensor sds(HardwareSerial); // passing HardwareSerial& as parameter
-#if (defined TEMP_HUM_1_SENSOR_EXISTS  || defined TEMP_HUM_2_SENSOR_EXISTS  || defined  TEMP_HUM_3_SENSOR_EXISTS  )
-//#ifdef TEMP_HUM_1_SENSOR_EXISTS  //TEMP_HUM_2_SENSOR_EXISTS TEMP_HUM_3_SENSOR_EXISTS
+#if (defined TEMP_HUM_1_SENSOR_EXISTS  || defined TEMP_HUM_2_SENSOR_EXISTS  || defined  TEMP_HUM_3_SENSOR_EXISTS || defined TEMP_HUM_ONBOARD_SENSOR_EXISTS )
  // #include "Adafruit_Si7021.h"
   Adafruit_Si7021 THsensor = Adafruit_Si7021();
 #endif
@@ -60,40 +59,46 @@ void Sensors_PeripInit(void){
 
   RTC_Init();
 
-  #ifdef TEMP_HUM_1_SENSOR_EXISTS
-    SensorInit_Si072(SI072_FIRST_SENSOR); // TEMP HUM
+  #ifdef TEMP_HUM_ONBOARD_SENSOR_EXISTS
+    SensorInit_Si072(SI072_ONBOARD_SENSOR_ADDR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_FIRST_SENSOR"));
+    Serial.print(F("No OnBoard Sensor !!"));Serial.print(F("SI072_ONBOARD_SENSOR"));
+  #endif 
+
+  #ifdef TEMP_HUM_1_SENSOR_EXISTS
+    SensorInit_Si072(SI072_FIRST_SENSOR_ADDR); // TEMP HUM
+  #else
+    //Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_FIRST_SENSOR"));
   #endif 
 
   #ifdef TEMP_HUM_2_SENSOR_EXISTS
-    SensorInit_Si072(SI072_SECOND_SENSOR); // TEMP HUM
+    SensorInit_Si072(SI072_SECOND_SENSOR_ADDR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_SECOND_SENSOR"));
+   // Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_SECOND_SENSOR"));
   #endif 
 
   #ifdef TEMP_HUM_3_SENSOR_EXISTS
-    SensorInit_Si072(SI072_THIRD_SENSOR); // TEMP HUM
+    SensorInit_Si072(SI072_THIRD_SENSOR_ADDR); // TEMP HUM
   #else
-    Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_THIRD_SENSOR"));
+  // Serial.print(F("No Sensor On Channel!!"));Serial.print(F("SI072_THIRD_SENSOR"));
   #endif 
       
   #ifdef BAR_PRES_SENSOR_EXISTS 
      SensorAlt_Init();     //BAROMETRIC PRESSURE
   #else
-    Serial.println(F("No Bar.Pressure_Sensor!!"));
+   // Serial.println(F("No Bar.Pressure_Sensor!!"));
   #endif 
       
   #ifdef LIGHT_SENSOR_EXISTS  
     SensorLight_Init();  // LIGHT 
   #else
-    Serial.println(F("No Light_Sensor!!"));
+   // Serial.println(F("No Light_Sensor!!"));
   #endif
       
   #ifdef ACCL_GYRO_SENSOR_EXISTS 
     SensorACccel_GyroInit(); // ACCEL GYRO  
    #else
-    Serial.println(F("No Accel Gyro_Sensor!!"));
+  //  Serial.println(F("No Accel Gyro_Sensor!!"));
   #endif  
   #ifdef PM25_DUST_SENSOR_EXISTS 
     Serial1.begin(9600);
@@ -152,20 +157,21 @@ void PrintPMValues(uint8_t PMError, uint8_t PMCount){
       Serial.print(F("PM10 "));Serial.println(Values.PM10);
       Serial.print(F("PMError "));Serial.println(PMError);         
 }
- void SerialPortPMSensor() {
-    uint8_t Rx;
-    uint8_t RxCount=0;
-    uint16_t PM25Val=0;
-    uint16_t PM10Val=0;
-     uint8_t PMError = 0; 
-     uint8_t PMCount = 0; 
-     unsigned char checksum = 32; 
+ void SerialPortPMSensor() {   
     if (Serial1.available()) {
+    //  uint8_t Rx;
+      uint8_t RxCount=0;
+      uint16_t PM25Val=0;
+      uint16_t PM10Val=0;
+      uint8_t PMError = 0; 
+      uint8_t PMCount = 0; 
+      unsigned char checksum = 32; 
+      
         for(int i=0; i<BUF_LENGTH;i++){   
           PMBuffer[i] = 0;
         }   
         while (Serial1.available()) {
-            Rx = Serial1.read();
+            uint8_t Rx = Serial1.read();
             if(RxCount < BUF_LENGTH)PMBuffer[RxCount] =  Rx; 
             RxCount++;      
         }
@@ -248,107 +254,103 @@ void SensorAcccel_GyroRead(){
   else Serial.println(F("Gyroscope Reading Problem"));
 }
 #endif  
-#ifdef TEMP_HUM_1_SENSOR_EXISTS  
+#if (defined TEMP_HUM_1_SENSOR_EXISTS  || defined TEMP_HUM_2_SENSOR_EXISTS  || defined  TEMP_HUM_3_SENSOR_EXISTS || defined TEMP_HUM_ONBOARD_SENSOR_EXISTS )
 void SensorInit_Si072(uint8_t Channel){
-  // Temperature & Humidity Sensor
-  if(Channel != NO_IC2_MULTIPLEXER)tcaselect(Channel);
-  Serial.print(F("Sensor_Channel:"));Serial.print(Channel);
-  Serial.println(F("  Si7021 test!"));
-  
+  if(Channel == NO_IC2_MULTIPLEXER){
+     Serial.print(F("No Sensor_Channel:"));
+    return;
+  }
+  tcaselect(Channel);
+  Serial.print(F("Sensor_Channel:"));Serial.println(Channel);
   if (!THsensor.begin()) {
     Serial.print(F("No Si7021 sensor On Channel: "));Serial.println(Channel);
-  //  delay(250);
-  //  while (true)      
-  }else{
-    Serial.print(F(" Si7021 sensor found!"));
- //   Serial.print(" Rev(");
-  //  Serial.print(THsensor.getRevision());
-    THsensor.getRevision();
-//    Serial.print(")");
- //    Serial.print(" Serial "); //Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
-     Serial.print(F("Sensor_Channel:"));Serial.println(Channel);
-  //   Serial.print(" String : ");
-    switch(Channel){
-      case NO_IC2_MULTIPLEXER:break; 
-      case SI072_FIRST_SENSOR:
-           // long Sensor1Ser = THsensor.sernum_a;
-    //       Sensor1_Id = String(THsensor.sernum_a, HEX) ;//+ String(THsensor.sernum_b,HEX); 
-   //         Sensor1_Id.toUpperCase();     
-             SensorId.No1 = THsensor.sernum_a;     
-             Serial.println(SensorId.No1,HEX); 
-       break;
-      case SI072_SECOND_SENSOR:
-     //       Sensor2_Id = String(SensorId.No1, HEX);// + String(THsensor.sernum_b,HEX);
-     //       Sensor2_Id.toUpperCase();
-            SensorId.No2 = THsensor.sernum_a;        
-            Serial.println(SensorId.No2,HEX); 
-       break;
-      case SI072_THIRD_SENSOR: 
-        //    Sensor3_Id = String(THsensor.sernum_a, HEX);// + String(THsensor.sernum_b,HEX);
-            SensorId.No3 = THsensor.sernum_a;     
-             Serial.println(SensorId.No3,HEX);            
-       break; 
-       default:
-              Serial.print(F("error"));
-       break;
-    }  
+    return;
   }
+    Serial.println(F(" Si7021 sensor found!"));
+    Serial.print(F("Revision of Th sensor!"));Serial.println(THsensor.getRevision());
+    
+ //    Serial.print(" Serial "); //Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
+  //   Serial.print(F("Sensor_Channel:"));Serial.println(Channel);
+
+    uint32_t Id = THsensor.sernum_a;
+    Serial.print(F("Current Sensor Id:"));Serial.println(Id,HEX); 
+    switch(Channel){
+      case SI072_ONBOARD_SENSOR_ADDR: SensorId.OnBoard = Id;     
+      break;     
+      case SI072_FIRST_SENSOR_ADDR:   SensorId.No1 = Id;     
+      break;
+      case SI072_SECOND_SENSOR_ADDR:  SensorId.No2 = Id;         
+      break;
+      case SI072_THIRD_SENSOR_ADDR:   SensorId.No3 = Id;                
+      break; 
+      default: Serial.print(F("error"));
+      break;
+    }  
 }
+/*
 void GerSerialNo(void){
       Serial.print(F(" Rev("));
     Serial.print(THsensor.getRevision());
     Serial.print(")");
     Serial.print(F(" Serial #")); Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
 }
-
+*/
 
 void SensorRead_Si072(unsigned char Channel){
-    if(Channel != NO_IC2_MULTIPLEXER)tcaselect(Channel);
-
-   // Serial.print("Humidity_");Serial.print(Channel);Serial.print(" %");
-
+    if(Channel == NO_IC2_MULTIPLEXER){
+      Serial.println(F("Not Defined Any Sensor!"));
+      return;
+    } 
+     tcaselect(Channel);
+    float Temperature = THsensor.readTemperature(); 
+    float Humidity = THsensor.readHumidity(); 
+    /*
+    Serial.print(F("Channel->"));Serial.print(Channel);
+    Serial.print(F("    Temperature:"));Serial.print(Temperature);Serial.print(F("'C     Humidity:%"));Serial.println(Humidity);   
+    */
     switch(Channel){
-      case NO_IC2_MULTIPLEXER:break;
-      case SI072_FIRST_SENSOR: 
-        Values.Humidity_Ch1 = THsensor.readHumidity();       
-      //  Serial.print(Values.Humidity_Ch1, 2);
-   
+     case SI072_ONBOARD_SENSOR_ADDR:
+        Values.Temperature_OnBoard = Temperature;
+        Values.Humidity_OnBoard = Humidity; 
+      break;       
+      case SI072_FIRST_SENSOR_ADDR: 
+        Values.Temperature_Ch1 = Temperature;
+        Values.Humidity_Ch1 = Humidity;        
        break;
-      case SI072_SECOND_SENSOR: 
-        Values.Humidity_Ch2 = THsensor.readHumidity();
-   //     Serial.print(Values.Humidity_Ch2, 2);
-
+      case SI072_SECOND_SENSOR_ADDR: 
+        Values.Temperature_Ch2 = Temperature;      
+        Values.Humidity_Ch2 = Humidity;
        break;
-      case SI072_THIRD_SENSOR: 
-        Values.Humidity_Ch3 = THsensor.readHumidity();
-     //   Serial.print(Values.Humidity_Ch3, 2);
- 
+      case SI072_THIRD_SENSOR_ADDR: 
+        Values.Temperature_Ch3 = Temperature;      
+        Values.Humidity_Ch3 = Humidity;
        break; 
        default:
         Serial.print(F("error"));
        break;
     }
- 
-
+ /*
     switch(Channel){
-      case NO_IC2_MULTIPLEXER:break;
-      case SI072_FIRST_SENSOR: 
-        Values.TemperatureSi072_Ch1 = THsensor.readTemperature();
-   //     Serial.println(Values.TemperatureSi072_Ch1, 2);
+      case SI072_ONBOARD_SENSOR_ADDR:
+       
+      break;        
+      case SI072_FIRST_SENSOR_ADDR: 
+        Values.Temperature_Ch1 = THsensor.readTemperature();
+   //     Serial.println(Values.Temperature_Ch1, 2);
        break;
-      case SI072_SECOND_SENSOR: 
-        Values.TemperatureSi072_Ch2 = THsensor.readTemperature();
-    //    Serial.println(Values.TemperatureSi072_Ch2, 2);
+      case SI072_SECOND_SENSOR_ADDR: 
+        Values.Temperature_Ch2 = THsensor.readTemperature();
+    //    Serial.println(Values.Temperature_Ch2, 2);
        break;
-      case SI072_THIRD_SENSOR: 
-        Values.TemperatureSi072_Ch3 = THsensor.readTemperature();
-   //     Serial.println(Values.TemperatureSi072_Ch3, 2);
+      case SI072_THIRD_SENSOR_ADDR: 
+        Values.Temperature_Ch3 = THsensor.readTemperature();
+   //     Serial.println(Values.Temperature_Ch3, 2);
        break; 
        default:
         Serial.print(F("error"));
        break;
     } 
-    
+    */
 }
 #endif
 #ifdef BAR_PRES_SENSOR_EXISTS 
