@@ -211,6 +211,11 @@ void PrintDisplayBuffer(void){
 
 #define MAXNOCHAR 4
 void UpdateProperLine(uint8_t Index, uint8_t Line){
+    #define TEMPERATURE_DEGREE_ASCII 247  // FOR OLED DISPLAY https://en.wikipedia.org/wiki/Code_page_437
+    String CelsiusDegree = "";  
+    CelsiusDegree = (char)TEMPERATURE_DEGREE_ASCII;
+    CelsiusDegree +=  "C";
+    
     String str = String(Index)+ ".";    
     switch(Index){
       case DISPROLL_LINE0: 
@@ -219,7 +224,8 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
         case DISPROLL_LINE1:  
           if (!isnan(Values.Temperature_OnBoard)) {
             str += String(Values.Temperature_OnBoard,1);
-            str += F(" C");  Display.ExpSensOnb = ON;                           
+            str += CelsiusDegree;
+            //str += F(" C");  Display.ExpSensOnb = ON;                           
           }
           else  str += F("------");       
           if (!isnan(Values.Humidity_OnBoard)) {
@@ -234,7 +240,8 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
       case DISPROLL_LINE2:   
           if (!isnan(Values.Temperature_Ch1)) {
             str += String(Values.Temperature_Ch1,1);
-            str += F(" C");  Display.ExpSens1 = ON;                           
+            str += CelsiusDegree;
+            //str += F(" C");  Display.ExpSens1 = ON;                           
           }
           else  str += F("------");       
           if (!isnan(Values.Humidity_Ch1)) {
@@ -249,7 +256,8 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
           //str = "4."; // temp sensor2
           if (!isnan(Values.Temperature_Ch2)) {
             str += String(Values.Temperature_Ch2,1);
-            str += F(" C");   Display.ExpSens2 = ON;               //  str += '°'; 
+            str += CelsiusDegree;
+           // str += F(" C");   Display.ExpSens2 = ON;               //  str += '°'; 
           }
           else  str += F("------");        
           if (!isnan(Values.Humidity_Ch2)) {
@@ -264,7 +272,8 @@ void UpdateProperLine(uint8_t Index, uint8_t Line){
         //str = "5."; // temp sensor3
          if (!isnan(Values.Temperature_Ch3)) {
             str += String(Values.Temperature_Ch3,1);
-            str += F(" C");    Display.ExpSens3 = ON;
+            str += CelsiusDegree;
+            //str += F(" C");    Display.ExpSens3 = ON;
         }
         else  str += F("------");  
         if (!isnan(Values.Humidity_Ch3)) {

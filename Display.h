@@ -525,6 +525,20 @@ void UpdateDisplayMenu(void) {
       break;
     case MENU6_SUB3 : str = CopyFlashToRam(Disp_MENU6_SUB3);
       break;
+    case MENU6_SUB4 : str = CopyFlashToRam(Disp_MENU6_SUB4);
+          if ( Mains_Frequency == FREQUENCY_50HZ)str += CopyFlashToRam(Disp_MENU6_SUB42); 
+          if ( Mains_Frequency == FREQUENCY_60HZ)str += CopyFlashToRam(Disp_MENU6_SUB43);   
+      break;
+    case MENU6_SUB5 : str = CopyFlashToRam(Disp_MENU6_SUB5);
+      break;
+    case MENU6_SUB6 : str = CopyFlashToRam(Disp_MENU6_SUB6);
+      break;
+    case MENU6_SUB7 : str = CopyFlashToRam(Disp_MENU6_SUB7);
+          if ( Mains_Frequency == FREQUENCY_50HZ)str += CopyFlashToRam(Disp_MENU6_SUB71); 
+          if ( Mains_Frequency == FREQUENCY_60HZ)str += CopyFlashToRam(Disp_MENU6_SUB72);        
+      break;
+
+      
     default:
       break;
   }

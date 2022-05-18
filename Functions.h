@@ -117,7 +117,6 @@ void Common_Loop(){
       displayValues();
     }
     else {
-
       Display_SwitchOff();
     }
     Display_ReInit_End();
@@ -182,7 +181,16 @@ void Common_Loop(){
         MainMenu = MENU_NULL;
       }
     }
-   
+      if(MainMenu == MENU6_SUB7) {  //  Mains Updated !   
+      Display.MenuTimeout++;
+      if(Display.MenuTimeout > 2){
+        Display.MenuTimeout = 2;
+        MainMenu = MENU6_SUB3;  // Calibration Started !
+        #ifdef ENERGYMETER_EXISTS
+          EnergyMeterIC.Mode = POWERIC_CALB1; 
+        #endif
+      }
+    }  
 /*
       if( (Values.PM25 > 64) &&  !digitalRead(RELAY_OUT_1) ) digitalWrite(RELAY_OUT_1,HIGH);
       if( (Values.PM25 < 16) &&   digitalRead(RELAY_OUT_1) ) digitalWrite(RELAY_OUT_1,LOW);
@@ -235,42 +243,41 @@ void Common_Loop(){
 
 void IO_Settings() {
 
-#ifdef FIRST_PROTOTYPE
+  #ifdef FIRST_PROTOTYPE
 
-#endif
+  #endif
 
 
-#ifdef ARDUINO_DUE
- // default i2c pin is for Mega not Due so set pins to input
-  pinMode(70, INPUT);  // 
-  pinMode(71, INPUT);  // 
+  #ifdef ARDUINO_DUE
+    // default i2c pin is for Mega not Due so set pins to input
+    pinMode(70, INPUT);  // 
+    pinMode(71, INPUT);  // 
+  #endif
 
-#endif
+  #ifdef ARDUINO_MKRZERO
+    digitalWrite(OLED_GND, LOW);
+    pinMode(OLED_GND, OUTPUT);  // 
 
-#ifdef ARDUINO_MKRZERO
-  digitalWrite(OLED_GND, LOW);
-  pinMode(OLED_GND, OUTPUT);  // 
+    pinMode(A4, INPUT);  
+    digitalWrite(OLED_CS, LOW);
+    pinMode(OLED_CS, OUTPUT);  //
+    digitalWrite(OLED_RESET, LOW);
+    pinMode(OLED_RESET, OUTPUT);  // 
 
-  pinMode(A4, INPUT);  
-  digitalWrite(OLED_CS, LOW);
-  pinMode(OLED_CS, OUTPUT);  //
-   digitalWrite(OLED_RESET, LOW);
-  pinMode(OLED_RESET, OUTPUT);  // 
+    digitalWrite(OLED_DC, LOW);
+    pinMode(OLED_DC, OUTPUT);  // 
+    digitalWrite(OLED_CLK, LOW);
+    pinMode(OLED_CLK, OUTPUT);  // 
+    digitalWrite(OLED_MOSI, LOW);
+    pinMode(OLED_MOSI, OUTPUT);  // 
 
-  digitalWrite(OLED_DC, LOW);
-  pinMode(OLED_DC, OUTPUT);  // 
-  digitalWrite(OLED_CLK, LOW);
-  pinMode(OLED_CLK, OUTPUT);  // 
-  digitalWrite(OLED_MOSI, LOW);
-  pinMode(OLED_MOSI, OUTPUT);  // 
-
-  digitalWrite(OLED_POWER, HIGH);
-  pinMode(OLED_POWER, OUTPUT);  // 
+    digitalWrite(OLED_POWER, HIGH);
+    pinMode(OLED_POWER, OUTPUT);  // 
   
-#endif
+  #endif
 
-#ifdef ENERGYMETER_EXISTS
-/*
+  #ifdef ENERGYMETER_EXISTS
+  /*
   pinMode(A5, INPUT);  // 
   pinMode(A4, INPUT);  // 
   pinMode(A3, INPUT);  // 
@@ -288,7 +295,7 @@ void IO_Settings() {
   pinMode(A1, INPUT_PULLUP);  //  
   */
   
-//  pinMode(I2C_TIMEOUT, INPUT);  // 
+  //  pinMode(I2C_TIMEOUT, INPUT);  // 
  // pinMode(DEBUG_OUT, OUTPUT);  // 
 
   pinMode(ADE9153A_RESET_PIN, OUTPUT);  // ADE9153A_RESET_PIN
@@ -303,7 +310,7 @@ void IO_Settings() {
   pinMode(ADE9153A_IRQ_PIN, INPUT_PULLUP);
   pinMode(ADE9153A_CALB_BUTTON, INPUT_PULLUP);
    
-#endif
+  #endif
   digitalWrite(RELAY_OUT_1, LOW);
   pinMode(RELAY_OUT_1, OUTPUT);  // SS Pin high to avoid miscommunication
 
@@ -346,7 +353,7 @@ void MicroInit() {
 
   NVRam_Read_Standbye();
   NVRam_Read_SampleTime();
-  
+
   SDCard.LogBootInit = 0;  // put the header of the csv file
 
   Serial.print(F("SDCard.LogEnable: "));
@@ -360,6 +367,12 @@ void MicroInit() {
   wdt_reset();
   wdt_enable(WDTO_8S);   //wdt_enable(WDT0_1S);
   //https://www.nongnu.org/avr-libc/user-manual/group__avr__watchdog.html
+#endif
+
+#ifdef ARDUINO_DUE
+  wdt_reset();
+  wdt_enable();   
+  //https://forum.arduino.cc/t/due-watchdog-timer-not-working/525122/2
 #endif
 
 #ifdef ARDUINO_MEGA
@@ -376,6 +389,10 @@ void MicroInit() {
   NVRam_Read_QueNo();
   UpdateLogFileNo();
   UpdateLogFileId();
+
+  #ifdef ENERGYMETER_EXISTS
+    NVRam_Read_MainsFreq();
+  #endif
   
 //#ifndef DEBUG_SIMULATOR_MODE
    #ifdef SDCARD_EXISTS

@@ -1,8 +1,28 @@
 
+
 #ifdef ENERGYMETER_EXISTS
- //#define ADE9153A_ACCMODE 0x0000      /*Energy accumulation modes, Bit 4, 0 for 50Hz, 1 for 60Hz 0x0010 -> 0x0000 */
+
   #define SPI_SPEED 100000     //SPI Speed   ////* Basic initializations for energy meter IC ADE9153 */
+ // uint16_t ACFREQMODE = Mains_Frequency; // 0x0010->60 Hz 0x0000->50 Hz 
+
+  #include "./ADE9153/PB_ADE9153A.h"
+  #include "./ADE9153/PB_ADE9153AAPI.h"
+  #include "./ADE9153/PB_ADE9153AAPI.cpp"
+  // if files are in the library directory 
+  //#include <ADE9153AAPI.h>
+  //#include <ADE9153A.h>
+  
+  struct EnergyRegs energyVals;  //Energy register values are read and stored in EnergyRegs structure
+  struct PowerRegs powerVals;    //Metrology data can be accessed from these structures
+  struct RMSRegs rmsVals;  
+  struct PQRegs pqVals;
+  struct AcalRegs acalVals;
+  struct Temperature tempVal;
+  uint32_t Igain;
+  uint32_t Vgain;
+  
   ADE9153AClass ade9153A;
+  
 void EnergymeterCalbLed(void){
   switch(EnergyMeterIC.Mode){
     case POWERIC_SETUP1:
@@ -127,7 +147,8 @@ void EnergyMeterIC_Operation(void){
       }
        
     break;
-    case POWERIC_CALB1: // Calibrating The Current Channel Started           
+    case POWERIC_CALB1: // Calibrating The Current Channel Started    
+         ade9153A.SetupADE9153A();// 50 Hz / 60 Hz       
         ade9153A.StartAcal_AINormal();
         EnergyMeterIC.Timer = 10; //20sec
         Serial.println(F("Autocalibrating Current Channel Started"));

@@ -331,7 +331,8 @@ void SD_Card_Header_Preparation(){
          // dataString += "PMsensor Rev"  + ',' +  Sensor_Info_SDS  +  ',';
       #endif 
         dataString += "\n" ;
-        dataString +=  F("Year,Month,Date,Hour,Min,Sec,");
+        //dataString +=  F("Year,Month,Date,Hour,Min,Sec,");
+        dataString +=  F("Date,Time,");        
       #ifdef WIND_SENSOR_EXISTS  
         dataString += F("WindRaw,velReading,WindMPH,WindTemp,");
       #endif  
@@ -381,7 +382,8 @@ void SD_Card_Header_Preparation(){
        #endif             
 }
 void SD_Card_Data_Preparation(){
-      dataString += Str_DispTime;     
+      dataString += Str_Date + ',';  
+      dataString += Str_Time + ',';           
       #ifdef WIND_SENSOR_EXISTS  
         dataString += String(Values.WindRaw) + ',' + String(velReading)+ ',' + String(Values.WindTemp) + ',' +String(Values.WindMPH)+ ',';
       #endif

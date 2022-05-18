@@ -269,10 +269,12 @@ void SensorInit_Si072(uint8_t Channel){
     Serial.println(F(" Si7021 sensor found!"));
     Serial.print(F("Revision of Th sensor!"));Serial.println(THsensor.getRevision());
     
- //    Serial.print(" Serial "); //Serial.print(THsensor.sernum_a, HEX); Serial.println(THsensor.sernum_b, HEX);
+      uint32_t Id = THsensor.sernum_a;
+      
+      Serial.print(F("THsensor.sernum_a :")); Serial.println(Id, HEX); 
+  //    Serial.print("THsensor.sernum_b");Serial.println(THsensor.sernum_b, HEX);
   //   Serial.print(F("Sensor_Channel:"));Serial.println(Channel);
 
-    uint32_t Id = THsensor.sernum_a;
     Serial.print(F("Current Sensor Id:"));Serial.println(Id,HEX); 
     switch(Channel){
       case SI072_ONBOARD_SENSOR_ADDR: SensorId.OnBoard = Id;     

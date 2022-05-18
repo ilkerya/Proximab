@@ -31,6 +31,15 @@ static const char Disp_MENU6_SUB1[] PROGMEM = "Start Calib? 60 Secs.";
 static const char Disp_MENU6_SUB2[] PROGMEM = "Sure To Start Calib.?"; 
 static const char Disp_MENU6_SUB3[] PROGMEM = "Calibration Started !"; 
 
+static const char Disp_MENU6_SUB4[] PROGMEM = "EU/US Sel. Active:";
+static const char Disp_MENU6_SUB42[] PROGMEM =                   " EU"; 
+static const char Disp_MENU6_SUB43[] PROGMEM =                   " ES"; 
+static const char Disp_MENU6_SUB5[] PROGMEM = "EU  230V / 50 Hz  ?  "; 
+static const char Disp_MENU6_SUB6[] PROGMEM = "US  110V / 60 Hz  ?  ";
+static const char Disp_MENU6_SUB7[] PROGMEM = " Updated To";
+static const char Disp_MENU6_SUB71[] PROGMEM =            " 50 Hz    ";
+static const char Disp_MENU6_SUB72[] PROGMEM =            " 60 Hz    ";
+
 static const char Disp_MENU1_SUB1[] PROGMEM = "LOG START            "; 
 static const char Disp_MENU1_SUB2[] PROGMEM = "LOG STOP             "; 
 static const char Disp_MENU1_SUB3[] PROGMEM = "LOG Started !        ";
@@ -73,15 +82,6 @@ static const char  Terminal_5[] PROGMEM = "EEEExxxx as4 digit HEX format";
 const char *const Terminal_table[] PROGMEM = {Terminal_1, Terminal_2, Terminal_3, Terminal_4, Terminal_5};
 
 #ifdef ENERGYMETER_EXISTS
-struct EnergyRegs energyVals;  //Energy register values are read and stored in EnergyRegs structure
-struct PowerRegs powerVals;    //Metrology data can be accessed from these structures
-struct RMSRegs rmsVals;  
-struct PQRegs pqVals;
-struct AcalRegs acalVals;
-struct Temperature tempVal;
-uint32_t Igain;
-uint32_t Vgain;
-
 struct EnergyIcVariables
 {
   uint8_t Mode = 0;
@@ -89,8 +89,12 @@ struct EnergyIcVariables
   bool Error = 0;
   bool commscheck;  
 };
-
 EnergyIcVariables EnergyMeterIC ;
+
+#define FREQUENCY_50HZ 0x0000 
+#define FREQUENCY_60HZ 0x0010 
+
+uint16_t  Mains_Frequency = FREQUENCY_50HZ;
 
 #endif  
 
@@ -297,7 +301,6 @@ struct
 
 String Str_Time="";
 String Str_Date="";
-String Str_DispTime="";
 struct
 {
   uint16_t Year=0; 

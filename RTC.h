@@ -14,35 +14,13 @@ void RTC_TimeClock(){
     return;
   }
     DateTime now = rtc.now();
-
-    Str_DispTime = "";
-    Str_DispTime += String(now.year(),DEC);   
-    Str_DispTime += ',';    
-    if(now.month()<10)Str_DispTime += '0';  
-     Str_DispTime += String(now.month(),DEC);
-     Str_DispTime += ',';       
-    if(now.day()<10)Str_DispTime += '0';  
-     Str_DispTime += String(now.day(),DEC);  
-     Str_DispTime += ",";
-    if(now.hour()<10)Str_DispTime += ' ';
-     Str_DispTime += String(now.hour(),DEC);
-      Str_DispTime += ',';    
-    if(now.minute()<10)Str_DispTime += '0';   
-     Str_DispTime += String(now.minute(),DEC);
-    Str_DispTime += ',';   
-    if(now.second()<10)Str_DispTime += '0';   
-     Str_DispTime += String(now.second(),DEC);
-     Str_DispTime +=  ','; 
-
-    Str_Date = "";
-    Str_Date += String(now.year(),DEC);   
-    Str_Date += '.';    
+    Str_Date = String(now.year(),DEC);   
+    Str_Date += '-';    
     if(now.month()<10)Str_Date += '0';  
      Str_Date += String(now.month(),DEC);
-     Str_Date += '.';       
+     Str_Date += '-';       
     if(now.day()<10)Str_Date += '0';  
      Str_Date += String(now.day(),DEC);
-    // Str_Date += ''; 
      
      Str_Time = "";
     if(now.hour()<10)Str_Time += '0';
@@ -53,8 +31,7 @@ void RTC_TimeClock(){
     Str_Time += ':';   
     if(now.second()<10)Str_Time += '0';   
      Str_Time += String(now.second(),DEC);
-   //  Str_Time +=  ''; 
-
+   
     if(DateTimeBuf.Init == ON){
       DateTimeBuf.Init = OFF;
       DateTimeBuf.Year = now.year();

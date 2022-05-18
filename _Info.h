@@ -25,7 +25,7 @@ http://git.int.electrolux.com/ilkerya/Phoenix_Mobile.git
 In case in the first push gives error use below command
 git remote add origin remote repository URL
 git push origin master
-git push https://github.com/ilkerya/Phoenix master --force
+git push --force https://github.com/ilkerya/Phoenix master --force
 
 DataLogger Arduino Atmega/Arduino Due // Arduino IDE / Microchip Studio 7.0
 CPU Modules : Both Can Used as Selectable Due Needs to be debugged for I2C issue!!

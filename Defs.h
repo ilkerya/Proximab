@@ -205,6 +205,10 @@ C:\Program Files (x86)\Arduino\libraries
 #define MENU6_SUB1 97
 #define MENU6_SUB2 98
 #define MENU6_SUB3 99
+#define MENU6_SUB4 100
+#define MENU6_SUB5 101
+#define MENU6_SUB6 102
+#define MENU6_SUB7 103
 
 #define KEYDISP_TIMER 40
 
@@ -300,6 +304,8 @@ void NVRam_Read_SampleTime(void);
 void NVRam_Write_SampleTime(uint8_t Sample);
 void NVRam_Read_Standbye(void);
 void NVRam_Write_Standbye(bool Mode);
+void NVRam_Read_MainsFreq(void);
+void NVRam_Write_MainsFreq(bool Mode);
 void NVRam_Read_SerNo(void);
 void NVRam_Write_SerNo(char* p);
 void NVRam_Read_QueNo(void);

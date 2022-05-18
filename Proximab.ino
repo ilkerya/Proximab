@@ -6,8 +6,8 @@
 //   Year,Month,Date,Hour,Minute;Second
 //   2022,03,22,23,23,50
 //  2020,12,24,22,48,55 TIME DATE COMMAND
-// DEVIDf567   // DEV ID COMMAND
-// FILEQUE01 // FILE NO COMMAND
+// DEVIDf567   // DEV ID COMMAND DEVIDXXXX     Lxxxx_77.CSV  xxxx = 0000 - FFFF
+// FILEQUE01 // FILE NO COMMAND  FILEQUEXX      LAB75_xx.CSV  xx = 00 - 99
 // https://www.browserling.com/tools/random-hex
 // 115200 baud Both NL & CR
 // put leading zero for numbers less than 10
@@ -15,14 +15,10 @@
 // C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
 // C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab
 
-//#define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
-#define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude
+#define ARDUINO_MEGA // 8 bit AVR Compiler -> GNU AVRDude 
+//#define ARDUINO_DUE // ARM Cortex M3 -> GNU AVRDude
 // #define CHIPKIT_MAX32 // PIC32MX795F512L
 // #define ARDUINO_MKRZERO // ARM Cortex M0
-
-
-//#pragma
-//#pragma
 
 #ifdef ARDUINO_MEGA // 8 bit AVR
 #include <EEPROM.h>
@@ -42,14 +38,36 @@ DueFlashStorage dueFlashStorage;
 #include <Wire.h>
 //#include <Wire1.h>
 #include <SPI.h>
-#include <ADE9153AAPI.h>
-#include <ADE9153A.h>
+
+
 
 
 #define ARM_MATH_CM0PLUS
 
 
 #ifdef ARDUINO_DUE // ARM 32 bit
+void wdt_enable(void)
+{
+  // Enable watchdog.
+  WDT->WDT_MR = WDT_MR_WDD(0xFFF)
+                | WDT_MR_WDRPROC
+                | WDT_MR_WDRSTEN
+                | WDT_MR_WDV(256 * 2); // Watchdog triggers a reset after 2 seconds if underflow
+  // 2 seconds equal 84000000 * 2 = 168000000 clock cycles
+  /* Slow clock is running at 32.768 kHz
+    watchdog frequency is therefore 32768 / 128 = 256 Hz
+    WDV holds the periode in 256 th of seconds  */
+
+//  Serial.begin(250000);
+//  uint32_t status = (RSTC->RSTC_SR & RSTC_SR_RSTTYP_Msk) >> RSTC_SR_RSTTYP_Pos; // Get status from the last Reset
+ // Serial.print("RSTTYP = 0b"); Serial.println(status, BIN);  // Should be 0b010 after first watchdog reset
+}
+void wdt_reset(void){
+  #define WDT_KEY (0xA5)
+  WDT->WDT_CR = WDT_CR_KEY(WDT_KEY) | WDT_CR_WDRSTT;
+  GPBR->SYS_GPBR[0] += 1;    
+}
+
 void startTimer(Tc *tc, uint32_t channel, IRQn_Type irq, uint32_t frequency) {
   pmc_set_writeprotect(false);
   pmc_enable_periph_clk((uint32_t)irq);
@@ -136,15 +154,7 @@ void tcDisable()
   TC5->COUNT16.CTRLA.reg &= ~TC_CTRLA_ENABLE;
   while (tcIsSyncing());
 }
-
-
 #endif
-
-// C:\Projects\Pangolin\..   Atmel Studio Project Path
-// C:\Projects\Pangolin\Pangolin\ArduinoCore\include\libraries\...  Atmel Studio Toolchain Compiler Lib Paths
-// C:\Users\ilker\Documents\Atmel Studio\7.0\trial\trial
-
-//Path   "C:\Users\ilker\OneDrive\Belgeler\Arduino\Proximab\Variables.h"
 
 #include  "Defs.h"
 #include  "Variables.h"
@@ -161,26 +171,24 @@ void tcDisable()
 void setup() {
   MicroInit();
 #ifdef ARDUINO_DUE // 
-  Due_Memory();
+  //Due_Memory();
   analogReadResolution(12);
 #endif
 }
 // the loop function runs over and over again forever
 void loop() {
-  Common_Loop();
-#ifdef ARDUINO_MEGA // 8 bit AVR 
-  wdt_reset();
-  wdt_enable(WDTO_8S);
-#endif
-#ifdef ARDUINO_DUE // 
-//   wdt_reset();
- //  wdt_enable(WDTO_8S);
-#endif
-#ifdef ARDUINO_MKRZERO
+    Common_Loop();
+    #ifdef ARDUINO_MEGA // 8 bit AVR 
+      wdt_reset();
+      wdt_enable(WDTO_8S);
+    #endif
+    #ifdef ARDUINO_DUE // 
+      wdt_reset();
+      wdt_enable();
+    #endif
+    #ifdef ARDUINO_MKRZERO
 
-#endif
-
-
+    #endif
 }
 #ifdef ARDUINO_DUE // 
 

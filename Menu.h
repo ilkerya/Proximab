@@ -8,7 +8,7 @@ void KeyTimeOutCheck(void) {
     }
   }
 }
-  
+
 void KeyTimeOutStart(void) {
   Key.BoardTimeOutEnb = ON;
   Key.BoardTimeOut  = 24;// 24 sec
@@ -42,14 +42,11 @@ void UpdateInfoQue(uint8_t UpDown){
    } 
 }
 void UpdateDispRoll(uint8_t UpDown){
- 
     if(Display.SensorRollTimer){
       Display.SensorRollTimer--;
       return;
     }
-
     UpdateInfoQue(UpDown);
-
 }
 void KeySensonsorRoll(uint8_t UpDown){
       Display.SensorRollTimer = 30; // 2sec x 30 = 60 sec
@@ -93,8 +90,6 @@ void NVRam_Read_QueNo() {
    Serial.print(F("File_Que: ")) ;
    Serial.println(File_Que);  
 }
-
-
 void NVRam_Write_QueNo(char* p) {
   Serial.print(F("File_Que:"));
   #ifdef ARDUINO_MEGA // 8 bit AVR
@@ -103,8 +98,7 @@ void NVRam_Write_QueNo(char* p) {
     #endif
     #ifdef ARDUINO_DUE
           dueFlashStorage.write(NVRAM_QUE1, p[0]);// high byte
-          dueFlashStorage.write(NVRAM_QUE2, p[1]);// high byte                
-      
+          dueFlashStorage.write(NVRAM_QUE2, p[1]);// high byte                 
     #endif
          Serial.println(p[0]);Serial.println(p[1]);
 }
@@ -154,6 +148,47 @@ void NVRam_Write_LogStatus(bool Mode) {
     #endif 
       
 }
+
+#ifdef ENERGYMETER_EXISTS
+
+#define MAINS_FREQ 32 // eepROM ADRESS
+#define HERTZ_50 ON
+#define HERTZ_60 OFF
+
+void NVRam_Write_MainsFreq(bool Mode) {
+      if(Mode == HERTZ_60)Mains_Frequency = FREQUENCY_60HZ; //60
+      if(Mode == HERTZ_50)Mains_Frequency = FREQUENCY_50HZ; // 50
+    #ifdef ARDUINO_MEGA
+      if (Mode == HERTZ_60)EEPROM.write(MAINS_FREQ, HERTZ_60); // OFF
+      else EEPROM.write(MAINS_FREQ, HERTZ_50);// ON
+    #endif
+    #ifdef ARDUINO_DUE
+      if (Mode == HERTZ_60)dueFlashStorage.write(MAINS_FREQ, HERTZ_60); // OFF
+      else dueFlashStorage.write(MAINS_FREQ, HERTZ_50);// ON
+    #endif 
+    #ifdef CHIPKIT_MAX32 // 32 bit ARM
+      Mode = 0;
+    #endif       
+}
+void NVRam_Read_MainsFreq(void) {
+    #ifdef ARDUINO_MEGA
+        uint8_t Read = EEPROM.read(MAINS_FREQ);// OFF
+    #endif
+     #ifdef ARDUINO_DUE
+      uint8_t Read =dueFlashStorage.read(MAINS_FREQ);
+    #endif
+     #ifdef ARDUINO_MKRZERO
+        uint8_t Read = 0;  
+      #endif
+       #ifdef CHIPKIT_MAX32 // 32 bit ARM
+       uint8_t Read = 0;
+    #endif 
+      if(Read == HERTZ_60)Mains_Frequency = FREQUENCY_60HZ; //60
+      if(Read == HERTZ_50)Mains_Frequency = FREQUENCY_50HZ; // 50
+}
+  #endif 
+
+
 void NVRam_Write_Standbye(bool Mode) {
     #ifdef ARDUINO_MEGA
       if (Mode == OFF)EEPROM.write(SLEEP_LOG, OFF); // OFF
@@ -307,10 +342,10 @@ void Key_Functions_Analog(uint32_t Adc) {
     Key.Adc = Adc;
     #ifdef ARDUINO_DUE // 
       Key.Adc >>= 2; 
-      if(Key.Adc < 990) {
+    //  if(Key.Adc < 990) {
         Key.Adc *= 66;
         Key.Adc /= 100;        
-      }
+   //   }
     #endif
   
 
@@ -438,6 +473,15 @@ void DownMenuKey(void) {
       break;
    case MENU2_SUB8 :  
       break;
+
+    case MENU3_SUB1 :  MainMenu =  MENU3_SUB2;//
+      break;
+    case MENU3_SUB2 :  MainMenu =  MENU3_SUB1;//
+      break;
+    case MENU3_SUB3 : 
+      break;
+    case MENU3_SUB4 : 
+      break; 
       
     case MENU5_SUB1 :  
         DateTimeBuf.Year--;
@@ -462,26 +506,26 @@ void DownMenuKey(void) {
     case MENU5_SUB6 :  
          DateTimeBuf.Second --;
         if (DateTimeBuf.Second < 1)DateTimeBuf.Second = 59;    
-      break;
-
-      
+      break;   
      case MENU5_SUB7 :      
       break;
-    case MENU6_SUB1:  //     
-      break;
-    case MENU6_SUB2:  //       
-      break;        
-    case MENU6_SUB3:      
-      break;
-    case MENU3_SUB1 :  MainMenu =  MENU3_SUB2;//
-      break;
-    case MENU3_SUB2 :  MainMenu =  MENU3_SUB1;//
-      break;
-    case MENU3_SUB3 : 
-      break;
-    case MENU3_SUB4 : 
-      break;
-    default: MainMenu = MENU_NULL;
+      
+      case MENU6_SUB1:  MainMenu = MENU6_SUB4; // Calib Start?  ..60sec   
+        break;
+      case MENU6_SUB2:  //       
+        break;        
+      case MENU6_SUB3:      
+        break;
+      case MENU6_SUB4:  MainMenu = MENU6_SUB1; // Calib Start?  ..60sec        
+        break;
+      case MENU6_SUB5: MainMenu = MENU6_SUB6; // Calib Start?  ..60sec    //       
+        break;        
+      case MENU6_SUB6:  MainMenu = MENU6_SUB5; // Calib Start?  ..60sec       
+        break;    
+      case MENU6_SUB7:      
+        break; 
+        
+      default: MainMenu = MENU_NULL;
      break;
 
   }
@@ -577,12 +621,20 @@ void UpMenuKey(void) {
       break;
      case MENU5_SUB7 :      
       break;
-     case MENU6_SUB1:  //     
+     case MENU6_SUB1: MainMenu = MENU6_SUB4; // Calib Start?  ..60sec     
       break;
       case MENU6_SUB2:  //       
       break;        
        case MENU6_SUB3:      
       break;
+       case MENU6_SUB4: MainMenu = MENU6_SUB1;  //   Calibration Started !  
+      break;
+      case MENU6_SUB5: MainMenu = MENU6_SUB6; //       
+      break;        
+       case MENU6_SUB6: MainMenu = MENU6_SUB5;     
+      break;    
+        case MENU6_SUB7:      //   Mains Updated !   
+      break; 
     default: MainMenu = MENU_NULL;
       break;
   }
@@ -664,7 +716,15 @@ void EscMenuKey(void) {
       case MENU6_SUB2: MainMenu = MENU6; //       
       break;        
        case MENU6_SUB3:      
-      break;     
+      break;  
+       case MENU6_SUB4: MainMenu = MENU6; //     //  Mains EU/US Select 
+      break;
+      case MENU6_SUB5:  MainMenu = MENU6;//       
+      break;        
+       case MENU6_SUB6: MainMenu = MENU6;      
+      break;    
+        case MENU6_SUB7:       //   Mains Updated !   
+      break;        
     default: MainMenu = MENU_NULL;
     break;
   }
@@ -785,8 +845,22 @@ void EnterMenuKey(void) {
           EnergyMeterIC.Mode = POWERIC_CALB1; 
         #endif      
       break;        
-       case MENU6_SUB3:      
+       case MENU6_SUB3:      // Calibration Started !
       break;  
+       case MENU6_SUB4:   MainMenu = MENU6_SUB5; //  Mains EU/US Select    
+      break;
+      case MENU6_SUB5:  MainMenu = MENU6_SUB7;  
+        #ifdef ENERGYMETER_EXISTS         
+          NVRam_Write_MainsFreq(HERTZ_50);
+        #endif        
+      break;        
+       case MENU6_SUB6: MainMenu = MENU6_SUB7;  
+         #ifdef ENERGYMETER_EXISTS          
+          NVRam_Write_MainsFreq(HERTZ_60);              
+        #endif             
+      break;    
+        case MENU6_SUB7:    //   Mains Updated !     
+      break;        
     default: MainMenu = MENU_NULL; 
     break;
   }
