@@ -72,12 +72,18 @@ void ReadConfigFile(){
       Serial.println(F("error opening ConfigFile ")); // Serial.println(ConfigFile);    
    }
 }
+
+
+
 void UpdateFileQue(){
     uint16_t Que= (LOG_FILE[6]-48) *10;
     Que += LOG_FILE[7]-48;
   //  Serial.print(F("Que ")); Serial.println(Que); 
-    #define MAXLOGFILESIZE 1048576 //2048
-    if(FileSize.Total > MAXLOGFILESIZE){ // 1Mbyte 
+
+   // #define MAXLOGFILESIZE 1048576 //2048    if(FileSize.Total > MAXLOGFILESIZE){ // 1Mbyte 
+  //  FileSize.MaxSize = MAXLOGFILESIZE;
+
+     if(FileSize.Total > (FileSize.MaxSize * FILE_500KBYTE)){ // 524288 -> 500 KByte * 
        if(Que<100){
           Que++;
           LOG_FILE[6] =  (Que/10)+48;   
@@ -85,11 +91,8 @@ void UpdateFileQue(){
           File_Que[0] =  LOG_FILE[6];
           File_Que[1] =  LOG_FILE[7];
           NVRam_Write_QueNo(&File_Que[0]);
-       //   Serial.print(F("NVRAM_QUE1 "));Serial.println( EEPROM.read(NVRAM_QUE1)); 
-      //    Serial.print(F("NVRAM_QUE2 "));Serial.println( EEPROM.read(NVRAM_QUE2)); 
        }       
     } 
-  //  Serial.print(F("LOG_FILE6.7 ")); Serial.print(LOG_FILE[6]);Serial.print(LOG_FILE[7]);
 }
 void SD_CardLogTask(){ 
   
@@ -316,10 +319,16 @@ void SD_Card_Header_Preparation(){
   }  
          //    dataString = "Year,Month,Date,Hour,Min,Sec,WindRaw,velReading,WindMPH,WindTemp,TemperatureSi072,Humidity,Pressure(hPa),";
         //    dataString += "TemperatureBMP,Altitude(m),Luminosity,Acc.(x),Acc.(y),Acc.(z),Gyro(x),Gyro(y),Gyro(z)";   
-    dataString += F("FirmVers ");   
+    dataString += F("Firmware ");   
     dataString += String(__DATE__) + ' ' + String(__TIME__);
     dataString += F(",Dev_Id:") ;
     dataString += String(Device_Id) ; 
+    dataString += F(",uC Id:") ;
+          for (uint8_t i = 0; i < 8; i++){
+            if (UniqueID8[i] < 0x10) dataString += '0';
+            dataString += String(UniqueID8[i], HEX);
+            if(i==3)dataString += '.';
+          } 
     dataString +=  F(",SD Type: ") ; 
     dataString +=  String(p);
     dataString +=  F(",Volume: ");

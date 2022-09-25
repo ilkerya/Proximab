@@ -174,7 +174,8 @@ void Common_Loop(){
 
     KeyTimeOutCheck();
     if (SampleTime == TASK_1SEC) Log_Data_Write_SD();
-     if((MainMenu == MENU5_SUB7)||(MainMenu == MENU2_SUB8)||(MainMenu == MENU3_SUB3) ||(MainMenu == MENU3_SUB4)||(MainMenu == MENU1_SUB3)||(MainMenu == MENU1_SUB4)||(MainMenu == MENU6_SUB3) ){
+     if((MainMenu == MENU5_SUB7)||(MainMenu == MENU2_SUB9)||(MainMenu == MENU3_SUB3) ||(MainMenu == MENU3_SUB4)||(MainMenu == MENU1_SUB3)
+                                                    ||(MainMenu == MENU1_SUB4)||(MainMenu == MENU6_SUB3) ||(MainMenu == MENU7_SUB9)){
       Display.MenuTimeout++;
       if(Display.MenuTimeout > 4){
         Display.MenuTimeout = 0;
@@ -341,7 +342,10 @@ void IO_Settings() {
 //  pinMode(KEY_ANALOG, INPUT);  // 
 }
 void MicroInit() {
- // Display_Line4[5] ='\0';
+  FileSize.MaxSize = MBYTE_1; // MAXLOGFILESIZE
+
+
+  
   Serial.begin(115200);
   IO_Settings();
   #ifdef OLEDDISPLAY_EXISTS
@@ -351,8 +355,38 @@ void MicroInit() {
   ResetCasePrint();
   //  SDCard.LogStatus = 0;      // default start with log off;
 
-  NVRam_Read_Standbye();
-  NVRam_Read_SampleTime();
+/*  
+  uint8_t Mode = NVRam_Read(EE_SAMPLE);
+    if((Mode== TASK_500MSEC)||(Mode== TASK_1SEC)||(Mode== TASK_2SEC)||(Mode== TASK_5SEC)||(Mode== TASK_10SEC)||(Mode== TASK_20SEC)||(Mode== TASK_60SEC)){
+      SDCard.LogEnable = ON; 
+      SampleTime =  Mode;
+    }
+    else SampleTime =  TASK_2SEC; // default
+*/
+        switch(NVRam_Read(EE_SAMPLE)){
+          case TASK_500MSEC: SampleTime = TASK_500MSEC; 
+            break;
+          case TASK_1SEC: SampleTime = TASK_1SEC; 
+            break;
+          case TASK_2SEC: SampleTime = TASK_2SEC;
+            break;
+          case TASK_5SEC: SampleTime = TASK_5SEC;
+            break;
+          case TASK_10SEC: SampleTime = TASK_10SEC;
+            break;
+          case TASK_20SEC: SampleTime = TASK_20SEC;
+            break;           
+          case TASK_60SEC: SampleTime = TASK_60SEC;
+            break;  
+          default: SampleTime = TASK_2SEC;
+            break;                    
+        }
+  
+   if(NVRam_Read(EE_LOGSTATUS)== OFF) SDCard.LogEnable = OFF;
+   else SDCard.LogEnable = ON;
+
+    if(NVRam_Read(EE_STANDBYE) == OFF)DispEnable(OFF,0);
+    else DispEnable(ON,100); // default 
 
   SDCard.LogBootInit = 0;  // put the header of the csv file
 
@@ -362,6 +396,19 @@ void MicroInit() {
   Serial.println(SampleTime);
   Serial.print(F("    DisplaySleep: "));
   Serial.println(Display.SleepEnable);
+
+#if defined (ARDUINO_MEGA)  | defined (ARDUINO_DUE) 
+ // UniqueID8dump(Serial);
+  // Serial.print("UniqueID: ");
+  for (size_t i = 0; i < 8; i++)
+  {
+    if (UniqueID8[i] < 0x10)
+      Serial.print("0");
+    Serial.print(UniqueID8[i], HEX);
+    Serial.print(".");
+  }
+  Serial.println();
+#endif
 
 #ifdef ARDUINO_MEGA
   wdt_reset();
@@ -391,8 +438,33 @@ void MicroInit() {
   UpdateLogFileId();
 
   #ifdef ENERGYMETER_EXISTS
-    NVRam_Read_MainsFreq();
+    // NVRam_Read_MainsFreq();
+      if(NVRam_Read(EE_ADE_FREQ) == HERTZ_60)Mains_Frequency = FREQUENCY_60HZ; //60
+      else Mains_Frequency = FREQUENCY_50HZ; // 50
+  
   #endif
+  
+
+        //switch(NVRam_Read_MaxFileSize()){
+        switch(NVRam_Read(EE_FILESIZE)){                  
+          case 0: FileSize.MaxSize = KBYTE_500; 
+          break;
+          case 1: FileSize.MaxSize = MBYTE_1; 
+          break;
+          case 2: FileSize.MaxSize = MBYTE_2;
+          break;
+          case 3: FileSize.MaxSize = MBYTE_4;
+          break;
+          case 4: FileSize.MaxSize = MBYTE_8;
+          break;
+          case 5:FileSize.MaxSize = MBYTE_16;
+          break;           
+          case 6:FileSize.MaxSize = MBYTE_32;
+          break;  
+          default: FileSize.MaxSize = MBYTE_2;
+          break;                    
+        }
+
   
 //#ifndef DEBUG_SIMULATOR_MODE
    #ifdef SDCARD_EXISTS

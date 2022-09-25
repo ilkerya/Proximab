@@ -20,12 +20,14 @@ static const unsigned char PROGMEM logo16_glcd_bmp[] =
 //char Disp_MENU1[] =    {'L','O','G',' ','S','T','A','R','T',' ','&',' ','S','T','O','P',' ','M','E','N','U','\0'};
 static const char Disp_MENU_NULL[]  PROGMEM = "ENTER             ESC";
 static const char Disp_MENU_ERROR[] PROGMEM = " KEY ERROR !         ";
-static const char Disp_MENU1[] PROGMEM =     "LOG START & STOP MENU";
-static const char Disp_MENU2[] PROGMEM =     "LOG SAMPLE TIME MENU ";
-static const char Disp_MENU3[] PROGMEM =     "DISPLAY STANDBYE MENU";
-static const char Disp_MENU4[] PROGMEM =     "INFORMATION MENU";
-static const char Disp_MENU5[] PROGMEM =     "DATE & TIME ADJ. MENU";
-static const char Disp_MENU6[] PROGMEM =     "ENEGY METER CALB MENU";
+static const char Disp_MENU1[] PROGMEM =      "LOG START & STOP MENU";
+static const char Disp_MENU2[] PROGMEM =      "LOG SAMPLE TIME MENU ";
+static const char Disp_MENU3[] PROGMEM =      "DISPLAY STANDBYE MENU";
+static const char Disp_MENU4[] PROGMEM =      "INFORMATION MENU";
+static const char Disp_MENU5[] PROGMEM =      "DATE & TIME ADJ. MENU";
+static const char Disp_MENU6[] PROGMEM =      "ENERGY METER MENU    ";
+static const char Disp_MENU7[] PROGMEM =      "LOG FILE MAXSIZE MENU";
+
 static const char Disp_MENU5_SUB7[] PROGMEM = "Date & Time Updated !"; 
 static const char Disp_MENU6_SUB1[] PROGMEM = "Start Calib? 60 Secs."; 
 static const char Disp_MENU6_SUB2[] PROGMEM = "Sure To Start Calib.?"; 
@@ -33,13 +35,35 @@ static const char Disp_MENU6_SUB3[] PROGMEM = "Calibration Started !";
 
 static const char Disp_MENU6_SUB4[] PROGMEM = "EU/US Sel. Active:";
 static const char Disp_MENU6_SUB42[] PROGMEM =                   " EU"; 
-static const char Disp_MENU6_SUB43[] PROGMEM =                   " ES"; 
+static const char Disp_MENU6_SUB43[] PROGMEM =                   " US"; 
 static const char Disp_MENU6_SUB5[] PROGMEM = "EU  230V / 50 Hz  ?  "; 
 static const char Disp_MENU6_SUB6[] PROGMEM = "US  110V / 60 Hz  ?  ";
 static const char Disp_MENU6_SUB7[] PROGMEM = " Updated To";
 static const char Disp_MENU6_SUB71[] PROGMEM =            " 50 Hz    ";
 static const char Disp_MENU6_SUB72[] PROGMEM =            " 60 Hz    ";
 
+
+//static const char Disp_MENU7_SUB1[] PROGMEM =      "Active-> "; //9
+static const char Disp_MENU7_SUB1[] PROGMEM =      "500 Kbytes  ";
+static const char Disp_MENU7_SUB2[] PROGMEM =      "1 Mbytes    ";
+static const char Disp_MENU7_SUB3[] PROGMEM =      "2 Mbytes    ";
+static const char Disp_MENU7_SUB4[] PROGMEM =      "4 Mbytes    ";
+static const char Disp_MENU7_SUB5[] PROGMEM =      "8 Mbytes    ";
+static const char Disp_MENU7_SUB6[] PROGMEM =      "16 Mbytes   ";
+static const char Disp_MENU7_SUB7[] PROGMEM =      "32 Mbytes   ";
+
+static const char Disp_MENU_Enter[] PROGMEM =     "Enter -> ";
+static const char Disp_MENU_Activ[] PROGMEM =     "Active.. ";
+static const char Disp_MENU7_SUB8[] PROGMEM =      " Sure?  If Yes Enter ";
+static const char Disp_MENU7_SUB9[] PROGMEM =      "File Size Updated !  ";
+/*
+static const char Disp_MENU7_SUB12[] PROGMEM =      " 500 KBytes "; //12
+static const char Disp_MENU7_SUB13[] PROGMEM =      "  1 MBytes  "; //9
+static const char Disp_MENU7_SUB14[] PROGMEM =      "  2 MBytes  "; //9
+static const char Disp_MENU7_SUB15[] PROGMEM =      "  4 MBytes  "; //9
+static const char Disp_MENU7_SUB16[] PROGMEM =      " 10 MBytes  "; //9
+static const char Disp_MENU7_SUB17[] PROGMEM =      " 20 MBytes  "; //9
+*/
 static const char Disp_MENU1_SUB1[] PROGMEM = "LOG START            "; 
 static const char Disp_MENU1_SUB2[] PROGMEM = "LOG STOP             "; 
 static const char Disp_MENU1_SUB3[] PROGMEM = "LOG Started !        ";
@@ -53,7 +77,8 @@ static const char Disp_MENU2_SUB4[] PROGMEM = " 5 Sec      "; //12
 static const char Disp_MENU2_SUB5[] PROGMEM = " 10 Sec     "; //12
 static const char Disp_MENU2_SUB6[] PROGMEM = " 20 Sec     "; //12
 static const char Disp_MENU2_SUB7[] PROGMEM = " 60 Sec     "; //12
-static const char Disp_MENU2_SUB8[] PROGMEM = "Sample Time Updated !";
+static const char Disp_MENU2_SUB8[] PROGMEM = " Sure?  If Yes Enter ";
+static const char Disp_MENU2_SUB9[] PROGMEM = "Sample Time Updated !";
 
 static const char Disp_MENU3_SUBMAIN[] PROGMEM = "STANDBYE ";  
 static const char Disp_MENU3_SUB1[] PROGMEM = "Enable "; 
@@ -61,8 +86,10 @@ static const char Disp_MENU3_SUB2[] PROGMEM = "Disable";
 static const char Disp_MENU3_SUB3[] PROGMEM = "Updated! On";
 static const char Disp_MENU3_SUB4[] PROGMEM = "Updated! Off";
                                            // "LOG START & STOP MENU";
-  static const char Disp_MENU4_SUB3[] PROGMEM = "Term:115200 8n1 NL&CR";
-//static const char Disp_MENU4_SUB3[] PROGMEM = "Ser:115200 baud NL&CR";
+//uId 756E6B77.6F000C05 ->17
+//static const char Disp_MENU4_SUB3[] PROGMEM = "Term:115200 8n1 NL&CR";
+static const char Disp_MENU4_SUB3_1[] PROGMEM = "uId ";
+static const char Disp_MENU4_SUB4[] PROGMEM = "Term:115200 8n1 NL&CR";
 static const char SD1_CARD[] PROGMEM = "SD1 Card "; 
 static const char SD2_CARD[] PROGMEM = "SD2 Card ";
 static const char SDHC_CARD[] PROGMEM ="SDHC Card "; 
@@ -131,6 +158,12 @@ String Relay1str, RlStr2, RlStr4, Relay2str, RlStr6,  RlStr8;
 #define ELEMENTS 12
  const String KeyWords[12]   = {"Tmp1","Tmp2","Tmp3","Hum1","Hum2","Hum3","PM25","PM10","Cur","Volt","Powr","PF",};
 
+struct Various{
+  uint8_t MaxFileSizeSure;
+  uint8_t SampleTime;
+};
+Various KeySupport;
+
 struct TaskOrg
 {
   uint16_t  IntTimer_250 = 0;
@@ -190,12 +223,14 @@ SDCard_Variables SDCard;
 struct FileSize_Variables
 {
   uint32_t Total;  // log on or off
+  uint32_t MaxSize;
   uint8_t Byte; // log on  init case
   uint8_t Kbyte;
   uint8_t Mbyte;
 };
 
 FileSize_Variables FileSize;
+
 
 struct Key_Variables
 {
@@ -288,15 +323,37 @@ struct
 */
 
 
-#define ADDRES_LOG 8
-#define SLEEP_LOG 16
+
+
+
+
+
+
+
+
+
+// EEPROM ADDRESSES 
+
+
+
 #define NVRAM_ID1 4
 #define NVRAM_ID2 5
 #define NVRAM_ID3 6
 #define NVRAM_ID4 7
+#define EE_LOGSTATUS 8
+#define EE_SAMPLE 10
 
 #define NVRAM_QUE1 14
 #define NVRAM_QUE2 15
+#define EE_STANDBYE 16
+
+#define EE_FILESIZE 20
+#define EE_MAINSFREQ 22
+
+#define EE_ADE_FREQ 32 // eepROM ADRESS
+
+#define HERTZ_50 ON
+#define HERTZ_60 OFF
 
 
 String Str_Time="";

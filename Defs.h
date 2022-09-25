@@ -78,6 +78,24 @@ C:\Program Files (x86)\Arduino\libraries
 #define POWERIC_CALB9  12
 #define POWERIC_CALB10 13
 
+/*
+#define KBYTE_500 524288
+#define MBYTE_1 1048576
+#define MBYTE_2 2097152
+#define MBYTE_4 4194304
+#define MBYTE_10 10485760 
+#define MBYTE_20 20971520
+*/
+#define FILE_500KBYTE 524288
+#define KBYTE_500 1
+#define MBYTE_1 2
+#define MBYTE_2 4
+#define MBYTE_4 8
+#define MBYTE_8 16
+#define MBYTE_16 32 
+#define MBYTE_32 64
+
+
  #define SI072_ONBOARD_SENSOR_ADDR 1  // multiplexer Channel 7 first blu box prot
  #define SI072_FIRST_SENSOR_ADDR 7  // multiplexer Channel 7 first blu box prot
  #define SI072_SECOND_SENSOR_ADDR 3 // first prot  0      0
@@ -88,7 +106,6 @@ C:\Program Files (x86)\Arduino\libraries
 
 #define ON 1 //
 #define OFF 0 //
-
 
 #ifdef FIRST_PROTOTYPE
   //  const int chipSelect = 10; // mega SS for SD Card  
@@ -169,6 +186,7 @@ C:\Program Files (x86)\Arduino\libraries
 #define MENU4   64
 #define MENU5   80
 #define MENU6   96
+#define MENU7   112
 
 #define MENU1_SUB1 17 // +=4
 #define MENU1_SUB2 18
@@ -183,6 +201,7 @@ C:\Program Files (x86)\Arduino\libraries
 #define MENU2_SUB6  38
 #define MENU2_SUB7  39
 #define MENU2_SUB8  40
+#define MENU2_SUB9  41
 
 #define MENU3_SUB1  49 // +=4
 #define MENU3_SUB2  50
@@ -192,6 +211,7 @@ C:\Program Files (x86)\Arduino\libraries
 #define MENU4_SUB1 65
 #define MENU4_SUB2 66
 #define MENU4_SUB3 67
+#define MENU4_SUB4 68
 
 #define MENU5_SUB1 81
 #define MENU5_SUB2 82
@@ -209,6 +229,16 @@ C:\Program Files (x86)\Arduino\libraries
 #define MENU6_SUB5 101
 #define MENU6_SUB6 102
 #define MENU6_SUB7 103
+
+#define MENU7_SUB1 113
+#define MENU7_SUB2 114
+#define MENU7_SUB3 115
+#define MENU7_SUB4 116
+#define MENU7_SUB5 117
+#define MENU7_SUB6 118
+#define MENU7_SUB7 119
+#define MENU7_SUB8 120
+#define MENU7_SUB9 121
 
 #define KEYDISP_TIMER 40
 
@@ -300,12 +330,15 @@ void I2_ACK_Reset(void);
 
 void SetResetLog(bool Enable);
 void NVRam_Write_LogStatus(bool Mode);
-void NVRam_Read_SampleTime(void);
-void NVRam_Write_SampleTime(uint8_t Sample);
+uint8_t NVRam_Read(uint8_t Address);
+void NVRam_Write(uint8_t Address, uint8_t Sample); // EE_SAMPLE
 void NVRam_Read_Standbye(void);
 void NVRam_Write_Standbye(bool Mode);
 void NVRam_Read_MainsFreq(void);
 void NVRam_Write_MainsFreq(bool Mode);
+void NVRam_Write_MaxFileSize(uint8_t Size);
+uint8_t NVRam_Read_MaxFileSize(void);
+
 void NVRam_Read_SerNo(void);
 void NVRam_Write_SerNo(char* p);
 void NVRam_Read_QueNo(void);

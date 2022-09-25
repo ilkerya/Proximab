@@ -74,9 +74,15 @@
 #error Select At Least One Standbye Type
 #endif
 
-//Adafruit_SSD1306 display(OLED_RESET);
-//DISPLAY INITIALIZER
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+
+//DISPLAY INITIALIZER  // software SPI
+#ifdef OLED_128X64
+  Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+#endif
+#ifdef OLED_128X128
+  Adafruit_SSD1327 display(128, 128, OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+#endif
+
 void Display_SwitchOff() {
 
   MainMenu = MENU_NULL;
@@ -159,15 +165,37 @@ void DisplayInit(void) {
   delay(1300); // Pause for 2 seconds
 #endif
 
-  //   #ifdef ARDUINO_MEGA
+
+#ifdef OLED_128X128
+  delay(1300); // Pause for 2 seconds
+  Serial.println("SSD1327 OLED test");
+  
+  if ( ! display.begin(0x3D) ) {
+     Serial.println("Unable to initialize OLED");
+     while (1) yield();
+  }
+ //   display.dim(0); // lower brightness
+
+  display.clearDisplay();
+  display.setTextSize(3);
+  display.setTextColor(SSD1327_WHITE);  //0  white on black
+  //    display.setTextColor(0);  //1     Black on white
+  display.setCursor(0, 0);
+  display.println();
+  display.println(F("DATALOG"));
+  display.display();
+
+  
+#endif
+  
+
+#ifdef OLED_128X64
   if (!display.begin(SSD1306_SWITCHCAPVCC)) { //  SSD1306_EXTERNALVCC
     Serial.println(F("SSD1306 allocation failed"));
     // for(;;); // Don’t proceed, loop forever
   }
-
-  //#endif
-  display.dim(0); // lower brightness
-  // display.begin(SSD1306_SWITCHCAPVCC);
+    display.dim(0); // lower brightness
+    // display.begin(SSD1306_SWITCHCAPVCC);
   display.clearDisplay();
   display.setTextSize(3);
   display.setTextColor(WHITE);  //0  white on black
@@ -179,13 +207,20 @@ void DisplayInit(void) {
 
   // Adafruit_SSD1306::dim  ( 1 ) //1 == lower brightness // 0 == full brightness
   //display.dim
+#endif
+
+  
 }
 
 void testdrawchar(void) {
   display.clearDisplay();
 
   display.setTextSize(1);      // Normal 1:1 pixel scale
+
+#ifdef OLED_128X64  
   display.setTextColor(SSD1306_WHITE); // Draw white text
+#endif
+  
   display.setCursor(0, 0);     // Start at top-left corner
   display.cp437(true);         // Use full 256 char 'Code Page 437' font
 
@@ -384,50 +419,75 @@ void UpdateDisplayMenu(void) {
       break;
     case MENU2 :   str = CopyFlashToRam(Disp_MENU2);
       break;
-    case MENU2_SUB1 : str = CopyFlashToRam(Disp_MENU2_SUB) ;
+    case MENU2_SUB1 : 
+     if(SampleTime == TASK_500MSEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);  
       str += CopyFlashToRam(Disp_MENU2_SUB1);
-      if (DisplayFlash() == OFF) {
-        str[10] = ' ';
-        str[11] = ' ';
-        str[12] = ' ';
-      }
+      if(SampleTime != TASK_500MSEC)    
+        if (DisplayFlash() == OFF) {
+          str[10] = ' ';
+          str[11] = ' ';
+          str[12] = ' ';
+        }
       break;
-    case MENU2_SUB2 : str = CopyFlashToRam(Disp_MENU2_SUB);
+    case MENU2_SUB2 : //str = CopyFlashToRam(Disp_MENU2_SUB);
+      if(SampleTime == TASK_1SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
       str += CopyFlashToRam(Disp_MENU2_SUB2);
-      if (DisplayFlash() == OFF)str[10] = ' ';
+      if(SampleTime != TASK_1SEC)
+        if (DisplayFlash() == OFF)str[10] = ' ';        
+    
       break;
-    case MENU2_SUB3 : str = CopyFlashToRam(Disp_MENU2_SUB);
+    case MENU2_SUB3 :// str = CopyFlashToRam(Disp_MENU2_SUB);
+      if(SampleTime == TASK_2SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
       str += CopyFlashToRam(Disp_MENU2_SUB3);
-      if (DisplayFlash() == OFF)str[10] = ' ';
+      if(SampleTime != TASK_2SEC)       
+        if (DisplayFlash() == OFF)str[10] = ' ';         
+      
       break;
-    case MENU2_SUB4 : str = CopyFlashToRam(Disp_MENU2_SUB);
+    case MENU2_SUB4 : //str = CopyFlashToRam(Disp_MENU2_SUB);
+      if(SampleTime == TASK_5SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);  
       str += CopyFlashToRam(Disp_MENU2_SUB4);
-      if (DisplayFlash() == OFF)str[10] = ' ';
+      if(SampleTime != TASK_5SEC)        
+        if (DisplayFlash() == OFF)str[10] = ' ';              
+
       break;
-    case MENU2_SUB5 : str = CopyFlashToRam(Disp_MENU2_SUB);
-      str += CopyFlashToRam(Disp_MENU2_SUB5);
-      if (DisplayFlash() == OFF) {
-        str[10] = ' ';
-        str[11] = ' ';
-      }
+    case MENU2_SUB5 : //str = CopyFlashToRam(Disp_MENU2_SUB);
+      if(SampleTime == TASK_10SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);   
+      str += CopyFlashToRam(Disp_MENU2_SUB5);         
+      if(SampleTime != TASK_10SEC)          
+          if (DisplayFlash() == OFF) {
+            str[10] = ' '; str[11] = ' ';             
+          }
+
       break;
-    case MENU2_SUB6 : str = CopyFlashToRam(Disp_MENU2_SUB);
-      str += CopyFlashToRam(Disp_MENU2_SUB6);
-      if (DisplayFlash() == OFF) {
-        str[10] = ' ';
-        str[11] = ' ';
-      }
+    case MENU2_SUB6 : //str = CopyFlashToRam(Disp_MENU2_SUB);
+      if(SampleTime == TASK_20SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
+      str += CopyFlashToRam(Disp_MENU2_SUB6);  
+      if(SampleTime != TASK_20SEC)         
+        if (DisplayFlash() == OFF) {
+          str[10] = ' ';str[11] = ' ';           
+        }
+
       break;
-    case MENU2_SUB7 :// str = Disp_MENU2_SUB + Disp_MENU2_SUB7;
-      str = CopyFlashToRam(Disp_MENU2_SUB);
+    case MENU2_SUB7 :// str = CopyFlashToRam(Disp_MENU2_SUB);
+     if(SampleTime == TASK_60SEC)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);   
       str += CopyFlashToRam(Disp_MENU2_SUB7);
-      if (DisplayFlash() == OFF) {
-        str[10] = ' ';
-        str[11] = ' ';
-      }
+      if(SampleTime != TASK_60SEC)       
+        if (DisplayFlash() == OFF) {
+            str[10] = ' ';str[11] = ' ';
+        }       
       break;
     case MENU2_SUB8 : str = CopyFlashToRam(Disp_MENU2_SUB8);
       break;
+    case MENU2_SUB9 : str = CopyFlashToRam(Disp_MENU2_SUB9);
+      break;
+      
     case MENU3 :   str = CopyFlashToRam(Disp_MENU3);
       break;
     case MENU3_SUB1 : str = CopyFlashToRam(Disp_MENU3_SUBMAIN) ;
@@ -473,8 +533,17 @@ void UpdateDisplayMenu(void) {
       str = "Dev Id: " + String(Device_Id);  // fw version compile time
       break;
     case MENU4_SUB3 :
-      str = CopyFlashToRam(Disp_MENU4_SUB3);
+      str = CopyFlashToRam(Disp_MENU4_SUB3_1);   
+      for (uint8_t i = 0; i < 8; i++){
+            if (UniqueID8[i] < 0x10) str += '0';
+            str += String(UniqueID8[i], HEX);
+            if(i==3)str += '.';
+       }
       break;
+    case MENU4_SUB4 :
+      str = CopyFlashToRam(Disp_MENU4_SUB4);
+      break;
+      
     case MENU5 :   str = CopyFlashToRam(Disp_MENU5);
       break;
     case MENU5_SUB1 : str = UpddateDateTimeBuffer();
@@ -537,8 +606,70 @@ void UpdateDisplayMenu(void) {
           if ( Mains_Frequency == FREQUENCY_50HZ)str += CopyFlashToRam(Disp_MENU6_SUB71); 
           if ( Mains_Frequency == FREQUENCY_60HZ)str += CopyFlashToRam(Disp_MENU6_SUB72);        
       break;
-
-      
+    case MENU7 : str = CopyFlashToRam(Disp_MENU7);
+      break;
+      /*
+   case MENU7_SUB1 : str = CopyFlashToRam(Disp_MENU7_Activ);
+          switch(FileSize.MaxSize){
+            case  KBYTE_500 :  str += CopyFlashToRam(Disp_MENU7_SUB1);  //12 max karakter
+              break;
+            case MBYTE_1 :     str += CopyFlashToRam(Disp_MENU7_SUB2);//12 max karakter
+              break;
+            case MBYTE_2 :     str += CopyFlashToRam(Disp_MENU7_SUB3); //12 max karakter
+              break;
+            case MBYTE_4 :     str += CopyFlashToRam(Disp_MENU7_SUB4); //12 max karakter
+              break;
+            case MBYTE_8 :     str += CopyFlashToRam(Disp_MENU7_SUB5); //12 max karakter
+              break;    
+            case MBYTE_16 :    str += CopyFlashToRam(Disp_MENU7_SUB6); //12 max karakter
+              break;  
+            case MBYTE_32 :    str += CopyFlashToRam(Disp_MENU7_SUB7); //12 max karakter
+              break;                
+            default:
+              break;                                                  
+          }
+      break;
+*/
+   case MENU7_SUB1: 
+     if(FileSize.MaxSize == KBYTE_500)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
+      str += CopyFlashToRam(Disp_MENU7_SUB1);
+      break;     
+   case MENU7_SUB2 : 
+      if(FileSize.MaxSize == MBYTE_1)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
+      str += CopyFlashToRam(Disp_MENU7_SUB2);
+      break;
+    case MENU7_SUB3 : 
+       if(FileSize.MaxSize == MBYTE_2)str = CopyFlashToRam(Disp_MENU_Activ);
+       else str = CopyFlashToRam(Disp_MENU_Enter);   
+       str += CopyFlashToRam(Disp_MENU7_SUB3);
+      break;
+    case MENU7_SUB4 : 
+      if(FileSize.MaxSize == MBYTE_4)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);   
+      str += CopyFlashToRam(Disp_MENU7_SUB4);
+      break;
+   case MENU7_SUB5 : 
+      if(FileSize.MaxSize == MBYTE_8)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);  
+      str += CopyFlashToRam(Disp_MENU7_SUB5);
+      break;
+   case MENU7_SUB6 : 
+      if(FileSize.MaxSize == MBYTE_16)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);
+      str += CopyFlashToRam(Disp_MENU7_SUB6);
+      break;
+    case MENU7_SUB7 : 
+      if(FileSize.MaxSize == MBYTE_32)str = CopyFlashToRam(Disp_MENU_Activ);
+      else str = CopyFlashToRam(Disp_MENU_Enter);    
+      str += CopyFlashToRam(Disp_MENU7_SUB7);
+      break;      
+    case MENU7_SUB8 : str = CopyFlashToRam(Disp_MENU7_SUB8);
+      break;           
+     case MENU7_SUB9 : str = CopyFlashToRam(Disp_MENU7_SUB9);
+      break;  
+    
     default:
       break;
   }

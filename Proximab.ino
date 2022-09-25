@@ -4,7 +4,7 @@
 */
 //for setting date&time open arduino serial monitor and send the data stream
 //   Year,Month,Date,Hour,Minute;Second
-//   2022,03,22,23,23,50
+//   2022,08,25,16,40,15
 //  2020,12,24,22,48,55 TIME DATE COMMAND
 // DEVIDf567   // DEV ID COMMAND DEVIDXXXX     Lxxxx_77.CSV  xxxx = 0000 - FFFF
 // FILEQUE01 // FILE NO COMMAND  FILEQUEXX      LAB75_xx.CSV  xx = 00 - 99
@@ -23,17 +23,26 @@
 #ifdef ARDUINO_MEGA // 8 bit AVR
 #include <EEPROM.h>
 #include <avr/wdt.h>
+#include <ArduinoUniqueID.h>
 #endif
 #ifdef ARDUINO_DUE // ARM CortexM3 32 bit
 #include <malloc.h>
 #include <DueFlashStorage.h>
 DueFlashStorage dueFlashStorage;
+#include <ArduinoUniqueID.h>
 #endif
 
+//#define OLED_128X128
+#define OLED_128X64
 
 #include <RTClib.h>
 #include <Adafruit_Si7021.h>
+#ifdef OLED_128X64
 #include <Adafruit_SSD1306.h>
+#endif
+#ifdef OLED_128X128
+#include <Adafruit_SSD1327.h>
+#endif
 #include <SD.h>
 #include <Wire.h>
 //#include <Wire1.h>
@@ -169,7 +178,7 @@ void tcDisable()
 
 
 void setup() {
-  MicroInit();
+  MicroInit(); //
 #ifdef ARDUINO_DUE // 
   //Due_Memory();
   analogReadResolution(12);
